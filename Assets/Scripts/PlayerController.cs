@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class PlayerController : MonoBehaviour {
 
     public Text heroHealthText;
@@ -12,13 +13,23 @@ public class PlayerController : MonoBehaviour {
     public Text cast2Text;
     public Text cast3Text;
     public Text GCDText;
+    public Animator hero;
+    public Animator enemy;
 
     private int heroHealth;
-    private int enemyHealth;
+    private float enemyHealth;
     private float GCD;
-    private float[] cooldown;
-    private Boolean multiplier;
+    private float multiplier;
+    private float addititve;
     private float enemyCastCD;
+    private Spell fireBlast;
+    private Spell fireball;
+    private Spell empower;
+    private Spell[] spellbook;
+    private Boolean triggersGCD;
+    private Spell toCast;
+    private int n;
+    private Boolean canCast;
 
     // Use this for initialization
     void Start()
@@ -27,19 +38,32 @@ public class PlayerController : MonoBehaviour {
         enemyHealth = 100;
         heroHealthText.text = heroHealth.ToString();
         enemyHealthText.text = enemyHealth.ToString();
-        cooldown = new float[] { 0, 0, 0, 0 };
         cast1Text.text = "0";
         cast2Text.text = "0";
         GCDText.text = "0";
         cast3Text.text = "0";
-        multiplier = false;
+        multiplier = 1;
+        addititve = 0;
+        fireBlast = new Spell(4, 1, true);
+        fireball = new Spell(10, 5, true);
+        empower = new Spell(20, 0, false);
+        empower.SetMultiplier(2);
+        empower.SetGCDRespectFalse();
+        spellbook = new Spell[] { fireBlast, fireball, empower};
+        triggersGCD = false;
+        n = 0;
+        canCast = false;
+        //anim = GetComponent<Animator>();
 
     }
+
+
 
     // Update is called once per frame
     void Update() {
         ReduceCooldowns();
         CheckInput();
+        Cast();
         enemyCast();
         checkDead();
     }
@@ -51,23 +75,60 @@ public class PlayerController : MonoBehaviour {
         //GUI.Box(new Rect(0, 0, 100, 50), (Math.Ceiling(cooldown[0])).ToString());
     }
 
-    //Checks if the input is the keybind for one of the casts, then attempts to cast
+    //Checks if the input is the keybind for one of the casts, then sets values so it can be cast with Cast() function
     void CheckInput()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Cast1();
+            if (spellbook[0].CanCast(GCD))
+            {
+                n = 0;
+                canCast = true;
+                hero.SetBool("Use1", true);
+                enemy.SetBool("Use1", true);
+            }
+
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            Cast2();
+            if (spellbook[1].CanCast(GCD))
+            {
+                n = 1;
+                canCast = true;
+                hero.SetBool("Use2", true);
+                enemy.SetBool("Use2", true);
+            }
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            Cast3();
-        }
+            if (spellbook[2].CanCast(GCD))
+            {
+                n = 2;
+                canCast = true;
+                multiplier = 2;
+                hero.SetBool("Use3", true);
+                enemy.SetBool("Use3", true);
+            }
+        }    
     }
 
+
+    void Cast()
+    {
+        if (canCast)
+        {
+            enemyHealth -= spellbook[n].Cast(multiplier, addititve);
+            triggersGCD = spellbook[n].GetTriggersGCD();
+            enemyHealthText.text = Math.Round(enemyHealth).ToString();
+            if (triggersGCD)
+            {
+                GCD = 2;
+                triggersGCD = false;
+            }
+            canCast = false;
+            multiplier = spellbook[n].GetMultiplier();
+        }
+    }
     //Called once every update.  Reduces cooldowns by change in time.
     void ReduceCooldowns()
     {
@@ -75,8 +136,7 @@ public class PlayerController : MonoBehaviour {
         if (GCD > 0)
         {
             GCDText.text = (Math.Ceiling(GCD -= (Time.deltaTime))).ToString();
-        }
-        if (GCD < 0)
+        }else if (GCD < 0)
         {
             GCD = 0;
         }
@@ -85,83 +145,25 @@ public class PlayerController : MonoBehaviour {
         enemyCastCD -= (float)(Time.deltaTime);
 
         //Goes through every cooldown and reduces it
-        for (int i = 0; i < cooldown.Length; i++)
+        for (int i = 0; i < spellbook.Length; i++)
         {
+            spellbook[i].ReduceCooldown((float)(Time.deltaTime));
 
-            if (cooldown[i] >= 0)
+            //Updates the cooldown of the moves to the GUI
+            if (i == 0)
             {
-                cooldown[i] -= (float)(Time.deltaTime);
-
-                //Updates the cooldown of the moves to the GUI
-                if (i == 0)
-                {
-                    cast1Text.text = (Math.Ceiling(cooldown[i])).ToString();
-                }
-                if (i == 1)
-                {
-                    cast2Text.text = (Math.Ceiling(cooldown[i])).ToString();
-                }
-                if (i == 2)
-                {
-                    cast3Text.text = (Math.Ceiling(cooldown[i])).ToString();
-                }
+                cast1Text.text = spellbook[0].displayCD();
             }
-
-            //Makes sure cooldowns aren't under 0
-            if (cooldown[i] < 0)
+            if (i == 1)
             {
-                cooldown[i] = 0;
+                cast2Text.text = spellbook[1].displayCD();
+            }
+            if (i == 2)
+            {
+                cast3Text.text = spellbook[2].displayCD();
             }
         }
-    }
 
-
-    //Casts the hard coded first ability if the cooldown is available.  Sets the cooldown if cast.
-    void Cast1()
-    {
-        if (cooldown[0] <= 0 & GCD <= 0)
-        {
-            cooldown[0] = 4;
-            GCD = 2;
-            if (multiplier)
-            {
-                enemyHealthText.text = (enemyHealth -= 2).ToString();
-                multiplier = false;
-            }
-            else
-            {
-                enemyHealthText.text = (enemyHealth -= 1).ToString();
-            }
-        }
-    }
-
-    //Casts the hard coded second ability if the cooldown is available.  Sets the cooldown if cast.
-    void Cast2()
-    {
-        if (cooldown[1] <= 0 & GCD <= 0)
-        {
-            cooldown[1] = 10;
-            GCD = 2;
-            if (multiplier)
-            {
-                enemyHealthText.text = (enemyHealth -= 10).ToString();
-            }
-            else
-            {
-                enemyHealthText.text = (enemyHealth -= 5).ToString();
-            }
-        }
-    }
-
-    //Doubles the damage of your next Cast
-    void Cast3()
-    {
-        if (cooldown[2] <= 0 & GCD <= 0)
-        {
-            cooldown[2] = 20;
-            GCD = 2;
-            multiplier = true;
-        }
     }
 
     void enemyCast()
