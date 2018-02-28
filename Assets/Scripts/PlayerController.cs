@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour {
     public Text cast1Text;
     public Text cast2Text;
     public Text cast3Text;
-    //public Text cast4Text;
     public Text GCDText;
 
     private int heroHealth;
@@ -29,12 +28,10 @@ public class PlayerController : MonoBehaviour {
         heroHealthText.text = heroHealth.ToString();
         enemyHealthText.text = enemyHealth.ToString();
         cooldown = new float[] { 0, 0, 0, 0 };
-        //cooldownInts = new int[] { 0, 0, 0, 0 };
         cast1Text.text = "0";
         cast2Text.text = "0";
         GCDText.text = "0";
-        //cast3Text.text = "0";
-        //cast4Text.text = "0";
+        cast3Text.text = "0";
         multiplier = false;
 
     }
@@ -45,8 +42,6 @@ public class PlayerController : MonoBehaviour {
         CheckInput();
         enemyCast();
         checkDead();
-
-
     }
 
     //Box for testing purposes
@@ -70,10 +65,6 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             Cast3();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            // Cast4()
         }
     }
 
@@ -114,7 +105,6 @@ public class PlayerController : MonoBehaviour {
                 {
                     cast3Text.text = (Math.Ceiling(cooldown[i])).ToString();
                 }
-
             }
 
             //Makes sure cooldowns aren't under 0
@@ -122,7 +112,6 @@ public class PlayerController : MonoBehaviour {
             {
                 cooldown[i] = 0;
             }
-
         }
     }
 
@@ -161,7 +150,6 @@ public class PlayerController : MonoBehaviour {
             {
                 enemyHealthText.text = (enemyHealth -= 5).ToString();
             }
-
         }
     }
 
