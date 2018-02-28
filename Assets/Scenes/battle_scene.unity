@@ -295,7 +295,6 @@ GameObject:
   - component: {fileID: 209997212}
   - component: {fileID: 209997215}
   - component: {fileID: 209997214}
-  - component: {fileID: 209997213}
   m_Layer: 0
   m_Name: Hero HP Text
   m_TagString: Untagged
@@ -321,23 +320,6 @@ RectTransform:
   m_AnchoredPosition: {x: -347, y: 193}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &209997213
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 209997211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77c5b1f70cbb06740935c10bca4a9ed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heroHealthText: {fileID: 209997214}
-  enemyHealthText: {fileID: 1694683797}
-  cast1Text: {fileID: 1730171158}
-  cast2Text: {fileID: 1021618711}
-  cast3Text: {fileID: 812347855}
-  GCDText: {fileID: 1585808361}
 --- !u!114 &209997214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,7 +439,6 @@ GameObject:
   - component: {fileID: 812347853}
   - component: {fileID: 812347856}
   - component: {fileID: 812347855}
-  - component: {fileID: 812347854}
   m_Layer: 5
   m_Name: Cast 3 Text
   m_TagString: Untagged
@@ -483,23 +464,6 @@ RectTransform:
   m_AnchoredPosition: {x: 11, y: -156}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &812347854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 812347852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77c5b1f70cbb06740935c10bca4a9ed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heroHealthText: {fileID: 209997214}
-  enemyHealthText: {fileID: 1694683797}
-  cast1Text: {fileID: 1730171158}
-  cast2Text: {fileID: 1021618711}
-  cast3Text: {fileID: 812347855}
-  GCDText: {fileID: 1585808361}
 --- !u!114 &812347855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -766,7 +730,6 @@ GameObject:
   - component: {fileID: 1021618710}
   - component: {fileID: 1021618712}
   - component: {fileID: 1021618711}
-  - component: {fileID: 1021618713}
   m_Layer: 5
   m_Name: Cast 2 Text
   m_TagString: Untagged
@@ -831,23 +794,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1021618709}
---- !u!114 &1021618713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1021618709}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77c5b1f70cbb06740935c10bca4a9ed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heroHealthText: {fileID: 209997214}
-  enemyHealthText: {fileID: 1694683797}
-  cast1Text: {fileID: 1730171158}
-  cast2Text: {fileID: 1021618711}
-  cast3Text: {fileID: 812347855}
-  GCDText: {fileID: 1585808361}
 --- !u!1 &1585808359
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,7 +804,6 @@ GameObject:
   - component: {fileID: 1585808360}
   - component: {fileID: 1585808362}
   - component: {fileID: 1585808361}
-  - component: {fileID: 1585808363}
   m_Layer: 5
   m_Name: GCD
   m_TagString: Untagged
@@ -925,23 +870,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1585808359}
---- !u!114 &1585808363
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1585808359}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77c5b1f70cbb06740935c10bca4a9ed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heroHealthText: {fileID: 209997214}
-  enemyHealthText: {fileID: 1694683797}
-  cast1Text: {fileID: 1730171158}
-  cast2Text: {fileID: 1021618711}
-  cast3Text: {fileID: 812347855}
-  GCDText: {fileID: 1585808361}
 --- !u!1 &1694683795
 GameObject:
   m_ObjectHideFlags: 0
@@ -952,7 +880,6 @@ GameObject:
   - component: {fileID: 1694683796}
   - component: {fileID: 1694683798}
   - component: {fileID: 1694683797}
-  - component: {fileID: 1694683799}
   m_Layer: 0
   m_Name: Enemy HP Text
   m_TagString: Untagged
@@ -1019,23 +946,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1694683795}
---- !u!114 &1694683799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1694683795}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77c5b1f70cbb06740935c10bca4a9ed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heroHealthText: {fileID: 209997214}
-  enemyHealthText: {fileID: 1694683797}
-  cast1Text: {fileID: 1730171158}
-  cast2Text: {fileID: 1021618711}
-  cast3Text: {fileID: 812347855}
-  GCDText: {fileID: 1585808361}
 --- !u!1 &1730171156
 GameObject:
   m_ObjectHideFlags: 0
@@ -1046,7 +956,6 @@ GameObject:
   - component: {fileID: 1730171157}
   - component: {fileID: 1730171159}
   - component: {fileID: 1730171158}
-  - component: {fileID: 1730171160}
   m_Layer: 5
   m_Name: Cast 1 Text
   m_TagString: Untagged
@@ -1111,12 +1020,28 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1730171156}
---- !u!114 &1730171160
+--- !u!1 &1829399221
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1829399223}
+  - component: {fileID: 1829399222}
+  m_Layer: 5
+  m_Name: Player Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1829399222
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1730171156}
+  m_GameObject: {fileID: 1829399221}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 77c5b1f70cbb06740935c10bca4a9ed7, type: 3}
@@ -1128,6 +1053,24 @@ MonoBehaviour:
   cast2Text: {fileID: 1021618711}
   cast3Text: {fileID: 812347855}
   GCDText: {fileID: 1585808361}
+--- !u!224 &1829399223
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1829399221}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 224.5, y: 536.5}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2044069693
 GameObject:
   m_ObjectHideFlags: 0
