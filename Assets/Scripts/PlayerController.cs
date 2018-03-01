@@ -1,167 +1,124 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public class PlayerController : MonoBehaviour
+{
 
-public class PlayerController : MonoBehaviour {
-
-    public Text heroHealthText;
-    public Text enemyHealthText;
     public Text cast1Text;
     public Text cast2Text;
     public Text cast3Text;
+    public Text heroHealthText;
+    public Text enemyHealthText;
     public Text GCDText;
     public Animator hero;
     public Animator enemy;
 
-    private int heroHealth;
-    private float enemyHealth;
-    private float GCD;
-    private float multiplier;
-    private float addititve;
-    private float enemyCastCD;
-    private Spell fireBlast;
-    private Spell fireball;
-    private Spell empower;
-    private Spell[] spellbook;
-    private Boolean triggersGCD;
-    private Spell toCast;
-    private int n;
-    private Boolean canCast;
+    private float maxGCD = 2;
+    private int heroHealth = 100;
+    public float enemyHealth = 100;
+    public float GCD = 0;
+    public float multiplier = 1;
+    public float additive = 0;
+    private float enemyCastCD = 0;
+    private List<Spell> spellbook;
+    private List<SpellBinding> spellBindings = new List<SpellBinding>();
 
     // Use this for initialization
     void Start()
     {
-        heroHealth = 100;
-        enemyHealth = 100;
-        heroHealthText.text = heroHealth.ToString();
-        enemyHealthText.text = enemyHealth.ToString();
-        cast1Text.text = "0";
-        cast2Text.text = "0";
-        GCDText.text = "0";
-        cast3Text.text = "0";
-        multiplier = 1;
-        addititve = 0;
-        fireBlast = new Spell(4, 1, true);
-        fireball = new Spell(10, 5, true);
-        empower = new Spell(20, 0, false);
-        empower.SetMultiplier(2);
-        empower.SetGCDRespectFalse();
-        spellbook = new Spell[] { fireBlast, fireball, empower};
-        triggersGCD = false;
-        n = 0;
-        canCast = false;
-        //anim = GetComponent<Animator>();
-
+        setSpellBindings();
     }
 
+    private List<Text> getTextBoxes()
+    {
+        return new List<Text>() { cast1Text, cast2Text, cast3Text };
+    }
 
+    private void setSpells()
+    {
+        Spell fireBlast = new Spell(3, 1, "Use1");
+        Spell fireball = new Spell(6, 5, "Use2");
+        Spell empower = new Spell(10, 0,"Use3", false);
+        empower.setGCDRespect(false);
+        empower.setMultiplier(2);
+        spellbook = new List<Spell>() { fireBlast, fireball, empower };
+    }
+
+    private List<KeyCode> getKeys()
+    {
+        return new List<KeyCode>() { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3 };
+    }
+
+    private void setSpellBindings()
+    {
+        setSpells();
+        List<Text> textBoxes = getTextBoxes();
+        List<KeyCode> keys = getKeys();
+        for (int i = 0; i < spellbook.Count; i++)
+        {
+            SpellBinding binding = new SpellBinding(spellbook[i], keys[i], textBoxes[i]);
+            spellBindings.Add(binding);
+        }
+    }
 
     // Update is called once per frame
     void Update() {
-        ReduceCooldowns();
-        CheckInput();
-        Cast();
+        reduceCooldowns();
+        checkInput();
         enemyCast();
         checkDead();
+        updateView();
     }
 
-    //Box for testing purposes
-    void OnGUI()
+    public String textConverter(float value) //TODO move to general utils class or textBox wrapper class
     {
-        //GUI.Box(new Rect(0, 0, 100, 50), (1 / Time.deltaTime).ToString());
-        //GUI.Box(new Rect(0, 0, 100, 50), (Math.Ceiling(cooldown[0])).ToString());
+        return Math.Ceiling(value).ToString();
+    }
+
+    public void updateView()
+    {
+        spellBindings.ForEach(binding => binding.updateTextBox());
+        GCDText.text = textConverter(GCD);
+        heroHealthText.text = textConverter(heroHealth);
+        enemyHealthText.text = textConverter(enemyHealth); 
+    }
+
+
+    public void triggerGCD()
+    {
+        GCD = maxGCD;
     }
 
     //Checks if the input is the keybind for one of the casts, then sets values so it can be cast with Cast() function
-    void CheckInput()
+    void checkInput()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        foreach(SpellBinding binding in spellBindings)
         {
-            if (spellbook[0].CanCast(GCD))
+            if (Input.GetKeyDown(binding.getKey()))
             {
-                n = 0;
-                canCast = true;
-                hero.SetBool("Use1", true);
-                enemy.SetBool("Use1", true);
+                if (binding.spell.canCast())
+                {
+                    binding.spell.cast();
+                }
             }
-
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if (spellbook[1].CanCast(GCD))
-            {
-                n = 1;
-                canCast = true;
-                hero.SetBool("Use2", true);
-                enemy.SetBool("Use2", true);
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            if (spellbook[2].CanCast(GCD))
-            {
-                n = 2;
-                canCast = true;
-                multiplier = 2;
-                hero.SetBool("Use3", true);
-                enemy.SetBool("Use3", true);
-            }
-        }    
+        } 
     }
 
-
-    void Cast()
-    {
-        if (canCast)
-        {
-            enemyHealth -= spellbook[n].Cast(multiplier, addititve);
-            triggersGCD = spellbook[n].GetTriggersGCD();
-            enemyHealthText.text = Math.Round(enemyHealth).ToString();
-            if (triggersGCD)
-            {
-                GCD = 2;
-                triggersGCD = false;
-            }
-            canCast = false;
-            multiplier = spellbook[n].GetMultiplier();
-        }
-    }
     //Called once every update.  Reduces cooldowns by change in time.
-    void ReduceCooldowns()
+    void reduceCooldowns()
     {
-        //Recudes Global Cooldown
-        if (GCD > 0)
-        {
-            GCDText.text = (Math.Ceiling(GCD -= (Time.deltaTime))).ToString();
-        }else if (GCD < 0)
-        {
-            GCD = 0;
-        }
+        //Reduces Global Cooldown
+        GCD = (float) Math.Max(GCD - Time.deltaTime, 0);
 
         //Reduces Enemy CD
-        enemyCastCD -= (float)(Time.deltaTime);
+        enemyCastCD = (float) Math.Max(enemyCastCD - Time.deltaTime, 0);
 
         //Goes through every cooldown and reduces it
-        for (int i = 0; i < spellbook.Length; i++)
+        foreach (SpellBinding binding in spellBindings)
         {
-            spellbook[i].ReduceCooldown((float)(Time.deltaTime));
-
-            //Updates the cooldown of the moves to the GUI
-            if (i == 0)
-            {
-                cast1Text.text = spellbook[0].displayCD();
-            }
-            if (i == 1)
-            {
-                cast2Text.text = spellbook[1].displayCD();
-            }
-            if (i == 2)
-            {
-                cast3Text.text = spellbook[2].displayCD();
-            }
+            binding.spell.reduceCooldown();
         }
 
     }
@@ -171,7 +128,7 @@ public class PlayerController : MonoBehaviour {
         if(enemyCastCD <= 0)
         {
             enemyCastCD = 3;
-            heroHealthText.text = (heroHealth -= 3).ToString();
+            heroHealth -= 3;
         }
     }
 
