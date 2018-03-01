@@ -12,7 +12,7 @@ public class Enemy
     private float castFreq;
     private float GCD = 2;
 
-    public Enemy(string name, float castFreq, List<Spell> spellbook, float health = 100)
+  /*  public Enemy(string name, float castFreq, List<Spell> spellbook, float health = 100)
     {
         this.name = name;
         this.health = health;
@@ -58,8 +58,8 @@ public class Enemy
                 GCD = 2;
             }
         }
-    }
-
+    }*/
+    
 }
 	
 
