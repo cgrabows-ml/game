@@ -33,8 +33,4 @@ public class SpellBinding
     {
     }
 
-    // Update is called once per frame
-	void Update () {
-       // updateTextBox(); //TODO: This doesn't work. Logic is instead still in player controller.
-	}
 }
