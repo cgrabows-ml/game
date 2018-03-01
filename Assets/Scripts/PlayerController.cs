@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour {
         empower = new Spell(20, 0, false);
         empower.SetMultiplier(2);
         empower.SetGCDRespectFalse();
-        spellbook = new Spell[] { fireBlast, fireball, empower};
+        spellbook = new Spell[] {fireBlast, fireball, empower};
         triggersGCD = false;
         n = 0;
         canCast = false;

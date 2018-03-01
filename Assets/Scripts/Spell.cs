@@ -28,10 +28,10 @@ public class Spell {
         cooldown = 0;
     }
 
-    /* Update is called once per frame
+
 	void Update () {
-		
-	}*/
+        ReduceCooldown(Time.deltaTime);
+	}
 
     //Returns the value of the upper limit of the cooldown.  Used to display on screen.
     public string displayCD()
@@ -98,7 +98,7 @@ public class Spell {
     }
 
     //sets the cooldown of the spell and returns damage
-    public float Cast(float multiplier, float addititve)
+    public float Cast(float multiplier = 1, float addititve = 0)
     {
         cooldown = baseCooldown;
         return DealDamage(multiplier, addititve);
