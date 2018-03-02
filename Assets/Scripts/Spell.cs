@@ -6,22 +6,24 @@ using UnityEngine.UI;
 
 public class Spell
 {
-
     public PlayerController playerController = GameObject.Find("PlayerController").GetComponent<PlayerController>();
+
     public String animationKey;
 
+    private Character owner;
     private float baseCooldown;
     private float cooldown = 0;
-    private float damage;
+    private float baseDamage;
     private Boolean triggersGCD;
     private float multiplier = 1;
     private Boolean GCDRespect;
     private String target;
 
-    public Spell(float baseCooldown, float damage, String animationKey, Boolean triggersGCD = true, String target = "front")
+    public Spell(Character owner, float baseCooldown, float baseDamage, String animationKey, Boolean triggersGCD = true, String target = "front")
     {
+        this.owner = owner;
         this.baseCooldown = baseCooldown;
-        this.damage = damage;
+        this.baseDamage = baseDamage;
         this.triggersGCD = triggersGCD;
         this.GCDRespect = true;
         this.animationKey = animationKey;
@@ -32,12 +34,12 @@ public class Spell
     /// Sets the multiplier in PlayerController to the parameter.
     /// </summary>
     /// <param name="multiplier"></param>
-    public void setMultiplier(float multiplier)
+    public void SetMultiplier(float multiplier)
     {
         this.multiplier = multiplier;
     }
 
-    public float getCooldown()
+    public float GetCooldown()
     {
         return cooldown;
     }
@@ -45,25 +47,16 @@ public class Spell
     /// <summary>
     /// Reduces the cooldown of the ability, makes sure it's not below 0.
     /// </summary>
-    public void reduceCooldown()
+    public void ReduceCooldown()
     {
         cooldown = Math.Max(0, cooldown - Time.deltaTime);
-    }
-
-    /// <summary>
-    /// Returns if the ability triggers the Global cooldown
-    /// </summary>
-    /// <returns>triggersGCD</returns>
-    public Boolean getTriggersGCD()
-    {
-        return triggersGCD;
     }
 
     /// <summary>
     /// Sets the spell to ignore the GCD if parameter is true.
     /// </summary>
     /// <param name="GCDRespect"></param>
-    public void setGCDRespect(Boolean GCDRespect)
+    public void SetGCDRespect(Boolean GCDRespect)
     {
         this.GCDRespect = GCDRespect;
     }
@@ -72,25 +65,34 @@ public class Spell
     /// Deals damage by changing variables in playercontroller.
     /// Uses the target variable to determine where to deal the damage.
     /// </summary>
-    public void dealDamage()
+    public void DealDamage()
+    {
+        float damage = owner.GetDamage(baseDamage);
+        List<Character> targets = GetTargets();
+        targets.ForEach(target => target.TakeDamage(damage));
+    }
+
+    private List<Character> GetTargets()
     {
         if (target == "player")
         {
-            playerController.heroHealth -= damage;
+            return new List<Character>() { playerController.hero };
         }
         else if (target == "front")
         {
-            playerController.enemies[0].health -= damage * playerController.multiplier + playerController.additive;
+            return new List<Character>() { playerController.enemies[0] };
         }
         else if (target == "AoE")
         {
-            foreach (Enemy enemy in playerController.enemies)
-            {
-                enemy.health -= damage * playerController.multiplier + playerController.additive;
-            }
-        }else if (target == "back")
+            return playerController.enemies;
+        }
+        else if (target == "back")
         {
-            playerController.enemies[playerController.enemies.Count - 1].health -= damage * playerController.multiplier + playerController.additive;
+            return new List<Character>() { playerController.enemies[-1] };
+        }
+        else
+        {
+            return new List<Character>(); //Should instead raise error
         }
     }
 
@@ -101,16 +103,16 @@ public class Spell
     /// Otherwise this returns false.
     /// </summary>
     /// <returns></returns>
-    public Boolean canCast()
+    public Boolean CanCast()
     {
-        return cooldown <= 0 && (playerController.GCD <= 0 || GCDRespect == false);
+        return cooldown <= 0 && (owner.GCD <= 0 || GCDRespect == false);
     }
 
     /// <summary>
     /// Returns if the enemy spell is on Cooldown or not.
     /// </summary>
     /// <returns></returns>
-    public Boolean canEnemyCast()
+    public Boolean CanEnemyCast()
     {
         return cooldown <= 0;
     }
@@ -118,18 +120,18 @@ public class Spell
     /// <summary>
     /// Casts the spell.  Sets the cooldown to the base cooldown.  Deals damage.  If it doesnt ignore the GCD, then trigger the GCD.  If an ememy didn't cast this, reset multiplier and animate the hero.
     /// </summary>
-    public void cast()
+    public void Cast()
     {
         cooldown = baseCooldown;
-        dealDamage();
+        DealDamage();
         if (triggersGCD && target != "player")
         {
-            playerController.triggerGCD();
+            owner.TriggerGCD();
         }
         if (target != "player")
         {
-            playerController.multiplier = multiplier;
-            playerController.hero.SetBool(animationKey, true);
+            owner.out_multiplier = multiplier;
+            owner.anim.SetBool(animationKey, true);
         }
     }
 }

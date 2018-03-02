@@ -17,13 +17,18 @@ public class SpellBinding
         this.textBox = textBox;
 	}
 
-    public void updateTextBox()
+    public void Update()
     {
-        this.textBox.text = playerController.textConverter(spell.getCooldown());
+        UpdateTextBox();
+    }
+
+    public void UpdateTextBox()
+    {
+        this.textBox.text = Utils.ToDisplayText(spell.GetCooldown());
     }
 
 
-    public KeyCode getKey()
+    public KeyCode GetKey()
     {
         return key;
     }

@@ -5,34 +5,30 @@ using UnityEngine.UI;
 
 
 
-public class Enemy
+public class Enemy : Character
 {
-    public PlayerController playerController = GameObject.Find("PlayerController").GetComponent<PlayerController>();
-    public List<Spell> spellbook;
-    public float health;
-    public float GCD = 2;
-
     private string name;
-    private float castFreq;
-    private Text textBox;
-    private Animator anim;
-
-    public Enemy(string name, float castFreq, List<Spell> spellbook, Text textBox, Animator anim, float health = 100)
-    {
-        this.name = name;
-        this.health = health;
-        this.castFreq = castFreq;
-        this.spellbook = spellbook;
-        this.textBox = textBox;
-        this.anim = anim;
-    }
 
     /// <summary>
-    /// Updates the text box that was entered with the constructor.
+    /// Constructor for enemy class
     /// </summary>
-    public void UpdateTextBox()
+    /// <param name="name"></param>
+    /// <param name="castFreq"></param>
+    /// <param name="spellbook"></param>
+    /// <param name="textBox"></param>
+    /// <param name="anim"></param>
+    /// <param name="health"></param>
+    public Enemy(string name, float castFreq, List<Spell> spellbook, Text textBox, Animator anim, float health = 100)
+        : base(spellbook, textBox, anim, health)
     {
-        textBox.text = playerController.textConverter(health);
+        base.SetMaxGCD(castFreq);
+        //maxGCD = castFreq; this should be possible
+    }
+
+    new public Update()
+    {
+        base.Update();
+        Cast();
     }
 
     /// <summary>
@@ -42,33 +38,14 @@ public class Enemy
     {
         foreach(Spell spell in spellbook)
         {
-            if (spell.canEnemyCast() && GCD <= 0)
-            { 
-                spell.cast();
+            if (spell.CanCast() && GCD <= 0)
+            {
+                spell.Cast();
                 anim.SetBool(spell.animationKey, true);
-                GCD = castFreq;
+                GCD = maxGCD;
             }
         }
     }
-
-    /// <summary>
-    /// Reduces GCD and cooldowns of every spell in the spellbook
-    /// </summary>
-    public void ReduceCooldowns()
-    {
-        //Reduces GCD
-        if (GCD > 0)
-        {
-            GCD -= Math.Max(Time.deltaTime, 0);
-        }
-
-        //Reduces Spell CDs
-        for (int i = 0; i < spellbook.Count; i++)
-        {
-            spellbook[i].reduceCooldown();
-        }
-    }
-    
 }
 	
 
