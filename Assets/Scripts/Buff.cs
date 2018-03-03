@@ -3,90 +3,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Buff {
+public abstract class Buff {
 
-    public PlayerController playerController = GameObject.Find("PlayerController").GetComponent<PlayerController>(); //USED FOR TESTING REMOVE THIS
+    private float duration;
+    protected Character owner;
+    private String name;
 
-    public float multiplier = 1;
-    public float addititve = 0;
-    public String removeWhen = "";
-    public string applies = "";
-    public String name = "";
-    public float duration;
-    public int numSpells;
-    public int numHits;
-    public List<String> castNames;
-
-
-    public Buff(float multiplier, float addititve, String name, String removeWhen, int duration = 0, int numSpells = 0, int numHits = 0, List<String> castNames = null)
+    public Buff(String name, Character owner, int duration = 0)
     {
-        this.multiplier = multiplier;
-        this.addititve = addititve;
-        this.removeWhen = removeWhen;
-        this.name = name;
         this.duration = duration;
-        this.numSpells = numSpells;
-        this.numHits = numHits;
-        if (castNames == null)
-        {
-            castNames = new List<String> { };
-        }
-        else
-        {
-            this.castNames = castNames;
-        }
+        this.owner = owner;
+        this.name = name;
     }
 
-    //removeWhen examples: time, # of spells cast, on hit, certain spell/set of spells is cast
-    //Implementing duration, numSpells, numHits, castNames
-    //Implement bonuses, armor, DoT/HoT
-
-    public Boolean CanRemove()
+    private Boolean CanRemove()
     {
-        //Duration
-        if (removeWhen == "duration")
-        {
-            if(duration <= 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        //Number of Spells
-        if (removeWhen == "numSpells")
-        {
-            if (numSpells <= 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        //Right now, the only time this else should get returned is if the removeWhen string is wrong, or if it's meant to be permanent.
-        else
-        {
-            return false;
-        }
+        return duration <= 0;
     }
 
-    public void RemoveBuff(Character owner)
+    public String getName()
     {
-        owner.out_multiplier = 1;
+        return name;
     }
+
+    public abstract void ApplyBuff();
+    public abstract void RemoveBuff();
 
     /// <summary>
     /// Removes duration based on deltatime
     /// </summary>
     public void Update()
     {
-        duration -= Math.Max(Time.deltaTime, 0);
-        duration = Math.Max(duration, 0);
+        duration = Math.Max(duration - Time.deltaTime, 0);
+        if (CanRemove())
+        {
+            RemoveBuff();
+        }
     }
 
 

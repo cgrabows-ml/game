@@ -49,15 +49,9 @@ public class Character
         return castable;
     }
 
-    /// <summary>
-    /// Reduces the number of spells variable in buffs
-    /// </summary>
-    public void ReduceNumSpell()
+    public void register_cast_listener(observer)
     {
-        foreach (Buff buff in buffs)
-        {
-            buff.numSpells = Math.Max(buff.numSpells - 1, 0);
-        }
+
     }
 
     //Right now this removes buffs every update... should be changed
