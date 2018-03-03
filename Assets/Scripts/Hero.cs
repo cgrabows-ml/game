@@ -13,11 +13,9 @@ public class Hero : Character {
     /// <param name="anim"></param>
     /// <param name="health"></param>
     // Use this for initialization
-    void Start(List<Spell> spellbook, Text textBox, Animator anim, float health = 100)
+    public Hero(List<Spell> spellbook, Text textBox, Animator anim, float health = 100)
+        :base(spellbook, textBox, anim, 100)
     {
-        this.spellbook = spellbook;
-        this.textBox = textBox;
-        this.anim = anim;
-        this.health = health;
+
 	}
 }

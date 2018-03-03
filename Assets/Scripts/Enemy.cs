@@ -21,11 +21,10 @@ public class Enemy : Character
     public Enemy(string name, float castFreq, List<Spell> spellbook, Text textBox, Animator anim, float health = 100)
         : base(spellbook, textBox, anim, health)
     {
-        base.SetMaxGCD(castFreq);
-        //maxGCD = castFreq; this should be possible
+        maxGCD = castFreq;
     }
 
-    new public Update()
+    new public void Update()
     {
         base.Update();
         Cast();
@@ -36,16 +35,13 @@ public class Enemy : Character
     /// </summary>
     public void Cast()
     {
+        int i = 0;
         foreach(Spell spell in spellbook)
         {
-            if (spell.CanCast() && GCD <= 0)
-            {
-                spell.Cast();
-                anim.SetBool(spell.animationKey, true);
-                GCD = maxGCD;
-            }
+            base.CanCast(i);
+            i++;
         }
     }
 }
-	
+
 

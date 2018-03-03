@@ -34,22 +34,41 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         SetSpells();
+        SetHero();
         SetEnemySpells();
         SetSpellBindings();
         SetEnemies();
     }
+
+    private void SetHero()
+    {
+        hero = new Hero(spellbook, heroHealthText, heroAnim, 100);
+    }
+
+    /// <summary>
+    /// Initializes Hero spells.
+    /// </summary>
+    private void SetSpells()
+    {
+        Spell fireBlast = new DamageSpell(3, 1, "Use1");
+        Spell fireball = new DamageSpell(6, 2, "Use2", target: "back");
+        Spell splash = new DamageSpell(8, 3, "Use3", target: "AoE");
+        Spell empower = new Empower();
+        spellbook = new List<Spell>() { fireBlast, fireball, splash, empower };
+    }
+
 
     /// <summary>
     /// Initializes spells to be used for enemies.  Puts spells into spellbooks for the enemies.
     /// </summary>
     private void SetEnemySpells()
     {
-        //Spell stab = new Spell(hero, 4, 1, "Use1", target: "player");
-        //Spell slash = new Spell(hero, 6, 5, "Use2", target: "player");
-        //Spell splash = new Spell(hero, 4, 1, "Use1", target: "player");
-        //Spell frostbolt = new Spell(hero, 6, 5, "Use2", target: "player");
-        //warriorSpellbook = new List<Spell> { stab, slash };
-        //mageSpellbook = new List<Spell> { splash, frostbolt };
+        Spell stab = new DamageSpell(4, 1, "Use1", target: "player");
+        Spell slash = new DamageSpell(6, 5, "Use2", target: "player");
+        Spell splash = new DamageSpell(4, 1, "Use1", target: "player");
+        Spell frostbolt = new DamageSpell(6, 5, "Use2", target: "player");
+        warriorSpellbook = new List<Spell> { stab, slash };
+        mageSpellbook = new List<Spell> { splash, frostbolt };
     }
 
     /// <summary>
@@ -72,20 +91,6 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Initializes spells.
-    /// </summary>
-    private void SetSpells()
-    {
-        Spell fireBlast = new Spell(hero, 3, 3, "Use1");
-        Spell fireball = new Spell(hero, 6, 5, "Use2", target:"back");
-        Spell splash = new Spell(hero, 8, 1, "Use3", target: "AoE");
-        Spell empower = new Spell(hero, 10, 0,"Use4", false);
-        empower.SetGCDRespect(false);
-        empower.SetMultiplier(2);
-        spellbook = new List<Spell>() { fireBlast, fireball, splash, empower };
-    }
-
-    /// <summary>
     /// Returns a list of keybinds to be used for spells.
     /// </summary>
     /// <returns>A list of keybinds.</returns>
@@ -103,7 +108,7 @@ public class PlayerController : MonoBehaviour
         List<KeyCode> keys = GetKeys();
         for (int i = 0; i < spellbook.Count; i++)
         {
-            SpellBinding binding = new SpellBinding(spellbook[i], keys[i], textBoxes[i]);
+            SpellBinding binding = new SpellBinding(hero.spellbook[i], keys[i], textBoxes[i]);
             spellBindings.Add(binding);
         }
     }
@@ -115,7 +120,6 @@ public class PlayerController : MonoBehaviour
         hero.Update();
         CheckDead();
         UpdateView();
-        Spell slash = new Slash();
     }
 
     /// <summary>
@@ -132,18 +136,19 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void CheckInput()
     {
+        int i = 0;
         foreach(SpellBinding binding in spellBindings)
         {
             if (Input.GetKeyDown(binding.GetKey()))
             {
-                if (binding.spell.CanCast())
-                {
-                    binding.spell.Cast();
-                }
+                //CanCast also does the cast
+                hero.CanCast(i);
             }
+            i++;
         } 
     }
-
+    
+    /*
     /// <summary>
     /// Called from Update.  Goes through all enemy spells and casts whichever is available, by which is first in the spellbook.
     /// </summary>
@@ -153,7 +158,7 @@ public class PlayerController : MonoBehaviour
         {
             enemy.Cast();
         }
-    }
+    }*/
 
     void CheckDead()
     {

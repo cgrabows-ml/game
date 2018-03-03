@@ -1924,15 +1924,11 @@ MonoBehaviour:
   enemyHealthText3: {fileID: 686270657}
   enemyHealthText4: {fileID: 1076376176}
   GCDText: {fileID: 1585808361}
-  hero: {fileID: 399281479}
-  enemy1: {fileID: 1565041771}
-  enemy2: {fileID: 655888592}
-  enemy3: {fileID: 705526320}
-  enemy4: {fileID: 1110490665}
-  heroHealth: 100
-  GCD: 0
-  multiplier: 1
-  additive: 0
+  heroAnim: {fileID: 399281479}
+  enemy1Anim: {fileID: 1565041771}
+  enemy2Anim: {fileID: 655888592}
+  enemy3Anim: {fileID: 705526320}
+  enemy4Anim: {fileID: 1110490665}
 --- !u!4 &1466786624
 Transform:
   m_ObjectHideFlags: 0

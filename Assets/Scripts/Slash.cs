@@ -2,27 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Slash : Spell {
+public class Slash : DamageSpell {
 
-    public Slash(Character owner)
-        :base()
+    public Slash()
+        :base(5, 5, "Use1", true, "front", true)
     {
-        this.owner = owner;
-        this.baseCooldown = 5;
-        this.baseDamage = 5;
-        this.triggersGCD = true;
-        this.GCDRespect = true;
-        this.animationKey = "Use1";
-        this.target = "front";
-    }
-
-	// Use this for initialization
-	void Start () {
 
     }
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
