@@ -10,11 +10,6 @@ public class PlayerController : MonoBehaviour
     public Text cast2Text;
     public Text cast3Text;
     public Text cast4Text;
-    public Text heroHealthText;
-    public Text enemyHealthText1;
-    public Text enemyHealthText2;
-    public Text enemyHealthText3;
-    public Text enemyHealthText4;
     public Text GCDText;
     public Animator heroAnim;
     public Animator enemy1Anim;
@@ -26,8 +21,24 @@ public class PlayerController : MonoBehaviour
     public List<Spell> mageSpellbook;
     public List<Spell> spellbook;
     public Character hero;
+    public static string TextField;
+
+    public Transform herofab;
+    public Transform warriorfab;
+    public Transform healthbarFab;
+    public Transform healthTextFab;
+    //public Transform mage;
+
+    public TextMesh enemyHealthText1;
+    public TextMesh enemyHealthText2;
+    public TextMesh enemyHealthText3;
+    public TextMesh enemyHealthText4;
+    public TextMesh heroHealthText;
 
     private List<SpellBinding> spellBindings = new List<SpellBinding>();
+    private List<CharacterBinding> enemyBindings = new List<CharacterBinding>();
+    private Transform instance;
+    private List<Transform> enemyGUI = new List<Transform> { };
 
 
     // Use this for initialization
@@ -38,7 +49,14 @@ public class PlayerController : MonoBehaviour
         SetEnemySpells();
         SetSpellBindings();
         SetEnemies();
+        SetEnemyBindings();
+        EnemyInstantiate();
+
+        //This is temp. Remove this pls.
+        //Instantiate(warrior, new Vector3(0, 0, 0), Quaternion.identity);
     }
+
+
 
     private void SetHero()
     {
@@ -76,9 +94,52 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void SetEnemies()
     {
-        Enemy warrior = new Enemy("warrior", 3, warriorSpellbook, enemyHealthText1, enemy1Anim, 120);
-        Enemy mage = new Enemy("mage", 2, mageSpellbook, enemyHealthText2, enemy2Anim, 80);
-        enemies = new List<Enemy> { warrior, mage };
+        Enemy warrior = new Warrior(enemyHealthText1, enemy1Anim);
+        Enemy mage = new Enemy("mage", 2, mageSpellbook, enemyHealthText1,  enemy2Anim, 2);
+        Enemy warrior2 = new Warrior(enemyHealthText1, enemy3Anim);
+        enemies = new List<Enemy> { warrior, warrior2, mage };
+
+    }
+
+    private void SetEnemyBindings()
+    {
+        List<TextMesh> textBoxes = new List<TextMesh>{ enemyHealthText1, enemyHealthText2, enemyHealthText3 };
+        List<Transform> prefabs = new List<Transform> { warriorfab, warriorfab, warriorfab };
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            CharacterBinding binding = new CharacterBinding(enemies[i], textBoxes[i], prefabs[i].GetComponent<Animator>(), prefabs[i]);
+            enemyBindings.Add(binding);
+        }
+    }
+
+
+    private void EnemyInstantiate()
+    {
+        int i = 0;
+        foreach (CharacterBinding binding in enemyBindings)
+        {
+            //Starting enemy spawn point
+            Vector3 vector = new Vector3(-0.3f + 1.43f * i, -2.58f, 0);
+
+            //Instantiate Enemy 
+            instance = Instantiate(binding.prefab, vector, Quaternion.identity);
+            binding.character.anim = instance.GetComponent<Animator>();
+            enemyGUI.Add(instance);
+
+            //Instantiate Enemy Health Bar
+            instance = Instantiate(healthbarFab, vector + new Vector3(0f, 1.8f, 0f), Quaternion.identity);
+            enemyGUI.Add(instance);
+
+
+            //Instantiate Text
+            instance = Instantiate(healthTextFab, vector + new Vector3(0f, 1.8f, 0f), Quaternion.identity);
+            binding.character.textBox = instance.GetComponent<TextMesh>();
+            enemyGUI.Add(instance);
+            i++;
+
+            binding.character.instances = enemyGUI;
+            enemyGUI = new List<Transform>{ };
+        }
     }
 
     /// <summary>
@@ -128,6 +189,7 @@ public class PlayerController : MonoBehaviour
     public void UpdateView()
     {
         spellBindings.ForEach(binding => binding.Update());
+        //foreach update characterbinding
         GCDText.text = Utils.ToDisplayText(hero.GCD);
     }
 
@@ -145,7 +207,11 @@ public class PlayerController : MonoBehaviour
                 hero.CanCast(i);
             }
             i++;
-        } 
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            //SpawnEnemy();
+        }
     }
     
     /*
@@ -162,7 +228,33 @@ public class PlayerController : MonoBehaviour
 
     void CheckDead()
     {
-        //ToDo: the whole function lmao
+        //Checks if an enemy has died.  Removes them from the enemies list and the enemyBindings list
+        List<Character> toRemove = new List<Character> { };
+        List<CharacterBinding> toRemoveB = new List<CharacterBinding> { };
+        int i = 0;
+        foreach(CharacterBinding binding in enemyBindings)
+        {
+            //todo move the check for being dead in the Character class, this is temp
+            if(binding.character.health <= 0)
+            {
+                toRemove.Add(binding.character);
+                toRemoveB.Add(binding);
+            }
+            i++;
+        }
+        foreach(Enemy chara in toRemove)
+        {
+            //Destroies in GUI
+            foreach(Transform instance in chara.instances)
+            {
+                Destroy(instance.gameObject);
+            }
+            enemies.Remove(chara);
+        }
+        foreach(CharacterBinding binding in toRemoveB)
+        {
+            enemyBindings.Remove(binding);
+        }
     }
 }
 

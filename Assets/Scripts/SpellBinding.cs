@@ -33,9 +33,4 @@ public class SpellBinding
         return key;
     }
 
-    // Use this for initialization
-    void Start()
-    {
-    }
-
 }

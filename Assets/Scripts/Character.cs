@@ -17,9 +17,10 @@ public class Character
     public float out_additive = 0;
     public float in_multiplier = 1;
     public float out_multiplier = 1;
-    protected Text textBox;
+    public TextMesh textBox;
     public Animator anim;
-    public List<Buff> buffs = new List<Buff> { }; 
+    public List<Buff> buffs = new List<Buff> { };
+    public List<Transform> instances;
 
     /// <summary>
     /// Constructor for Character class.
@@ -28,7 +29,7 @@ public class Character
     /// <param name="textBox"></param>
     /// <param name="anim"></param>
     /// <param name="health"></param>
-    public Character(List<Spell> spellbook, Text textBox, Animator anim,  float health = 100)
+    public Character(List<Spell> spellbook, TextMesh textBox, Animator anim,  float health = 100)
     {
         this.health = health;
         this.spellbook = spellbook;
@@ -65,7 +66,7 @@ public class Character
     {
         ReduceCooldowns();
         RemoveBuffs();
-        textBox.text = Utils.ToDisplayText(health);
+        textBox.text = Utils.ToDisplayText(Math.Max(health, 0));
     }
 
     public void RemoveBuffs()

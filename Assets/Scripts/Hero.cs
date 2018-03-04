@@ -13,7 +13,7 @@ public class Hero : Character {
     /// <param name="anim"></param>
     /// <param name="health"></param>
     // Use this for initialization
-    public Hero(List<Spell> spellbook, Text textBox, Animator anim, float health = 100)
+    public Hero(List<Spell> spellbook, TextMesh textBox, Animator anim, float health = 100)
         :base(spellbook, textBox, anim, 100)
     {
 

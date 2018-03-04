@@ -18,8 +18,8 @@ public class Enemy : Character
     /// <param name="textBox"></param>
     /// <param name="anim"></param>
     /// <param name="health"></param>
-    public Enemy(string name, float castFreq, List<Spell> spellbook, Text textBox, Animator anim, float health = 100)
-        : base(spellbook, textBox, anim, health)
+    public Enemy(string name, float castFreq, List<Spell> spellbook, TextMesh text, Animator anim, float health = 100)
+        : base(spellbook, text, anim, health)
     {
         maxGCD = castFreq;
     }
