@@ -4,32 +4,25 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
-public class Spell
+public class Spell : GameLogger
 {
     public PlayerController playerController = GameObject.Find("PlayerController").GetComponent<PlayerController>();
 
     public String animationKey;
     protected float baseCooldown;
     protected float cooldown = 0;
-    public float baseDamage;
     public Boolean triggersGCD;
     public Boolean GCDRespect;
     protected String target;
 
-    public Spell(float baseCooldown, float baseDamage, String animationKey, Boolean triggersGCD = true, String target = "front", Boolean GCDRespect = true)
+    public Spell(float baseCooldown, String animationKey, Boolean triggersGCD = true, String target = "front", Boolean GCDRespect = true)
     {
         this.baseCooldown = baseCooldown;
-        this.baseDamage = baseDamage;
         this.triggersGCD = triggersGCD;
         this.GCDRespect = true;
         this.animationKey = animationKey;
         this.target = target;
         this.GCDRespect = GCDRespect;
-    }
-
-    public virtual void Special(Character owner)
-    {
-
     }
 
     public float GetCooldown()

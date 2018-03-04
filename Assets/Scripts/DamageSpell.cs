@@ -6,10 +6,12 @@ using UnityEngine.UI;
 
 public class DamageSpell : Spell {
 
-    public DamageSpell(float baseCooldown, float baseDamage, String animationKey, Boolean triggersGCD = true, String target = "front", Boolean GCDRespect = true)
-        : base(baseCooldown, baseDamage, animationKey, triggersGCD, target, GCDRespect)
-    {
+    private float baseDamage;
 
+    public DamageSpell(float baseCooldown, float baseDamage, String animationKey, Boolean triggersGCD = true, String target = "front", Boolean GCDRespect = true)
+        : base(baseCooldown, animationKey, triggersGCD, target, GCDRespect)
+    {
+        this.baseDamage = baseDamage;
     }
 
     public override void Cast(Character owner)

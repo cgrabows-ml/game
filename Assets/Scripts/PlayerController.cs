@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
     private List<Transform> enemyGUI = new List<Transform> { };
 
 
+
     // Use this for initialization
     void Start()
     {
@@ -204,7 +205,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(binding.GetKey()))
             {
                 //CanCast also does the cast
-                hero.CanCast(i);
+                hero.CastIfAble(binding.spell);
             }
             i++;
         }

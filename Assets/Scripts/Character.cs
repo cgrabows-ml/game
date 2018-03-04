@@ -5,22 +5,24 @@ using UnityEngine.UI;
 
 
 
-public class Character
+public class Character : GameLogger
 {
     public PlayerController playerController = GameObject.Find("PlayerController").GetComponent<PlayerController>();
 
     public List<Spell> spellbook;
+    private float maxHealth;
     public float health;
     public float GCD = 0;
     public float maxGCD = 2;
-    public float in_additive = 0;
-    public float out_additive = 0;
-    public float in_multiplier = 1;
-    public float out_multiplier = 1;
+    public float inAdditive = 0;
+    public float outAdditive = 0;
+    public float inMultiplier = 1;
+    public float outMultiplier = 1;
     public TextMesh textBox;
     public Animator anim;
     public List<Buff> buffs = new List<Buff> { };
     public List<Transform> instances;
+    private List<SpellCastObserver> spellCastObservers = new List<SpellCastObserver>();
 
     /// <summary>
     /// Constructor for Character class.
@@ -28,62 +30,52 @@ public class Character
     /// <param name="spellbook"></param>
     /// <param name="textBox"></param>
     /// <param name="anim"></param>
-    /// <param name="health"></param>
-    public Character(List<Spell> spellbook, TextMesh textBox, Animator anim,  float health = 100)
+    /// <param name="max_health"></param>
+    public Character(List<Spell> spellbook, TextMesh textBox, Animator anim, float maxHealth = 100)
     {
-        this.health = health;
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
         this.spellbook = spellbook;
         this.textBox = textBox;
         this.anim = anim;
-}
+    }
 
-    //Also casts the spell TODO: Rename
-    public Boolean CanCast(int i)
+    //Also casts the spell
+    public Boolean CastIfAble(Spell spell)
     {
-        Boolean castable =  (spellbook[i].GetCooldown() <= 0 && (GCD <= 0 || spellbook[i].GCDRespect == false));
+        if (!spellbook.Contains(spell))
+        {
+            //Throw error
+        }
+        Boolean castable = (spell.GetCooldown() <= 0 && (GCD <= 0 || spell.GCDRespect == false));
         if (castable)
         {
-            spellbook[i].Cast(this);
-            ReduceNumSpell();
+            spell.Cast(this);
+            spellCastObservers.ForEach(observer => observer.SpellCastUpdate(spell, this));
         }
-        
+
         return castable;
     }
 
     /// <summary>
-    /// Reduces the number of spells variable in buffs
+    /// Register object that will listen for spellcasts.
     /// </summary>
-    public void ReduceNumSpell()
+    /// <param name="observer"></param>
+    public void RegisterCastListener(SpellCastObserver observer)
     {
-        foreach (Buff buff in buffs)
-        {
-            buff.numSpells = Math.Max(buff.numSpells - 1, 0);
-        }
+        spellCastObservers.Add(observer);
+    }
+
+    public void UnregisterCastListener(SpellCastObserver observer)
+    {
+        spellCastObservers.Remove(observer);
     }
 
     //Right now this removes buffs every update... should be changed
     public void Update()
     {
         ReduceCooldowns();
-        RemoveBuffs();
         textBox.text = Utils.ToDisplayText(Math.Max(health, 0));
-    }
-
-    public void RemoveBuffs()
-    {
-        List<Buff> toRemove = new List<Buff> { };
-        foreach(Buff buff in buffs)
-        {
-            if (buff.CanRemove())
-            {
-                buff.RemoveBuff(this);
-                toRemove.Add(buff);
-            }
-        }
-        foreach(Buff buff in toRemove)
-        {
-            buffs.Remove(buff);
-        }
     }
 
     /// <summary>
@@ -114,7 +106,7 @@ public class Character
     /// <returns></returns>
     public float GetDamage(float baseDamage)
     {
-        return out_additive + (out_multiplier * baseDamage);
+        return outAdditive + (outMultiplier * baseDamage);
     }
 
     /// <summary>
@@ -123,7 +115,7 @@ public class Character
     /// <param name="baseDamage"></param>
     public void TakeDamage(float baseDamage)
     {
-        health -= in_additive + in_multiplier * baseDamage;
+        health -= inAdditive + (inMultiplier * baseDamage);
     }
 
     /// <summary>
