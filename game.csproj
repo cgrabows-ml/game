@@ -303,13 +303,14 @@
     <Compile Include="Assets\Scripts\Empower.cs" />
     <Compile Include="Assets\Scripts\EmpowerBuff.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\GameLogger.cs" />
+    <Compile Include="Assets\Scripts\GamePrinter.cs" />
     <Compile Include="Assets\Scripts\Hero.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Slash.cs" />
     <Compile Include="Assets\Scripts\Spell.cs" />
     <Compile Include="Assets\Scripts\SpellBinding.cs" />
     <Compile Include="Assets\Scripts\SpellCastObserver.cs" />
-    <Compile Include="Assets\Scripts\SpellObserver.cs" />
     <Compile Include="Assets\Scripts\Utils.cs" />
     <Compile Include="Assets\Unity Asset Store Stuff\Black Knight\AnimationEvent.cs" />
     <Compile Include="Assets\Unity Asset Store Stuff\Black Knight\demo\UnitControl.cs" />

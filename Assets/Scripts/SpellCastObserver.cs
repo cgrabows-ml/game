@@ -2,15 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpellObserver : MonoBehaviour {
+public interface SpellCastObserver {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    void SpellCastUpdate(Spell spell, Character caster);
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Buff {
+public class Buff : GameLogger {
 
     private float duration;
     protected Character owner;
@@ -14,11 +14,7 @@ public abstract class Buff {
         this.duration = duration;
         this.owner = owner;
         this.name = name;
-    }
-
-    private Boolean CanRemove()
-    {
-        return duration <= 0;
+        ApplyBuff();
     }
 
     public String getName()
@@ -26,8 +22,15 @@ public abstract class Buff {
         return name;
     }
 
-    public abstract void ApplyBuff();
-    public abstract void RemoveBuff();
+    public virtual void ApplyBuff()
+    {
+        owner.buffs.Add(this);
+    }
+
+    public virtual void RemoveBuff()
+    {
+        owner.buffs.Remove(this);
+    }
 
     /// <summary>
     /// Removes duration based on deltatime
@@ -35,7 +38,7 @@ public abstract class Buff {
     public void Update()
     {
         duration = Math.Max(duration - Time.deltaTime, 0);
-        if (CanRemove())
+        if (duration <= 0)
         {
             RemoveBuff();
         }

@@ -35,12 +35,7 @@ public class Enemy : Character
     /// </summary>
     public void Cast()
     {
-        int i = 0;
-        foreach(Spell spell in spellbook)
-        {
-            base.CanCast(i);
-            i++;
-        }
+        spellbook.ForEach(spell => CastIfAble(spell));
     }
 }
 
