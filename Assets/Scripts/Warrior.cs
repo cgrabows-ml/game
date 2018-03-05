@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Warrior : Enemy {
-
-    public Warrior(TextMesh text, Animator anim)
-        : base("warrior", 3, new List<Spell> { new DamageSpell(4, 1, "Use1", target: "player"), new DamageSpell(6, 5, "Use2", target: "player") }, text, anim, 120)
+    
+    public Warrior(Vector3 position)
+        : base("warrior", 3, new List<Spell> { new DamageSpell(4, 1, "Use1", target: "player"), new DamageSpell(6, 5, "Use2", target: "player") },
+            (Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/warrior.prefab", typeof(Transform)), (TextMesh)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/healthbar_sprite", typeof(Transform)), 
+            position,
+            120)
     {
         
     }

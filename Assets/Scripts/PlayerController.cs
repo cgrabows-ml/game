@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,9 +19,8 @@ public class PlayerController : MonoBehaviour
     public Animator enemy3Anim;
     public Animator enemy4Anim;
     public List<Enemy> enemies = new List<Enemy>();
-    public List<Spell> warriorSpellbook;
     public List<Spell> mageSpellbook;
-    public List<Spell> spellbook;
+    public List<Spell> spellbook = new List<Spell>() { };
     public Character hero;
     public static string TextField;
 
@@ -36,32 +37,30 @@ public class PlayerController : MonoBehaviour
     public TextMesh heroHealthText;
 
     private List<SpellBinding> spellBindings = new List<SpellBinding>();
-    private List<CharacterBinding> enemyBindings = new List<CharacterBinding>();
     private Transform instance;
     private List<Transform> enemyGUI = new List<Transform> { };
+    private int lastX = 0;
 
 
 
     // Use this for initialization
     void Start()
     {
-        SetSpells();
         SetHero();
+        SetSpells();
         SetEnemySpells();
         SetSpellBindings();
         SetEnemies();
-        SetEnemyBindings();
-        EnemyInstantiate();
-
-        //This is temp. Remove this pls.
-        //Instantiate(warrior, new Vector3(0, 0, 0), Quaternion.identity);
     }
 
 
 
     private void SetHero()
     {
-        hero = new Hero(spellbook, heroHealthText, heroAnim, 100);
+        hero = new Hero(heroHealthText);
+
+        //instantiate Hero
+
     }
 
     /// <summary>
@@ -69,11 +68,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void SetSpells()
     {
-        Spell fireBlast = new DamageSpell(3, 1, "Use1");
-        Spell fireball = new DamageSpell(6, 2, "Use2", target: "back");
-        Spell splash = new DamageSpell(8, 3, "Use3", target: "AoE");
-        Spell empower = new Empower();
-        spellbook = new List<Spell>() { fireBlast, fireball, splash, empower };
+        foreach(Spell spell in hero.spellbook)
+        {
+            spellbook.Add(spell);
+        }
     }
 
 
@@ -82,11 +80,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void SetEnemySpells()
     {
-        Spell stab = new DamageSpell(4, 1, "Use1", target: "player");
-        Spell slash = new DamageSpell(6, 5, "Use2", target: "player");
         Spell splash = new DamageSpell(4, 1, "Use1", target: "player");
         Spell frostbolt = new DamageSpell(6, 5, "Use2", target: "player");
-        warriorSpellbook = new List<Spell> { stab, slash };
         mageSpellbook = new List<Spell> { splash, frostbolt };
     }
 
@@ -95,52 +90,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void SetEnemies()
     {
-        Enemy warrior = new Warrior(enemyHealthText1, enemy1Anim);
-        Enemy mage = new Enemy("mage", 2, mageSpellbook, enemyHealthText1,  enemy2Anim, 2);
-        Enemy warrior2 = new Warrior(enemyHealthText1, enemy3Anim);
+        Enemy warrior = new Warrior(new Vector3(-0.3f + 1.43f * 0, -2.58f, 0));
+        Enemy mage = new Enemy("mage", 2, mageSpellbook, (Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/warrior.prefab", typeof(Transform)), (TextMesh)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/enemy_text.prefab", typeof(TextMesh)),
+            new Vector3(-0.3f + 1.43f * 2, -2.58f, 0), 2);
+        Enemy warrior2 = new Warrior(new Vector3(-0.3f + 1.43f * 1, -2.58f, 0));
         enemies = new List<Enemy> { warrior, warrior2, mage };
-
-    }
-
-    private void SetEnemyBindings()
-    {
-        List<TextMesh> textBoxes = new List<TextMesh>{ enemyHealthText1, enemyHealthText2, enemyHealthText3 };
-        List<Transform> prefabs = new List<Transform> { warriorfab, warriorfab, warriorfab };
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            CharacterBinding binding = new CharacterBinding(enemies[i], textBoxes[i], prefabs[i].GetComponent<Animator>(), prefabs[i]);
-            enemyBindings.Add(binding);
-        }
-    }
-
-
-    private void EnemyInstantiate()
-    {
-        int i = 0;
-        foreach (CharacterBinding binding in enemyBindings)
-        {
-            //Starting enemy spawn point
-            Vector3 vector = new Vector3(-0.3f + 1.43f * i, -2.58f, 0);
-
-            //Instantiate Enemy 
-            instance = Instantiate(binding.prefab, vector, Quaternion.identity);
-            binding.character.anim = instance.GetComponent<Animator>();
-            enemyGUI.Add(instance);
-
-            //Instantiate Enemy Health Bar
-            instance = Instantiate(healthbarFab, vector + new Vector3(0f, 1.8f, 0f), Quaternion.identity);
-            enemyGUI.Add(instance);
-
-
-            //Instantiate Text
-            instance = Instantiate(healthTextFab, vector + new Vector3(0f, 1.8f, 0f), Quaternion.identity);
-            binding.character.textBox = instance.GetComponent<TextMesh>();
-            enemyGUI.Add(instance);
-            i++;
-
-            binding.character.instances = enemyGUI;
-            enemyGUI = new List<Transform>{ };
-        }
     }
 
     /// <summary>
@@ -180,7 +134,6 @@ public class PlayerController : MonoBehaviour
         CheckInput();
         enemies.ForEach(enemy => enemy.Update());
         hero.Update();
-        CheckDead();
         UpdateView();
     }
 
@@ -199,7 +152,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void CheckInput()
     {
-        int i = 0;
         foreach(SpellBinding binding in spellBindings)
         {
             if (Input.GetKeyDown(binding.GetKey()))
@@ -207,55 +159,43 @@ public class PlayerController : MonoBehaviour
                 //CanCast also does the cast
                 hero.CastIfAble(binding.spell);
             }
-            i++;
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
-            //SpawnEnemy();
+            AddEnemy(new Warrior(new Vector3(-0.3f + 1.43f * 2, -2.58f, 0)));
         }
     }
-    
-    /*
-    /// <summary>
-    /// Called from Update.  Goes through all enemy spells and casts whichever is available, by which is first in the spellbook.
-    /// </summary>
-    void EnemyCast()
-    {
-        foreach (Enemy enemy in enemies)
-        {
-            enemy.Cast();
-        }
-    }*/
 
-    void CheckDead()
+    //Removes enemy from enemy List
+    public void RemoveEnemy(Enemy enemy, List<Transform> instances)
     {
-        //Checks if an enemy has died.  Removes them from the enemies list and the enemyBindings list
-        List<Character> toRemove = new List<Character> { };
-        List<CharacterBinding> toRemoveB = new List<CharacterBinding> { };
-        int i = 0;
-        foreach(CharacterBinding binding in enemyBindings)
+        enemies.Remove(enemy);
+        IEnumerator coroutine = DestroyAfterTime(2, instances);
+        StartCoroutine(coroutine);
+    }
+
+    //Adds enemy to enemy list and instantiates
+    public void AddEnemy(Enemy enemy)
+    {
+        List<Enemy> newEnemy = new List<Enemy> { };
+        enemies.Add(enemy);
+        newEnemy.Add(enemy);
+    }
+
+
+    IEnumerator DestroyAfterTime(float time, List<Transform> instances)
+    {
+        float startTime = 0;
+        while (startTime < time)
         {
-            //todo move the check for being dead in the Character class, this is temp
-            if(binding.character.health <= 0)
-            {
-                toRemove.Add(binding.character);
-                toRemoveB.Add(binding);
-            }
-            i++;
+            time -= Time.deltaTime;
+            yield return null;
         }
-        foreach(Enemy chara in toRemove)
+        foreach(Transform instance in instances)
         {
-            //Destroies in GUI
-            foreach(Transform instance in chara.instances)
-            {
-                Destroy(instance.gameObject);
-            }
-            enemies.Remove(chara);
-        }
-        foreach(CharacterBinding binding in toRemoveB)
-        {
-            enemyBindings.Remove(binding);
+            Destroy(instance.gameObject);
         }
     }
+
 }
 

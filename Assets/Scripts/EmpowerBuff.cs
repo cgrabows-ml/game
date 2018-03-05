@@ -8,7 +8,7 @@ public class EmpowerBuff : Buff, SpellCastObserver {
     private int maxSpellCasts = 2;
     
     public EmpowerBuff(Character owner)
-        :base("Empowered", owner, 20)
+        :base("Empowered", owner, 5)
     {
     }
 
@@ -26,7 +26,6 @@ public class EmpowerBuff : Buff, SpellCastObserver {
         {
             //Throw Exception
         }
-
     }
 
     public override void ApplyBuff()

@@ -14,8 +14,9 @@ public class Spell : GameLogger
     public Boolean triggersGCD;
     public Boolean GCDRespect;
     protected String target;
+    protected float delay;
 
-    public Spell(float baseCooldown, String animationKey, Boolean triggersGCD = true, String target = "front", Boolean GCDRespect = true)
+    public Spell(float baseCooldown, String animationKey, Boolean triggersGCD = true, String target = "front", Boolean GCDRespect = true, float delay = 0)
     {
         this.baseCooldown = baseCooldown;
         this.triggersGCD = triggersGCD;
@@ -23,6 +24,7 @@ public class Spell : GameLogger
         this.animationKey = animationKey;
         this.target = target;
         this.GCDRespect = GCDRespect;
+        this.delay = delay;
     }
 
     public float GetCooldown()
@@ -77,21 +79,6 @@ public class Spell : GameLogger
         }
     }
 
-    /// <summary>
-    /// Used for hero casts only.  Returns if you can cast the spell.
-    /// If the spell is not on CD and the GCD is not on CD, this returns true.
-    /// Or if the spell is not on CD and the spell ignores the GCD, this returns true.
-    /// Otherwise this returns false.
-    /// </summary>
-    /// <returns></returns>
-    /*public Boolean CanCast()
-    {
-        return cooldown <= 0 && (owner.GCD <= 0 || GCDRespect == false);
-    }*/
-
-    /// <summary>
-    /// Casts the spell.  Sets the cooldown to the base cooldown.  Deals damage.  If it doesnt ignore the GCD, then trigger the GCD.  If an ememy didn't cast this, reset multiplier and animate the hero.
-    /// </summary>
     public virtual void Cast(Character caster)
     {
         cooldown = baseCooldown;
@@ -99,7 +86,6 @@ public class Spell : GameLogger
         {
             caster.GCD = caster.maxGCD;
         }
-        //DealDamage(caster.GetDamage(baseDamage));
         caster.anim.SetBool(animationKey, true);
     }
 }
