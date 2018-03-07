@@ -16,10 +16,8 @@ public class DamageSpell : Spell {
 
     public override void Cast(Character owner)
     {
-        base.Cast(owner);
         IEnumerator coroutine = DamageAfterTime(delay, owner);
         playerController.StartCoroutine(coroutine);
-        //DealDamage(owner.GetDamage(baseDamage));
     }
 
     public void DealDamage(float damage)
@@ -30,13 +28,15 @@ public class DamageSpell : Spell {
 
     IEnumerator DamageAfterTime(float time, Character owner)
     {
+        float finalDamage = owner.GetDamage(baseDamage);
         float startTime = 0;
+        base.Cast(owner);
         while (startTime < time)
         {
             time -= Time.deltaTime;
             yield return null;
         }
-        DealDamage(owner.GetDamage(baseDamage));
+        DealDamage(finalDamage);
     }
 
 }

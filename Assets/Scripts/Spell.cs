@@ -9,7 +9,7 @@ public class Spell : GameLogger
     public PlayerController playerController = GameObject.Find("PlayerController").GetComponent<PlayerController>();
 
     public String animationKey;
-    protected float baseCooldown;
+    public float baseCooldown;
     protected float cooldown = 0;
     public Boolean triggersGCD;
     public Boolean GCDRespect;
@@ -39,16 +39,6 @@ public class Spell : GameLogger
     {
         cooldown = Math.Max(0, cooldown - Time.deltaTime);
     }
-
-    /*/// <summary>
-    /// Deals damage by changing variables in playercontroller.
-    /// Uses the target variable to determine where to deal the damage.
-    /// </summary>
-    public void DealDamage(float damage)
-    {
-        List<Character> targets = GetTargets();
-        targets.ForEach(target => target.TakeDamage(damage));
-    }*/
 
     public List<Character> GetTargets()
     {
@@ -86,6 +76,17 @@ public class Spell : GameLogger
         {
             caster.GCD = caster.maxGCD;
         }
-        caster.anim.SetBool(animationKey, true);
+        //caster.anim.SetBool(animationKey, true);
+    }
+
+    IEnumerator DamageAfterTime(float time, Character owner)
+    {
+        float startTime = 0;
+        while (startTime < time)
+        {
+            time -= Time.deltaTime;
+            yield return null;
+        }
+        Cast(owner);
     }
 }

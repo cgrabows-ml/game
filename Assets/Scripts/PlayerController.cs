@@ -48,12 +48,42 @@ public class PlayerController : MonoBehaviour
     {
         SetHero();
         SetSpells();
+        SetSpellToolTips();
         SetEnemySpells();
         SetSpellBindings();
         SetEnemies();
     }
 
 
+    private void SetSpellToolTips()
+    {
+        List<TooltipHover> tooltips = new List<TooltipHover>(FindObjectsOfType<TooltipHover>());
+
+        //Sort by transform x position
+        int j = 1;
+        while(j < tooltips.Count)
+        {
+            if (tooltips[j].transform.position.x <= tooltips[j - 1].transform.position.x)
+            {
+                TooltipHover t = tooltips[j - 1];
+                tooltips[j - 1] = tooltips[j];
+                tooltips[j] = t;
+                j = 1;
+            }
+            else
+            {
+                j++;
+            }
+        }
+
+
+        int i = 0;
+        foreach (TooltipHover tooltip in tooltips)
+        {
+            tooltip.spell = hero.spellbook[i];
+            i++;
+        }
+    }
 
     private void SetHero()
     {

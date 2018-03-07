@@ -286,23 +286,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Buff.cs" />
+    <Compile Include="Assets\Scripts\Buffs\EmpowerBuff.cs" />
     <Compile Include="Assets\Scripts\Character.cs" />
-    <Compile Include="Assets\Scripts\CharacterBinding.cs" />
+    <Compile Include="Assets\Scripts\Characters\Hero.cs" />
+    <Compile Include="Assets\Scripts\Characters\Warrior.cs" />
     <Compile Include="Assets\Scripts\DamageSpell.cs" />
-    <Compile Include="Assets\Scripts\Empower.cs" />
-    <Compile Include="Assets\Scripts\EmpowerBuff.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
     <Compile Include="Assets\Scripts\GameLogger.cs" />
     <Compile Include="Assets\Scripts\GamePrinter.cs" />
-    <Compile Include="Assets\Scripts\Hero.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
-    <Compile Include="Assets\Scripts\Slash.cs" />
     <Compile Include="Assets\Scripts\Spell.cs" />
     <Compile Include="Assets\Scripts\SpellBinding.cs" />
     <Compile Include="Assets\Scripts\SpellCastObserver.cs" />
+    <Compile Include="Assets\Scripts\Spells\Empower.cs" />
+    <Compile Include="Assets\Scripts\Spells\Fireball.cs" />
+    <Compile Include="Assets\Scripts\Spells\Slash.cs" />
     <Compile Include="Assets\Scripts\TooltipHover.cs" />
     <Compile Include="Assets\Scripts\Utils.cs" />
-    <Compile Include="Assets\Scripts\Warrior.cs" />
     <Compile Include="Assets\Unused Assets\Black Knight\AnimationEvent.cs" />
     <Compile Include="Assets\Unused Assets\Black Knight\demo\UnitControl.cs" />
     <Compile Include="Assets\Unused Assets\Universal Pixel Hero (Warrior)\Scripts\Controller.cs" />

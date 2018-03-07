@@ -26,7 +26,7 @@ public class Character : GameLogger
     public List<Transform> instances = new List<Transform> { };
     public List<TextMesh> floatingCombatText = new List<TextMesh> { };
     public Transform prefab;
-    private List<SpellCastObserver> spellCastObservers = new List<SpellCastObserver>();
+    protected List<SpellCastObserver> spellCastObservers = new List<SpellCastObserver>();
 
     /// <summary>
     /// Constructor for Character class.
@@ -46,7 +46,7 @@ public class Character : GameLogger
     }
 
     //Also casts the spell
-    public Boolean CastIfAble(Spell spell)
+    public virtual Boolean CastIfAble(Spell spell)
     {
         if (!spellbook.Contains(spell))
         {
@@ -56,6 +56,7 @@ public class Character : GameLogger
         Boolean castable = (spell.GetCooldown() <= 0 && (GCD <= 0 || spell.GCDRespect == false));
         if (castable)
         {
+            anim.SetBool(spell.animationKey, true);
             spell.Cast(this);
             spellCastObservers.ForEach(observer => observer.SpellCastUpdate(spell, this));
         }
@@ -133,7 +134,8 @@ public class Character : GameLogger
         if (health <= 0) {
             foreach (Transform instance in instances)
             {
-                MonoBehaviour.Destroy(instance.gameObject);
+                MonoBehaviour.print("You Lose.");
+                //MonoBehaviour.Destroy(instance.gameObject);
             }
         }
     }
@@ -166,7 +168,7 @@ public class Character : GameLogger
         while (startTime < time)
         {
             time -= Time.deltaTime;
-            instance.transform.position += new Vector3(.005f, 0.01f, 0);
+            instance.transform.position += new Vector3(.31f * Time.deltaTime, 0.62f * Time.deltaTime, 0);
             yield return null;
         }
         MonoBehaviour.Destroy(instance.gameObject);
