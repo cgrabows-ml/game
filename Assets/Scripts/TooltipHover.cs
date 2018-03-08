@@ -3,19 +3,23 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class TooltipHover : MonoBehaviour {
 
     public Spell spell;
 
-    private PlayerController playerController;
+    //public PlayerController playerController;
+    public GameObject tooltipBG;
+    public GameObject tooltipText;
+
     private IEnumerator coroutine;
     private Transform instance;
-    private List<Transform> instances = new List<Transform> { };
+    //private List<GameObject> tooltips = new List<GameObject> { };
 
     public void Start()
     {
-     playerController = GameObject.Find("PlayerController").GetComponent<PlayerController>();
+        //playerController = GameObject.Find("PlayerController").GetComponent<PlayerController>();
     }
 
     public void OnMouseEnter()
@@ -23,33 +27,27 @@ public class TooltipHover : MonoBehaviour {
         coroutine = TooltipBox();
         StartCoroutine(coroutine);
 
-        //Instantiate Enemy Health Bar
-        instance = MonoBehaviour.Instantiate((Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Tooltip_BG.prefab", typeof(Transform)), new Vector3(0, 0, 0f), Quaternion.identity);
-        instances.Add(instance);
+        tooltipBG.gameObject.SetActive(true);
+        tooltipText.gameObject.SetActive(true);
+
 
 
         //Instantiate Text
-        instance = MonoBehaviour.Instantiate((Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/enemy_text.prefab", typeof(Transform)), new Vector3(0, 0, 0f), Quaternion.identity);
-        TextMesh textBox = instance.GetComponent<TextMesh>();
+        Text textBox = tooltipText.GetComponent<Text>();
 
 
         textBox.text = "Has " + spell.baseCooldown + " base cooldown";
-        instances.Add(instance);
     }
 
     public void OnMouseOver()
     {
-        Vector2 newPos = Input.mousePosition;
-        newPos.x = newPos.x / 100 -4.65f;
-        newPos.y = newPos.y / 100  -2.35f;
-        instances.ForEach(instance=>instance.position = newPos);
 
     }
 
     public void OnMouseExit()
     {
-        instances.ForEach(instance => Destroy(instance.gameObject));
-        instances = new List<Transform> { };
+        tooltipBG.gameObject.SetActive(false);
+        tooltipText.gameObject.SetActive(false);
     }
 
     public void Update()

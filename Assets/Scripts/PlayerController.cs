@@ -7,33 +7,22 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-
+    public static PlayerController playerController;
     public Text cast1Text;
     public Text cast2Text;
     public Text cast3Text;
     public Text cast4Text;
     public Text GCDText;
-    public Animator heroAnim;
-    public Animator enemy1Anim;
-    public Animator enemy2Anim;
-    public Animator enemy3Anim;
-    public Animator enemy4Anim;
     public List<Enemy> enemies = new List<Enemy>();
     public List<Spell> mageSpellbook;
     public List<Spell> spellbook = new List<Spell>() { };
     public Character hero;
     public static string TextField;
+    public RectTransform castCover1;
+    public RectTransform castCover2;
+    public RectTransform castCover3;
+    public RectTransform castCover4;
 
-    public Transform herofab;
-    public Transform warriorfab;
-    public Transform healthbarFab;
-    public Transform healthTextFab;
-    //public Transform mage;
-
-    public TextMesh enemyHealthText1;
-    public TextMesh enemyHealthText2;
-    public TextMesh enemyHealthText3;
-    public TextMesh enemyHealthText4;
     public TextMesh heroHealthText;
 
     private List<SpellBinding> spellBindings = new List<SpellBinding>();
@@ -52,6 +41,7 @@ public class PlayerController : MonoBehaviour
         SetEnemySpells();
         SetSpellBindings();
         SetEnemies();
+        playerController = this;
     }
 
 
@@ -88,8 +78,6 @@ public class PlayerController : MonoBehaviour
     private void SetHero()
     {
         hero = new Hero(heroHealthText);
-
-        //instantiate Hero
 
     }
 
@@ -200,8 +188,6 @@ public class PlayerController : MonoBehaviour
     public void RemoveEnemy(Enemy enemy, List<Transform> instances)
     {
         enemies.Remove(enemy);
-        IEnumerator coroutine = DestroyAfterTime(2, instances);
-        StartCoroutine(coroutine);
     }
 
     //Adds enemy to enemy list and instantiates
@@ -210,21 +196,6 @@ public class PlayerController : MonoBehaviour
         List<Enemy> newEnemy = new List<Enemy> { };
         enemies.Add(enemy);
         newEnemy.Add(enemy);
-    }
-
-
-    IEnumerator DestroyAfterTime(float time, List<Transform> instances)
-    {
-        float startTime = 0;
-        while (startTime < time)
-        {
-            time -= Time.deltaTime;
-            yield return null;
-        }
-        foreach(Transform instance in instances)
-        {
-            Destroy(instance.gameObject);
-        }
     }
 
 }
