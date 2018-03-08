@@ -73,6 +73,10 @@ public class Character : GameLogger
         spellCastObservers.Add(observer);
     }
 
+    /// <summary>
+    /// Unregister object that will listen for spellcasts.
+    /// </summary>
+    /// <param name="observer"></param>
     public void UnregisterCastListener(SpellCastObserver observer)
     {
         spellCastObservers.Remove(observer);
@@ -174,6 +178,11 @@ public class Character : GameLogger
         MonoBehaviour.Destroy(instance.gameObject);
     }
 
+    private int GetEffectiveWidth() //TODO move to enemy class
+    {
+        return this.width + this.buffer * 2;
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -181,7 +190,6 @@ public class Character : GameLogger
     {
         GCD = maxGCD;
     }
-
 }
 
 

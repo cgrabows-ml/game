@@ -14,44 +14,43 @@ public class PlayerController : MonoBehaviour
     public Text cast4Text;
     public Text GCDText;
     public Animator heroAnim;
-    public Animator enemy1Anim;
-    public Animator enemy2Anim;
-    public Animator enemy3Anim;
-    public Animator enemy4Anim;
-    public List<Enemy> enemies = new List<Enemy>();
-    public List<Spell> mageSpellbook;
     public List<Spell> spellbook = new List<Spell>() { };
     public Character hero;
-    public static string TextField;
 
     public Transform herofab;
     public Transform warriorfab;
     public Transform healthbarFab;
     public Transform healthTextFab;
-    //public Transform mage;
 
-    public TextMesh enemyHealthText1;
-    public TextMesh enemyHealthText2;
-    public TextMesh enemyHealthText3;
-    public TextMesh enemyHealthText4;
+    public Stage stage;
+
     public TextMesh heroHealthText;
 
     private List<SpellBinding> spellBindings = new List<SpellBinding>();
     private Transform instance;
-    private List<Transform> enemyGUI = new List<Transform> { };
-    private int lastX = 0;
-
-
 
     // Use this for initialization
     void Start()
     {
+        SetStage();
         SetHero();
         SetSpells();
         SetSpellToolTips();
-        SetEnemySpells();
         SetSpellBindings();
-        SetEnemies();
+    }
+
+    private void SetStage()
+    {
+        stage = new Stage();
+        Encounter encounter = new Encounter(stage, enemies);
+        List<Encounter> encounters = new List<Encounter>();
+        stage.SetEncounters(encounters);
+        stage.StartStage();
+    }
+
+    private void SetHero()
+    {
+        this.hero = stage.hero;
     }
 
 
@@ -85,48 +84,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void SetHero()
-    {
-        hero = new Hero(heroHealthText);
-
-        //instantiate Hero
-
-    }
-
-    /// <summary>
-    /// Initializes Hero spells.
-    /// </summary>
-    private void SetSpells()
-    {
-        foreach(Spell spell in hero.spellbook)
-        {
-            spellbook.Add(spell);
-        }
-    }
-
-
-    /// <summary>
-    /// Initializes spells to be used for enemies.  Puts spells into spellbooks for the enemies.
-    /// </summary>
-    private void SetEnemySpells()
-    {
-        Spell splash = new DamageSpell(4, 1, "Use1", target: "player");
-        Spell frostbolt = new DamageSpell(6, 5, "Use2", target: "player");
-        mageSpellbook = new List<Spell> { splash, frostbolt };
-    }
-
-    /// <summary>
-    /// Initializes Enemies.
-    /// </summary>
-    private void SetEnemies()
-    {
-        Enemy warrior = new Warrior(new Vector3(-0.3f + 1.43f * 0, -2.58f, 0));
-        Enemy mage = new Enemy("mage", 2, mageSpellbook, (Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/warrior.prefab", typeof(Transform)), (TextMesh)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/enemy_text.prefab", typeof(TextMesh)),
-            new Vector3(-0.3f + 1.43f * 2, -2.58f, 0), 2);
-        Enemy warrior2 = new Warrior(new Vector3(-0.3f + 1.43f * 1, -2.58f, 0));
-        enemies = new List<Enemy> { warrior, warrior2, mage };
-    }
-
     /// <summary>
     /// Gets a list of text boxes.
     /// </summary>
@@ -143,6 +100,17 @@ public class PlayerController : MonoBehaviour
     private List<KeyCode> GetKeys()
     {
         return new List<KeyCode>() { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4 };
+    }
+
+    /// <summary>
+    /// Initializes Hero spells.
+    /// </summary>
+    private void SetSpells()
+    {
+        foreach (Spell spell in hero.spellbook)
+        {
+            spellbook.Add(spell);
+        }
     }
 
     /// <summary>
@@ -190,28 +158,7 @@ public class PlayerController : MonoBehaviour
                 hero.CastIfAble(binding.spell);
             }
         }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            AddEnemy(new Warrior(new Vector3(-0.3f + 1.43f * 2, -2.58f, 0)));
-        }
     }
-
-    //Removes enemy from enemy List
-    public void RemoveEnemy(Enemy enemy, List<Transform> instances)
-    {
-        enemies.Remove(enemy);
-        IEnumerator coroutine = DestroyAfterTime(2, instances);
-        StartCoroutine(coroutine);
-    }
-
-    //Adds enemy to enemy list and instantiates
-    public void AddEnemy(Enemy enemy)
-    {
-        List<Enemy> newEnemy = new List<Enemy> { };
-        enemies.Add(enemy);
-        newEnemy.Add(enemy);
-    }
-
 
     IEnumerator DestroyAfterTime(float time, List<Transform> instances)
     {

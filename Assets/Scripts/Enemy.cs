@@ -10,6 +10,7 @@ public class Enemy : Character
 {
     private string name;
     private List<Transform> enemyGUI = new List<Transform> { };
+    private List<DeathObserver> deathObservers = new List<DeathObserver>();
 
     /// <summary>
     /// Constructor for enemy class
@@ -46,7 +47,8 @@ public class Enemy : Character
         if (health <= 0)
         {
             anim.SetBool("Death", true);
-            playerController.RemoveEnemy(this, instances);
+            playerController.stage.RemoveEnemy(this, instances);
+            deathObservers.ForEach(observer => observer.DeathUpdate(this))
         }
 
     }
@@ -77,7 +79,17 @@ public class Enemy : Character
 
         instances = enemyGUI;
         enemyGUI = new List<Transform> { };
-        }
+    }
+
+    public void RegisterDeathObserver(DeathObserver observer)
+    {
+        deathObservers.Add(observer);
+    }
+
+    public void UnregisterDeathObserver(DeathObserver observer)
+    {
+        deathObservers.Remove(observer);
+    }
 
 }
 
