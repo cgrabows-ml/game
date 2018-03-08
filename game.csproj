@@ -312,6 +312,8 @@
     <Compile Include="Assets\Scripts\GameLogger.cs" />
     <Compile Include="Assets\Scripts\GamePrinter.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Projectile.cs" />
+    <Compile Include="Assets\Scripts\Projectiles\Lob.cs" />
     <Compile Include="Assets\Scripts\Spell.cs" />
     <Compile Include="Assets\Scripts\SpellBinding.cs" />
     <Compile Include="Assets\Scripts\SpellCastObserver.cs" />

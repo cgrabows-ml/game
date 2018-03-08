@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public class Hero : Character
 {
 
+    List<RectTransform> castCovers = new List<RectTransform>{ };
+
     /// <summary>
     /// Constructor for Hero class.
     /// </summary>
@@ -20,12 +22,13 @@ public class Hero : Character
         : base(new List<Spell> { new DamageSpell(3, 1, "Use1", delay:1), new Fireball(), new DamageSpell(8, 3, "Use3", target: "AoE"), new Empower() },
         (Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/blackKnight.prefab", typeof(Transform)),
             textBox,
-            20)
+            200)
     {
         Transform instance = MonoBehaviour.Instantiate(prefab);
         instances.Add(instance);
         anim = instance.GetComponent<Animator>();
         textBox.text = Utils.ToDisplayText(health);
+        castCovers = new List<RectTransform> { playerController.castCover1, playerController.castCover2, playerController.castCover3, playerController.castCover4 };
     }
 
     //Also casts the spell
@@ -33,11 +36,14 @@ public class Hero : Character
     {
         if (base.CastIfAble(spell))
         {
+            //Make cast cover "visible"
             int i = spellbook.IndexOf(spell);
-            GameObject instance = MonoBehaviour.Instantiate((GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/CooldownCover.prefab", typeof(GameObject)));
-            IEnumerator coroutine = CooldownCover(i, instance);
-            playerController.StartCoroutine(coroutine);
+            RectTransform cover = castCovers[i]; //throws error if there are more spells than casts on the screen
 
+            cover.localScale = new Vector3(1,1,0);
+           
+            IEnumerator coroutine = CooldownCover(i, cover);
+            playerController.StartCoroutine(coroutine);
             return true;
         }
         else
@@ -56,19 +62,21 @@ public class Hero : Character
         }
     }
 
-    IEnumerator CooldownCover(int index, GameObject instance)
+    IEnumerator CooldownCover(int index, Transform instance)
     {
+        Vector3 basePos = instance.localPosition;
         float duration = spellbook[index].baseCooldown;
         float time = 0;
         Transform r = instance.GetComponent<Transform>();
-        r.position += new Vector3(0 + .93f * index, Time.deltaTime / duration * .8f / 2, 0);
+        //r.position += new Vector3(0 + .93f * index, Time.deltaTime / duration * .8f / 2, 0);
         while (time < duration)
         {
             time += Time.deltaTime;
-            r.localScale -= new Vector3(0, Time.deltaTime / duration * .8f, 0);
-            r.position -= new Vector3(0, Time.deltaTime / duration * .8f / 2, 0);
+            r.localScale -= new Vector3(0, Time.deltaTime / duration, 0);
+            r.localPosition -= new Vector3(0, Time.deltaTime / duration * 80 / 2, 0);
             yield return null;
         }
-        MonoBehaviour.Destroy(instance.gameObject);
+        r.localPosition = basePos;
+        r.localScale = new Vector3(0, 0, 0);
     }
 }

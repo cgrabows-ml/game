@@ -190,6 +190,20 @@ public class Character : GameLogger
     {
         GCD = maxGCD;
     }
+
+    protected IEnumerator DestroyAfterTime(float time, List<Transform> instances)
+    {
+        float startTime = 0;
+        while (startTime < time)
+        {
+            time -= Time.deltaTime;
+            yield return null;
+        }
+        foreach (Transform instance in instances)
+        {
+            MonoBehaviour.Destroy(instance.gameObject);
+        }
+    }
 }
 
 

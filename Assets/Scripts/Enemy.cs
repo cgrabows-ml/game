@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -49,16 +50,17 @@ public class Enemy : Character
             anim.SetBool("Death", true);
             playerController.stage.RemoveEnemy(this, instances);
             deathObservers.ForEach(observer => observer.DeathUpdate(this))
+            IEnumerator coroutine = DestroyAfterTime(2, instances);
+            playerController.StartCoroutine(coroutine);
         }
 
     }
+
 
     public void InstantiateEnemy(Vector3 position)
     {
         Transform instance;
         Transform healthTextFab = (Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/enemy_text.prefab", typeof(Transform));
-        //Starting enemy spawn point
-        //Vector3 vector = new Vector3(-0.3f + 1.43f * i, -2.58f, 0);
 
         //Instantiate Enemy 
         instance = MonoBehaviour.Instantiate(prefab, position, Quaternion.identity);

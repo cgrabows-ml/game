@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-
+    public static PlayerController playerController;
     public Text cast1Text;
     public Text cast2Text;
     public Text cast3Text;
@@ -23,6 +23,14 @@ public class PlayerController : MonoBehaviour
     public Transform healthTextFab;
 
     public Stage stage;
+    
+    public List<Enemy> enemies = new List<Enemy>();
+    public List<Spell> mageSpellbook;
+    public static string TextField;
+    public RectTransform castCover1;
+    public RectTransform castCover2;
+    public RectTransform castCover3;
+    public RectTransform castCover4;
 
     public TextMesh heroHealthText;
 
@@ -32,11 +40,12 @@ public class PlayerController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        SetStage();
         SetHero();
+        SetStage();
         SetSpells();
         SetSpellToolTips();
         SetSpellBindings();
+        playerController = this;
     }
 
     private void SetStage()
@@ -85,6 +94,17 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
+    /// Initializes Hero spells.
+    /// </summary>
+    private void SetSpells()
+    {
+        foreach(Spell spell in hero.spellbook)
+        {
+            spellbook.Add(spell);
+        }
+    }
+
+    /// <summary>
     /// Gets a list of text boxes.
     /// </summary>
     /// <returns>The list of text boxes</returns>
@@ -100,17 +120,6 @@ public class PlayerController : MonoBehaviour
     private List<KeyCode> GetKeys()
     {
         return new List<KeyCode>() { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4 };
-    }
-
-    /// <summary>
-    /// Initializes Hero spells.
-    /// </summary>
-    private void SetSpells()
-    {
-        foreach (Spell spell in hero.spellbook)
-        {
-            spellbook.Add(spell);
-        }
     }
 
     /// <summary>
@@ -150,7 +159,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void CheckInput()
     {
-        foreach(SpellBinding binding in spellBindings)
+        foreach (SpellBinding binding in spellBindings)
         {
             if (Input.GetKeyDown(binding.GetKey()))
             {
@@ -159,20 +168,5 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
-    IEnumerator DestroyAfterTime(float time, List<Transform> instances)
-    {
-        float startTime = 0;
-        while (startTime < time)
-        {
-            time -= Time.deltaTime;
-            yield return null;
-        }
-        foreach(Transform instance in instances)
-        {
-            Destroy(instance.gameObject);
-        }
-    }
-
 }
 

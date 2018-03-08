@@ -9,7 +9,7 @@ public class Fireball : DamageSpell
     public Transform fireball;
 
     public Fireball()
-        : base(6, 2, "Use2", true, "front", true, 2)
+        : base(6, 2, "Use2", true, "front", true, 4)
     {
 
     }
@@ -18,27 +18,11 @@ public class Fireball : DamageSpell
     {
         base.Cast(owner);
 
+        Transform prefab = (Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/lobproj.prefab", typeof(Transform));
 
-        //Create game object for Empower graphic
-        Transform prefab = (Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/fireball.prefab", typeof(Transform));
-        fireball = MonoBehaviour.Instantiate(prefab);
-        IEnumerator coroutine = MoveFireball();
-        playerController.StartCoroutine(coroutine);
+        new Lob(owner.instances[0].position + new Vector3(0, .5f, 0), GetTargets()[0].instances[0].position + new Vector3(0, .5f, 0), prefab, delay);
 
     }
 
-    IEnumerator MoveFireball()
-    {
-        float time = 0;
-        float duration = 2;
-        while(time < duration)
-        {
-            fireball.position += new Vector3(1.2f * Time.deltaTime , 0, 0);
-
-            time += Time.deltaTime;
-            yield return null;
-        }
-        MonoBehaviour.Destroy(fireball.gameObject);
-    }
 
 }
