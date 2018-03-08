@@ -139,7 +139,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update() {
         CheckInput();
-        enemies.ForEach(enemy => enemy.Update());
+        stage.Update();
         hero.Update();
         UpdateView();
     }

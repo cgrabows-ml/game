@@ -43,6 +43,11 @@ public class Stage {
 
     }
 
+    public void Update()
+    {
+        enemies.ForEach(enemy => enemy.Update());
+    }
+
     public void EndEncounter()
     {
         //Need to change overall state in some way to disable ability usage etc.
