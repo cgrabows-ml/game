@@ -47,6 +47,7 @@ public class Enemy : Character
         if (health <= 0)
         {
             anim.SetBool("Death", true);
+            playerController.RemoveEnemy(this);
             IEnumerator coroutine = DestroyAfterTime(2, instances);
             playerController.StartCoroutine(coroutine);
         }

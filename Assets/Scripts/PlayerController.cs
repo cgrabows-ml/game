@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviour
     }
 
     //Removes enemy from enemy List
-    public void RemoveEnemy(Enemy enemy, List<Transform> instances)
+    public void RemoveEnemy(Enemy enemy)
     {
         enemies.Remove(enemy);
     }
