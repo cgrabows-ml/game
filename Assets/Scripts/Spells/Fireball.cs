@@ -9,7 +9,7 @@ public class Fireball : DamageSpell
     public Transform fireball;
 
     public Fireball()
-        : base(6, 2, "Use2", true, "front", true, 4)
+        : base(6, 2, "Use2", true, "back", true, 2)
     {
 
     }

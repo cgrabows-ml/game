@@ -1128,11 +1128,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c5b1f70cbb06740935c10bca4a9ed7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pc: {fileID: 1466786623}
   cast1Text: {fileID: 1730171158}
   cast2Text: {fileID: 222695342}
   cast3Text: {fileID: 329354267}
   cast4Text: {fileID: 1155911}
   GCDText: {fileID: 1585808361}
+  heroAnim: {fileID: 0}
+  herofab: {fileID: 0}
+  warriorfab: {fileID: 0}
+  healthbarFab: {fileID: 0}
+  healthTextFab: {fileID: 0}
   castCover1: {fileID: 909753442}
   castCover2: {fileID: 739985562}
   castCover3: {fileID: 1307410984}

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface DeathObserver  {
+public interface IDeathObserver  {
 
-    public void DeathUpdate(Character character);
+    void DeathUpdate(Character character);
 }

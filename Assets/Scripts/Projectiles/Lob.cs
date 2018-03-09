@@ -22,6 +22,10 @@ public class Lob : Projectile {
 
         while (time < duration)
         {
+            //rotates projectile assuming right end is front
+            float angle = Mathf.Atan2(projectile.GetComponent<Rigidbody2D>().velocity.y, projectile.GetComponent<Rigidbody2D>().velocity.x) * Mathf.Rad2Deg;
+            projectile.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
             time += Time.deltaTime;
             yield return null;
 

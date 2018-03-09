@@ -42,7 +42,17 @@ public class Character : GameLogger
         this.spellbook = spellbook;
         this.prefab = prefab;
         this.textBox = textBox;
-        this.anim = prefab.GetComponent<Animator>();        
+        //this.anim = prefab.GetComponent<Animator>();        
+    }
+
+    public virtual void Spawn(Vector2 pos)
+    {
+        Transform instance = MonoBehaviour.Instantiate(prefab);
+        instances.Add(instance);
+        anim = instance.GetComponent<Animator>();
+        textBox.text = Utils.ToDisplayText(health);
+
+
     }
 
     //Also casts the spell
@@ -178,11 +188,6 @@ public class Character : GameLogger
         MonoBehaviour.Destroy(instance.gameObject);
     }
 
-    private int GetEffectiveWidth() //TODO move to enemy class
-    {
-        return this.width + this.buffer * 2;
-    }
-
     /// <summary>
     /// 
     /// </summary>
@@ -191,7 +196,7 @@ public class Character : GameLogger
         GCD = maxGCD;
     }
 
-    protected IEnumerator DestroyAfterTime(float time, List<Transform> instances)
+    public IEnumerator DestroyAfterTime(float time)
     {
         float startTime = 0;
         while (startTime < time)

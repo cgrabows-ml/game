@@ -44,16 +44,16 @@ public class Spell : GameLogger
     {
         if (target == "player")
         {
-            return new List<Character>() { playerController.hero };
+            return new List<Character>() { playerController.stage.hero };
         }
         else if (target == "front")
         {
-            return new List<Character>() { playerController.enemies[0] };
+            return new List<Character>() { playerController.stage.enemies[0] };
         }
         else if (target == "AoE")
         {
             List<Character> enemies = new List<Character>();
-            foreach(Enemy enemy in playerController.enemies)
+            foreach(Enemy enemy in playerController.stage.enemies)
             {
                 enemies.Add(enemy);
             }
@@ -61,7 +61,7 @@ public class Spell : GameLogger
         }
         else if (target == "back")
         {
-            return new List<Character>() { playerController.enemies[playerController.enemies.Count -1] };
+            return new List<Character>() { playerController.stage.enemies[playerController.stage.enemies.Count -1] };
         }
         else
         {

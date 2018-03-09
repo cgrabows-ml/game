@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController playerController;
+    public PlayerController pc;
     public Text cast1Text;
     public Text cast2Text;
     public Text cast3Text;
@@ -40,8 +41,8 @@ public class PlayerController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        SetHero();
         SetStage();
+        SetHero();
         SetSpells();
         SetSpellToolTips();
         SetSpellBindings();
@@ -51,8 +52,8 @@ public class PlayerController : MonoBehaviour
     private void SetStage()
     {
         stage = new Stage();
-        Encounter encounter = new Encounter(stage, enemies);
-        List<Encounter> encounters = new List<Encounter>();
+        //Encounter encounter = new Encounter(stage, enemies);
+        List<Encounter> encounters = new List<Encounter>() { new Encounter1(stage) };
         stage.SetEncounters(encounters);
         stage.StartStage();
     }

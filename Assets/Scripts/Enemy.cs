@@ -11,7 +11,8 @@ public class Enemy : Character
 {
     private string name;
     private List<Transform> enemyGUI = new List<Transform> { };
-    private List<DeathObserver> deathObservers = new List<DeathObserver>();
+    private List<IDeathObserver> deathObservers = new List<IDeathObserver>();
+    public float width;
 
     /// <summary>
     /// Constructor for enemy class
@@ -22,11 +23,12 @@ public class Enemy : Character
     /// <param name="textBox"></param>
     /// <param name="anim"></param>
     /// <param name="health"></param>
-    public Enemy(string name, float castFreq, List<Spell> spellbook, Transform prefab, TextMesh textBox, Vector3 position, float health = 100)
+    public Enemy(string name, float castFreq, List<Spell> spellbook, Transform prefab, TextMesh textBox, Vector3 position, float health = 100, float width = 1)
         : base(spellbook, prefab, textBox, health)
     {
         maxGCD = castFreq;
-        InstantiateEnemy(position);
+        //InstantiateEnemy(position);
+        this.width = width;
     }
 
     new public void Update()
@@ -48,14 +50,18 @@ public class Enemy : Character
         if (health <= 0)
         {
             anim.SetBool("Death", true);
-            playerController.stage.RemoveEnemy(this, instances);
-            deathObservers.ForEach(observer => observer.DeathUpdate(this))
-            IEnumerator coroutine = DestroyAfterTime(2, instances);
+            playerController.stage.RemoveEnemy(this);
+            deathObservers.ForEach(observer => observer.DeathUpdate(this));
+            IEnumerator coroutine = DestroyAfterTime(2);
             playerController.StartCoroutine(coroutine);
         }
 
     }
 
+    public override void Spawn(Vector2 pos)
+    {
+        InstantiateEnemy(new Vector3(pos.x,pos.y,0));
+    }
 
     public void InstantiateEnemy(Vector3 position)
     {
@@ -83,15 +89,52 @@ public class Enemy : Character
         enemyGUI = new List<Transform> { };
     }
 
-    public void RegisterDeathObserver(DeathObserver observer)
+    public void RegisterDeathObserver(IDeathObserver observer)
     {
         deathObservers.Add(observer);
     }
 
-    public void UnregisterDeathObserver(DeathObserver observer)
+
+    //this shouldnt even exist.  The stage class has the buffer width
+    private float GetEffectiveWidth() 
+    {
+        //3 is the buffer
+        return width;
+    }
+
+    public void UnregisterDeathObserver(IDeathObserver observer)
     {
         deathObservers.Remove(observer);
     }
+
+    public void Move(float moveDistance)
+    {
+        IEnumerator coroutine = MoveEnemy(moveDistance);
+        playerController.StartCoroutine(coroutine);
+    }
+
+    IEnumerator MoveEnemy(float moveDistance)
+    {
+        float time = 0;
+        float walkTime = 2;
+        anim.SetBool("Walk", true);
+        List<Vector3> endPositions = new List<Vector3> { };
+        foreach (Transform i in instances)
+        {
+            endPositions.Add(i.position - new Vector3(moveDistance, 0, 0));
+        }
+
+        while (time < walkTime)
+        {
+            instances.ForEach(i => i.position -= new Vector3(moveDistance * Time.deltaTime / walkTime, 0));
+            time += Time.deltaTime;
+            yield return null;
+        }
+        
+        instances.ForEach(i => i.position = endPositions[instances.IndexOf(i)]);
+        anim.SetBool("Idle", true);
+    }
+
 
 }
 

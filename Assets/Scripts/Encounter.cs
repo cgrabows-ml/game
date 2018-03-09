@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Encounter: DeathObserver {
+public class Encounter: IDeathObserver {
 
     private Stage stage;
     private List<Enemy> startingEnemies;
@@ -16,7 +16,6 @@ public class Encounter: DeathObserver {
     {
         this.stage = stage;
         this.startingEnemies = startingEnemies;
-        StartEncounter();
     }
 
     /// <summary>
@@ -33,7 +32,7 @@ public class Encounter: DeathObserver {
     private void AddEnemy(Enemy enemy)
     {
         enemy.RegisterDeathObserver(this);
-        stage.AddEnemy(enemy)
+        stage.AddEnemy(enemy);
     }
 
     private void RemoveEnemy(Enemy enemy)

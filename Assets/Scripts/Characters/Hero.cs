@@ -24,10 +24,12 @@ public class Hero : Character
             textBox,
             200)
     {
-        Transform instance = MonoBehaviour.Instantiate(prefab);
-        instances.Add(instance);
-        anim = instance.GetComponent<Animator>();
-        textBox.text = Utils.ToDisplayText(health);
+
+    }
+
+    public override void Spawn(Vector2 pos)
+    {
+        base.Spawn(pos);
         castCovers = new List<RectTransform> { playerController.castCover1, playerController.castCover2, playerController.castCover3, playerController.castCover4 };
     }
 

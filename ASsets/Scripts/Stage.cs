@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class Stage {
 
+    public PlayerController playerController = GameObject.Find("PlayerController").GetComponent<PlayerController>();
     public Hero hero;
     public List<Enemy> enemies = new List<Enemy>();
 
     private List<Encounter> encounters;
-    private int leftMostPositionX;
-    private int rightScreenEdgePositionX;
+    private float leftMostPositionX = 0;
+    private float rightScreenEdgePositionX = 6.58f;
 
     private Vector3 heroPosition; //replace me
-    private int bufferWidth = 123; //replace me
-    private int groundY = 123; //replace me
+    private float bufferWidth = 1; //replace me
+    private float groundY = -2.58f; //replace me
 
     public Stage()
     {
@@ -26,11 +27,8 @@ public class Stage {
 
     private void SetHero()
     {
-        hero = new Hero(heroHealthText);
+        hero = new Hero(playerController.heroHealthText);
         hero.Spawn(heroPosition);
-
-        //instantiate Hero
-
     }
 
     public void StartStage () {
@@ -69,12 +67,12 @@ public class Stage {
     }
 
     //Removes enemy from enemy List
-    public void RemoveEnemy(Enemy enemy, List<Transform> instances)
+    public void RemoveEnemy(Enemy enemy)
     {
         enemies.Remove(enemy);
         MoveEnemies();
-        IEnumerator coroutine = DestroyAfterTime(2, instances);
-        StartCoroutine(coroutine);
+        IEnumerator coroutine = enemy.DestroyAfterTime(2);
+        playerController.StartCoroutine(coroutine);
     }
 
     //Adds enemy to enemy list and instantiates
@@ -91,15 +89,16 @@ public class Stage {
     /// <param name="enemy"></param>
     public void SpawnEnemyOffscreen(Enemy enemy)
     {
-        int effectiveWidth = enemy.width + bufferWidth;
-        enemy.Spawn(rightScreenEdgePositionX + effectiveWidth);
+        float effectiveWidth = enemy.width + bufferWidth;
+        //MonoBehaviour.print(rightScreenEdgePositionX + " " + effectiveWidth);
+        enemy.Spawn(new Vector2(rightScreenEdgePositionX + effectiveWidth, 0));
         MoveEnemies();
     }
 
     public void SetEnemies(List<Enemy> enemies)
     {
         this.enemies = enemies;
-        MoveEnemies();
+        //MoveEnemies();
     }
 
     /// <summary>
@@ -109,26 +108,28 @@ public class Stage {
     public void SpawnEnemiesOffscreen(List<Enemy> enemies)
     {
         //Spawn enemies in order off screen
-        int nextPositionX = rightScreenEdgePositionX;
+        float nextPositionX = rightScreenEdgePositionX;
         foreach (Enemy enemy in enemies)
         {
             // move enemy to correct position
-            int effectiveWidth = enemy.width + bufferWidth;
-            enemy.Spawn(nextPositionX + effectiveWidth / 2, groundY);
-            nextPositionX += effectiveWidth;
+            Vector2 spawnPos = new Vector2(nextPositionX, groundY);
+
+            enemy.Spawn(spawnPos);
+            nextPositionX += enemy.width / 2 + bufferWidth;
+
         }
         MoveEnemies();
     }
 
     private void MoveEnemies()
     {
-        int nextPositionX = leftMostPositionX;
+        float nextPositionX = leftMostPositionX;
         foreach (Enemy enemy in enemies)
         {
-            // move enemy to correct position
-            int effectiveWidth = enemy.width + bufferWidth;
-            enemy.Move(nextPositionX + effectiveWidth / 2);
-            nextPositionX += effectiveWidth;
+            enemy.Move(rightScreenEdgePositionX - leftMostPositionX);
         }
     }
+
+
+
 }
