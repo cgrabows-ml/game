@@ -28,6 +28,7 @@ public class DamageSpell : Spell {
 
     IEnumerator DamageAfterTime(float time, Character owner)
     {
+        int startNum = numEncounter;
         float finalDamage = owner.GetDamage(baseDamage);
         float startTime = 0;
         base.Cast(owner);
@@ -36,7 +37,10 @@ public class DamageSpell : Spell {
             time -= Time.deltaTime;
             yield return null;
         }
-        DealDamage(finalDamage);
+        if(startNum == numEncounter)
+        {
+            DealDamage(finalDamage);
+        }
     }
 
 }

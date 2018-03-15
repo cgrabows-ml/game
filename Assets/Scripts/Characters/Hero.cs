@@ -19,17 +19,21 @@ public class Hero : Character
     /// <param name="health"></param>
     // Use this for initialization
     public Hero(TextMesh textBox)
-        : base(new List<Spell> { new DamageSpell(3, 1, "Use1", delay:1), new Fireball(), new DamageSpell(8, 3, "Use3", target: "AoE"), new Empower() },
+        : base(new List<Spell> { new DamageSpell(3, 1, "Use1"), new Fireball(), new DamageSpell(8, 3, "Use3", target: "AoE"), new Empower() },
         (Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/blackKnight.prefab", typeof(Transform)),
             textBox,
             200)
     {
-
+        maxGCD = 1;
     }
 
     public override void Spawn(Vector2 pos)
     {
         base.Spawn(pos);
+
+        //set camera
+        playerController.cam.transform.position = new Vector3(pos.x + 3.91f, 0, -6); 
+
         castCovers = new List<RectTransform> { playerController.castCover1, playerController.castCover2, playerController.castCover3, playerController.castCover4 };
     }
 
@@ -64,13 +68,44 @@ public class Hero : Character
         }
     }
 
+    public void MoveRight(Vector3 startingPosition)
+    {
+        IEnumerator coroutine = MoveRight2(startingPosition);
+        playerController.StartCoroutine(coroutine);
+    }
+
+    IEnumerator MoveRight2(Vector3 startingPosition)
+    {
+        float time = 0;
+        float walkTime = 2;
+
+        anim.SetBool("Walk", true);
+
+        Vector3 camStartPos = playerController.cam.transform.position;
+
+        while (time < walkTime)
+        {
+            //Move hero
+            instances[0].position += new Vector3(6.09f, 0,0) * Time.deltaTime / walkTime;
+
+            //Move camera
+            playerController.cam.transform.position += new Vector3(6.09f, 0, 0) * Time.deltaTime / walkTime;
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+        instances[0].transform.position = new Vector3(startingPosition.x + 6.09f, -2.58f,0);
+        playerController.cam.transform.position = new Vector3(camStartPos.x + 6.09f, 0, -6);
+        anim.SetBool("Idle", true);
+
+    }
+
     IEnumerator CooldownCover(int index, Transform instance)
     {
         Vector3 basePos = instance.localPosition;
         float duration = spellbook[index].baseCooldown;
         float time = 0;
         Transform r = instance.GetComponent<Transform>();
-        //r.position += new Vector3(0 + .93f * index, Time.deltaTime / duration * .8f / 2, 0);
         while (time < duration)
         {
             time += Time.deltaTime;

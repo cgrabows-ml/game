@@ -15,6 +15,8 @@ public class Spell : GameLogger
     public Boolean GCDRespect;
     protected String target;
     protected float delay;
+    public int numEncounter;
+
 
     public Spell(float baseCooldown, String animationKey, Boolean triggersGCD = true, String target = "front", Boolean GCDRespect = true, float delay = 0)
     {

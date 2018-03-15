@@ -12,7 +12,9 @@ public class Enemy : Character
     private string name;
     private List<Transform> enemyGUI = new List<Transform> { };
     private List<IDeathObserver> deathObservers = new List<IDeathObserver>();
+
     public float width;
+    public Vector3 moveTo = new Vector3(-100,0,0);
 
     /// <summary>
     /// Constructor for enemy class
@@ -50,6 +52,7 @@ public class Enemy : Character
         if (health <= 0)
         {
             anim.SetBool("Death", true);
+            moveTo = instances[0].position;
             playerController.stage.RemoveEnemy(this);
             deathObservers.ForEach(observer => observer.DeathUpdate(this));
             IEnumerator coroutine = DestroyAfterTime(2);
@@ -58,9 +61,22 @@ public class Enemy : Character
 
     }
 
+    public Boolean CheckDead()
+    {
+        if (health <= 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public override void Spawn(Vector2 pos)
     {
         InstantiateEnemy(new Vector3(pos.x,pos.y,0));
+        moveTo = new Vector3(pos.x, 0, 0);
     }
 
     public void InstantiateEnemy(Vector3 position)
@@ -107,32 +123,38 @@ public class Enemy : Character
         deathObservers.Remove(observer);
     }
 
-    public void Move(float moveDistance)
+    public void Move(float walkTime)
     {
-        IEnumerator coroutine = MoveEnemy(moveDistance);
+        IEnumerator coroutine = MoveEnemy(walkTime);
         playerController.StartCoroutine(coroutine);
     }
 
-    IEnumerator MoveEnemy(float moveDistance)
+    //Moves enemy to it moveTo
+    IEnumerator MoveEnemy(float walkSpeed)
     {
-        float time = 0;
-        float walkTime = 2;
-        anim.SetBool("Walk", true);
-        List<Vector3> endPositions = new List<Vector3> { };
-        foreach (Transform i in instances)
+        if (!CheckDead())
         {
-            endPositions.Add(i.position - new Vector3(moveDistance, 0, 0));
-        }
+            anim.SetBool("Walk", true);
 
-        while (time < walkTime)
-        {
-            instances.ForEach(i => i.position -= new Vector3(moveDistance * Time.deltaTime / walkTime, 0));
-            time += Time.deltaTime;
-            yield return null;
+            //Get End position of everything
+            List<Vector3> startPositions = new List<Vector3> { };
+            foreach (Transform i in instances)
+            {
+                startPositions.Add(i.position);
+            }
+
+            while (instances[0].position.x > moveTo.x)
+            {
+                //Use the coded out one for dynamic move speed
+                //instances.ForEach(i => i.position += new Vector3((moveTo.x - startPositions[instances.IndexOf(i)].x) * Time.deltaTime * walkSpeed, 0, 0));
+                instances.ForEach(i => i.position -= new Vector3(Time.deltaTime * walkSpeed, 0, 0));
+
+                yield return null;
+            }
+
+            instances.ForEach(i => i.position = new Vector2(moveTo.x, i.position.y));
+            anim.SetBool("Idle", true);
         }
-        
-        instances.ForEach(i => i.position = endPositions[instances.IndexOf(i)]);
-        anim.SetBool("Idle", true);
     }
 
 

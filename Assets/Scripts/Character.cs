@@ -48,6 +48,7 @@ public class Character : GameLogger
     public virtual void Spawn(Vector2 pos)
     {
         Transform instance = MonoBehaviour.Instantiate(prefab);
+        instance.position = pos;
         instances.Add(instance);
         anim = instance.GetComponent<Animator>();
         textBox.text = Utils.ToDisplayText(health);

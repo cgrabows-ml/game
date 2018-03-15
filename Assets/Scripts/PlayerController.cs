@@ -33,6 +33,10 @@ public class PlayerController : MonoBehaviour
     public RectTransform castCover3;
     public RectTransform castCover4;
 
+    public Text spaceContinue;
+
+    public Camera cam;
+
     public TextMesh heroHealthText;
 
     private List<SpellBinding> spellBindings = new List<SpellBinding>();
@@ -53,7 +57,7 @@ public class PlayerController : MonoBehaviour
     {
         stage = new Stage();
         //Encounter encounter = new Encounter(stage, enemies);
-        List<Encounter> encounters = new List<Encounter>() { new Encounter1(stage) };
+        List<Encounter> encounters = new List<Encounter>() { new Encounter1(stage), new Encounter1(stage) };
         stage.SetEncounters(encounters);
         stage.StartStage();
     }
@@ -139,10 +143,15 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        CheckInput();
+
         stage.Update();
-        hero.Update();
-        UpdateView();
+        if (stage.inCombat)
+        {
+            CheckInput();
+            hero.Update();
+            UpdateView();
+        }
+
     }
 
     /// <summary>

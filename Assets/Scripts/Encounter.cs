@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Encounter: IDeathObserver {
+
+    public Boolean winCon = false;
 
     private Stage stage;
     private List<Enemy> startingEnemies;
@@ -26,7 +29,8 @@ public class Encounter: IDeathObserver {
     {
         enemies.ForEach(e => e.RegisterDeathObserver(this));
         stage.SetEnemies(enemies);
-        stage.SpawnEnemiesOffscreen(enemies);
+        stage.SpawnStartingEnemies();
+        //stage.SpawnEnemiesOffscreen(enemies);
     }
 
     private void AddEnemy(Enemy enemy)
@@ -45,6 +49,7 @@ public class Encounter: IDeathObserver {
     {
         if (stage.enemies.Count == 0)
         {
+            winCon = true;
             EndEncounter();
         }
     }
@@ -52,6 +57,12 @@ public class Encounter: IDeathObserver {
 	public void StartEncounter () {
         SetEnemies(startingEnemies);
 	}
+
+    public void Update()
+    {
+        
+
+    }
 
     public void EndEncounter()
     {
