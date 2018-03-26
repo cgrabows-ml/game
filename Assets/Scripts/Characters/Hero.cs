@@ -19,12 +19,18 @@ public class Hero : Character
     /// <param name="health"></param>
     // Use this for initialization
     public Hero(TextMesh textBox)
-        : base(new List<Spell> { new DamageSpell(3, 1, "Use1"), new Fireball(), new DamageSpell(8, 3, "Use3", target: "AoE"), new Empower() },
-        (Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/blackKnight.prefab", typeof(Transform)),
-            textBox,
-            200)
+        : base("blackKnight.prefab", textBox, 200)
     {
         maxGCD = 1;
+    }
+
+    protected override List<Spell> getSpells()
+    {
+        Spell spell1 = new DamageSpell(3, 1, "Use1");
+        Spell spell2 = new Fireball();
+        Spell spell3 = new DamageSpell(8, 3, "Use3", target: "aoe");
+        Spell spell4 = new Empower();
+        return new List<Spell> { spell1, spell2, spell3, spell4 };
     }
 
     public override void Spawn(Vector2 pos)
@@ -32,9 +38,9 @@ public class Hero : Character
         base.Spawn(pos);
 
         //set camera
-        playerController.cam.transform.position = new Vector3(pos.x + 3.91f, 0, -6); 
+        gameController.cam.transform.position = new Vector3(pos.x + 3.91f, 0, -6); 
 
-        castCovers = new List<RectTransform> { playerController.castCover1, playerController.castCover2, playerController.castCover3, playerController.castCover4 };
+        castCovers = new List<RectTransform> { gameController.castCover1, gameController.castCover2, gameController.castCover3, gameController.castCover4 };
     }
 
     //Also casts the spell
@@ -49,7 +55,7 @@ public class Hero : Character
             cover.localScale = new Vector3(1,1,0);
            
             IEnumerator coroutine = CooldownCover(i, cover);
-            playerController.StartCoroutine(coroutine);
+            gameController.StartCoroutine(coroutine);
             return true;
         }
         else
@@ -71,7 +77,7 @@ public class Hero : Character
     public void MoveRight(Vector3 startingPosition)
     {
         IEnumerator coroutine = MoveRight2(startingPosition);
-        playerController.StartCoroutine(coroutine);
+        gameController.StartCoroutine(coroutine);
     }
 
     IEnumerator MoveRight2(Vector3 startingPosition)
@@ -81,7 +87,7 @@ public class Hero : Character
 
         anim.SetBool("Walk", true);
 
-        Vector3 camStartPos = playerController.cam.transform.position;
+        Vector3 camStartPos = gameController.cam.transform.position;
 
         while (time < walkTime)
         {
@@ -89,13 +95,13 @@ public class Hero : Character
             instances[0].position += new Vector3(6.09f, 0,0) * Time.deltaTime / walkTime;
 
             //Move camera
-            playerController.cam.transform.position += new Vector3(6.09f, 0, 0) * Time.deltaTime / walkTime;
+            gameController.cam.transform.position += new Vector3(6.09f, 0, 0) * Time.deltaTime / walkTime;
 
             time += Time.deltaTime;
             yield return null;
         }
         instances[0].transform.position = new Vector3(startingPosition.x + 6.09f, -2.58f,0);
-        playerController.cam.transform.position = new Vector3(camStartPos.x + 6.09f, 0, -6);
+        gameController.cam.transform.position = new Vector3(camStartPos.x + 6.09f, 0, -6);
         anim.SetBool("Idle", true);
 
     }
