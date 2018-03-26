@@ -155,7 +155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b549a88c114f2ed4d917907dbdfeee91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 0}
+  tooltipBG: {fileID: 0}
+  tooltipText: {fileID: 0}
 --- !u!114 &114357191909090158
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -188,7 +189,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 0
 --- !u!114 &114401582191668328
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -330,7 +331,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b549a88c114f2ed4d917907dbdfeee91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 0}
+  tooltipBG: {fileID: 0}
+  tooltipText: {fileID: 0}
 --- !u!114 &114934080636879032
 MonoBehaviour:
   m_ObjectHideFlags: 1
