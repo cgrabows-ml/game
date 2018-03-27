@@ -1270,7 +1270,7 @@ GameObject:
   - component: {fileID: 1466786624}
   - component: {fileID: 1466786623}
   m_Layer: 0
-  m_Name: PlayerController
+  m_Name: GameController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1287,7 +1287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c5b1f70cbb06740935c10bca4a9ed7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pc: {fileID: 1466786623}
+  gc: {fileID: 0}
   cast1Text: {fileID: 1730171158}
   cast2Text: {fileID: 222695342}
   cast3Text: {fileID: 329354267}
