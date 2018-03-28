@@ -73,7 +73,6 @@ GameObject:
   - component: {fileID: 224827096733050868}
   - component: {fileID: 222711994094459066}
   - component: {fileID: 114594083242122258}
-  - component: {fileID: 114279213734279308}
   - component: {fileID: 65470551028050734}
   - component: {fileID: 223129084290824594}
   - component: {fileID: 114934080636879032}
@@ -94,7 +93,6 @@ GameObject:
   - component: {fileID: 224629439184293782}
   - component: {fileID: 222264188876146956}
   - component: {fileID: 114401582191668328}
-  - component: {fileID: 114822691052834170}
   - component: {fileID: 65210859620073376}
   - component: {fileID: 223360569694281406}
   - component: {fileID: 114649138152620976}
@@ -144,19 +142,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 78, y: 78, z: 0.9999822}
   m_Center: {x: 0, y: 0, z: 0.000008927726}
---- !u!114 &114279213734279308
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1774014002825574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b549a88c114f2ed4d917907dbdfeee91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tooltipBG: {fileID: 0}
-  tooltipText: {fileID: 0}
 --- !u!114 &114357191909090158
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -320,19 +305,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114822691052834170
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1803801387139484}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b549a88c114f2ed4d917907dbdfeee91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tooltipBG: {fileID: 0}
-  tooltipText: {fileID: 0}
 --- !u!114 &114934080636879032
 MonoBehaviour:
   m_ObjectHideFlags: 1

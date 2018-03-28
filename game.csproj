@@ -309,6 +309,7 @@
     <Compile Include="Assets\Scripts\Combat\Spells\EnemySpells\SummonSkeleton.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\Empower.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\Fireball.cs" />
+    <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\Knockback.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\Slash.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\Spell.cs" />
     <Compile Include="Assets\Scripts\Encounters\Encounter.cs" />

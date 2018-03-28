@@ -29,7 +29,8 @@ public class Hero : Character
         Spell spell1 = new DamageSpell(3, 1, "Use1");
         Spell spell2 = new Fireball();
         Spell spell3 = new DamageSpell(8, 3, "Use3", target: "aoe");
-        Spell spell4 = new Empower();
+        //Spell spell4 = new Empower();
+        Spell spell4 = new Knockback();
         return new List<Spell> { spell1, spell2, spell3, spell4 };
     }
 
