@@ -9,6 +9,8 @@ public class Stage: IDeathObserver {
         GameObject.Find("GameController").GetComponent<GameController>();
     public Hero hero;
     public List<Enemy> enemies = new List<Enemy>();
+    public List<Enemy> movableEnemies = new List<Enemy>();
+    public List<Enemy> fixedEnemies = new List<Enemy>();
     public Boolean inCombat = false;
 
     private List<Encounter> encounters;
@@ -160,33 +162,52 @@ public class Stage: IDeathObserver {
     public void AddEnemy(Enemy enemy)
     {
         enemies.Add(enemy);
-        enemy.RegisterDeathObserver(this);
-        enemy.Spawn(new Vector2(getNextFreeSpace(enemy, leftMostPositionX), groundY));
+        SetupEnemy(enemy);
+
         //SpawnEnemyOffscreen(enemy);
+    }
+
+    public void SetupEnemy(Enemy enemy)
+    {
+        enemy.RegisterDeathObserver(this);
+        //enemy.Spawn(new Vector2(getNextFreeSpace(enemy, leftMostPositionX), groundY));
+        Vector2 position;
+        if (enemy.isFixed)
+        {
+            fixedEnemies.Add(enemy);
+            position = enemy.moveTo;
+        }
+        else
+        {
+            movableEnemies.Add(enemy);
+            float nextX = getNextFreeSpace(enemy, leftMostPositionX);
+            position = new Vector2(nextX, groundY);
+        }
+        enemy.Spawn(position);
     }
 
     public void AddEnemyAtIndex(Enemy enemy, int index)
     {
         enemies.Insert(index, enemy);
-        enemy.RegisterDeathObserver(this);
-        enemy.Spawn(new Vector2(getNextFreeSpace(enemy, leftMostPositionX), groundY));
+        SetupEnemy(enemy);
     }
 
-    /// <summary>
-    /// Spawn enemy offscreen and have it walk into the correct position
-    /// </summary>
-    /// <param name="enemy"></param>
-    public void SpawnEnemyOffscreen(Enemy enemy)
-    {
-        float effectiveWidth = enemy.width + bufferWidth;
-        //MonoBehaviour.print(rightScreenEdgePositionX + " " + effectiveWidth);
-        enemy.Spawn(new Vector2(rightScreenEdgePositionX + effectiveWidth, 0));
-        //MoveEnemies();
-    }
+    ///// <summary>
+    ///// Spawn enemy offscreen and have it walk into the correct position
+    ///// </summary>
+    ///// <param name="enemy"></param>
+    //public void SpawnEnemyOffscreen(Enemy enemy)
+    //{
+    //    float effectiveWidth = enemy.width + bufferWidth;
+    //    //MonoBehaviour.print(rightScreenEdgePositionX + " " + effectiveWidth);
+    //    enemy.Spawn(new Vector2(rightScreenEdgePositionX + effectiveWidth, 0));
+    //    //MoveEnemies();
+    //}
 
     public void SetEnemies(List<Enemy> enemies)
     {
         this.enemies = enemies;
+        enemies.ForEach(enemy => SetupEnemy(enemy));
     }
 
     /// <summary>
@@ -202,24 +223,6 @@ public class Stage: IDeathObserver {
             float nextPositionX = getNextFreeSpace(enemy, rightScreenEdgePositionX);
             Vector2 spawnPos = new Vector2(nextPositionX, groundY);
             enemy.Spawn(spawnPos);
-        }
-    }
-
-    public void SpawnStartingEnemies()
-    {
-        foreach (Enemy enemy in enemies)
-        {
-            Vector2 position;
-            if (enemy.isFixed)
-            {
-                position = enemy.moveTo;
-            }
-            else
-            {
-                float nextX = getNextFreeSpace(enemy, leftMostPositionX);
-                position = new Vector2(nextX, groundY);
-            }
-            enemy.Spawn(position);
         }
     }
 
@@ -265,13 +268,18 @@ public class Stage: IDeathObserver {
 
     //meant to be for moving enemies when they see an open spot upon death
     //Current implementation is inefficient, but should be sufficient.
-    private void MoveEnemies()
+    public void MoveEnemies()
     {
+        MonoBehaviour.print("Moving Enemies");
         foreach(Enemy enemy in enemies)
         {
-            float nextX = getNextFreeSpace(enemy, leftMostPositionX);
-            Vector2 position = new Vector2(nextX, groundY);
-            enemy.Move(position);
+            if (!enemy.isFixed)
+            {
+                float nextX = getNextFreeSpace(enemy, leftMostPositionX);
+                Vector2 position = new Vector2(nextX, groundY);
+                enemy.Move(position);
+                MonoBehaviour.print(String.Format("Move {0} to {1}", enemy.name, position.x));
+            }
         }
         //sort the enemy list by x coordinate
         enemies.Sort(delegate (Enemy e1, Enemy e2) 
