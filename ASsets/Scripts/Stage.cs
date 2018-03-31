@@ -104,10 +104,30 @@ public class Stage: IDeathObserver {
 
     public void DeathUpdate(Character character)
     {
+        gameController.StartCoroutine(HandleEnemyDeath(character));
+    }
+
+    IEnumerator HandleEnemyDeath(Character character)
+    {
+        yield return new WaitForSeconds(character.deathTime - .1f);
         RemoveEnemy((Enemy)character);
+        if (enemies.Count == 0)
+            EndEncounter();
         MoveEnemies();
     }
 
+    public List<Enemy> getActiveEnemies()
+    {
+        List<Enemy> result = new List<Enemy>();
+        foreach(Enemy enemy in enemies)
+        {
+            if (enemy.isActive)
+            {
+                result.Add(enemy);
+            }
+        }
+        return result;
+    }
 
     public void StartNextEncounter2()
     {
@@ -144,11 +164,6 @@ public class Stage: IDeathObserver {
         int index = enemies.IndexOf(enemy);
         enemies.Remove(enemy);
         enemy.UnregisterDeathObserver(this);
-        MoveEnemies();
-        IEnumerator coroutine = enemy.DestroyAfterTime(2);
-        gameController.StartCoroutine(coroutine);
-        if (enemies.Count == 0)
-            EndEncounter();
     }
 
     IEnumerator MoveAfter(Enemy deadEnemy, float time)
@@ -240,7 +255,7 @@ public class Stage: IDeathObserver {
             if (i != targetIndex)
             {
                 Enemy enemy = enemies[i];
-                if (i < targetIndex || enemy.isFixed)
+                if (enemy.isActive && (i < targetIndex || enemy.isFixed))
                 {
                     float targetLeft = x;
                     float targetRight = x + target.width + bufferWidth;
@@ -256,10 +271,9 @@ public class Stage: IDeathObserver {
                         collision = enemyLeft < targetRight;
                     }
                     if (collision)
+                    {
                         x = targetRight;
-//                    MonoBehaviour.print(
-//String.Format("NAME: {3}{2} : x={1}, collides with {4}?: {0}",
-//collision, targetIndex, x, target.name, i));
+                    }
                 }
             }
         }
@@ -270,20 +284,18 @@ public class Stage: IDeathObserver {
     //Current implementation is inefficient, but should be sufficient.
     public void MoveEnemies()
     {
-        MonoBehaviour.print("Moving Enemies");
         foreach(Enemy enemy in enemies)
         {
-            if (!enemy.isFixed)
+            if (!enemy.isFixed && enemy.isActive)
             {
                 float nextX = getNextFreeSpace(enemy, leftMostPositionX);
                 Vector2 position = new Vector2(nextX, groundY);
                 enemy.Move(position);
-                MonoBehaviour.print(String.Format("Move {0} to {1}", enemy.name, position.x));
+                //MonoBehaviour.print(String.Format("Move {0} to {1}", enemy.name, position.x));
             }
         }
         //sort the enemy list by x coordinate
         enemies.Sort(delegate (Enemy e1, Enemy e2) 
         { return e1.moveTo.x.CompareTo(e2.moveTo.x); });
-        //MonoBehaviour.print(enemies.Count);
     }
 }

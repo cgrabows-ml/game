@@ -15,6 +15,14 @@ public class SummonSkeleton : Spell, IDeathObserver
 
     }
 
+    public override void ReduceCooldown()
+    {
+        if (skeletonsAlive < maxSkeletons)
+        {
+            cooldown = Math.Max(0, cooldown - Time.deltaTime);
+        }
+    }
+
     public void DeathUpdate(Character character)
     {
         skeletonsAlive -= 1;

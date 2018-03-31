@@ -46,7 +46,7 @@ public abstract class Spell
     /// <summary>
     /// Reduces the cooldown of the ability, makes sure it's not below 0.
     /// </summary>
-    public void ReduceCooldown()
+    public virtual void ReduceCooldown()
     {
         cooldown = Math.Max(0, cooldown - Time.deltaTime);
     }

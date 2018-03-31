@@ -16,7 +16,7 @@ public class Knockback : Spell
     {
         base.Cast(owner);
         Stage stage = gameController.stage;
-        Enemy enemy = stage.enemies[0];
+        Enemy enemy = stage.getActiveEnemies()[0];
         stage.enemies.Remove(enemy);
         stage.enemies.Add(enemy);
         stage.MoveEnemies();

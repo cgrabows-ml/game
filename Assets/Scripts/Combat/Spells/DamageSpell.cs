@@ -40,29 +40,33 @@ public class DamageSpell : Spell {
 
     public List<Character> GetTargets()
     {
+        List<Enemy> enemies = gameController.stage.getActiveEnemies();
         if (target == "player")
         {
             return new List<Character>() { gameController.stage.hero };
         }
         else if (target == "front")
         {
-            return new List<Character>() { gameController.stage.enemies[0] };
+            return new List<Character>() { enemies[0] };
         }
         else if (target == "aoe")
         {
-            List<Character> enemies = new List<Character>();
-            foreach (Enemy enemy in gameController.stage.enemies)
+            List<Character> characters = new List<Character>();
+            foreach(Enemy enemy in enemies)
             {
-                enemies.Add(enemy);
+                characters.Add(enemy);
             }
-            return enemies;
+            return characters;
         }
         else if (target == "back")
         {
-            return new List<Character>() { gameController.stage.enemies[gameController.stage.enemies.Count - 1] };
+            return new List<Character>() {
+               enemies[enemies.Count - 1]
+            };
         }
         else
         {
+            MonoBehaviour.print("Target not valid for damage spell.");
             return new List<Character>(); //should instead raise error
         }
     }

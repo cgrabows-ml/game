@@ -18,6 +18,7 @@ public abstract class Enemy : Character
     public Vector2 moveTo = new Vector3(-100,0);
     private float walkSpeed = 1;
     private Boolean isMoving = false;
+    public Boolean isActive = false;
 
     /// <summary>
     /// Constructor for enemy class
@@ -49,7 +50,10 @@ public abstract class Enemy : Character
     /// </summary>
     public void Cast()
     {
-        spellbook.ForEach(spell => CastIfAble(spell));
+        if (isActive)
+        {
+            spellbook.ForEach(spell => CastIfAble(spell));
+        }
     }
 
     public override void CheckDeadAndKill()
@@ -58,7 +62,7 @@ public abstract class Enemy : Character
         {
             anim.SetBool("Death", true);
             moveTo = instances[0].position;
-            gameController.stage.RemoveEnemy(this);
+            isActive = false;
             deathObservers.ForEach(observer => observer.DeathUpdate(this));
             IEnumerator coroutine = DestroyAfterTime(deathTime);
             gameController.StartCoroutine(coroutine);
@@ -80,6 +84,7 @@ public abstract class Enemy : Character
 
     public override void Spawn(Vector2 pos)
     {
+        isActive = true;
         InstantiateEnemy(new Vector2(pos.x, pos.y));
         moveTo = new Vector2(pos.x, pos.y);
     }
@@ -138,7 +143,7 @@ public abstract class Enemy : Character
 
     public void Move(Vector2 position)
     {
-        if (isFixed)
+        if (isFixed || !isActive)
         {
             return;
         }
