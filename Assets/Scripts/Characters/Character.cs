@@ -173,10 +173,23 @@ public abstract class Character
     /// <param name="damageTaken"></param>
     public void DrawDamageTaken(float damageTaken) { 
     
-        Transform prefab = (Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/enemy_text.prefab", typeof(Transform));
+        Transform prefab = (Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/FCT.prefab", typeof(Transform));
         Transform instance = MonoBehaviour.Instantiate(prefab);
         TextMesh tmesh = instance.GetComponent<TextMesh>();
         tmesh.text = "- " + Utils.ToDisplayText(damageTaken);
+
+        //Assigns color to text based on amount of mitigation        
+        if(inMultiplier > 1)
+        {
+            tmesh.color = new Color(255, 255, 0, 1f);
+        }
+        else if(inMultiplier < 1){
+            tmesh.color = Color.blue;
+        }
+
+        //Assigns size based on sqrt of damage
+        tmesh.fontSize = (int)Math.Round(tmesh.fontSize * Math.Sqrt(damageTaken));
+
         Vector3 newPos = new Vector3(instances[0].position.x + .2f,
             instances[0].position.y + .4f, 0);
         instance.transform.position = newPos;

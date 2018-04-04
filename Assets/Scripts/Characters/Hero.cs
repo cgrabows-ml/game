@@ -10,6 +10,7 @@ public class Hero : Character
 
     List<RectTransform> castCovers = new List<RectTransform>{ };
 
+
     /// <summary>
     /// Constructor for Hero class.
     /// </summary>
@@ -21,7 +22,7 @@ public class Hero : Character
     public Hero(TextMesh textBox)
         : base("blackKnight.prefab", textBox, 200)
     {
-        maxGCD = 1;
+        maxGCD = .2f;
     }
 
     protected override List<Spell> getSpells()
@@ -54,13 +55,14 @@ public class Hero : Character
             RectTransform cover = castCovers[i]; //throws error if there are more spells than casts on the screen
 
             cover.localScale = new Vector3(1,1,0);
-           
+
             IEnumerator coroutine = CooldownCover(i, cover);
             gameController.StartCoroutine(coroutine);
             return true;
         }
         else
         {
+            CantCastMessage();
             return false;
         }
     }
@@ -115,12 +117,67 @@ public class Hero : Character
         Transform r = instance.GetComponent<Transform>();
         while (time < duration)
         {
-            time += Time.deltaTime;
-            r.localScale -= new Vector3(0, Time.deltaTime / duration, 0);
-            r.localPosition -= new Vector3(0, Time.deltaTime / duration * 80 / 2, 0);
-            yield return null;
+            if (gameController.stage.inCombat)
+            {
+                time += Time.deltaTime;
+                r.localScale -= new Vector3(0, Time.deltaTime / duration, 0);
+                r.localPosition = basePos - new Vector3(0, time / duration * instance.GetComponent<RectTransform>().rect.height / 2, 0);
+                yield return null;
+            }
+            else
+            {
+                yield return null;
+            }
+
         }
         r.localPosition = basePos;
         r.localScale = new Vector3(0, 0, 0);
+    }
+
+
+    /// <summary>
+    /// Displays a fading message when the player attempts to cast an uncastable spell
+    /// </summary>
+    private void CantCastMessage()
+    {
+        Boolean toStart = true;
+        float r = gameController.cantCast.GetComponent<Text>().color.r;
+        float g = gameController.cantCast.GetComponent<Text>().color.g;
+        float b = gameController.cantCast.GetComponent<Text>().color.b;
+
+        if (gameController.cantCast.IsActive())
+        {
+            toStart = false;
+        }
+
+        gameController.cantCast.gameObject.SetActive(true);
+        gameController.cantCast.GetComponent<Text>().color = new Color(r, g, b, 1f);
+
+        AudioSource source = gameController.GetComponent<AudioSource>();
+        source.Play();
+
+        if (toStart)
+        {
+            IEnumerator coroutine = FadeCantCast(r, g, b);
+            gameController.StartCoroutine(coroutine);
+        }
+    }
+
+    /// <summary>
+    /// coroutine for CantCastMessage()
+    /// </summary>
+    /// <param name="r"></param>
+    /// <param name="g"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    IEnumerator FadeCantCast(float r, float g, float b)
+    {
+        float disappearTime = 3;
+        while (gameController.cantCast.GetComponent<Text>().color.a >= 0)
+        {
+            gameController.cantCast.GetComponent<Text>().color = new Color(r, g, b, gameController.cantCast.GetComponent<Text>().color.a - (1f / disappearTime * Time.deltaTime));
+            yield return null;
+        }
+        gameController.cantCast.gameObject.SetActive(false);
     }
 }

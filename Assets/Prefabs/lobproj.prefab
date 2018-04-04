@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4888526948984688}
   - component: {fileID: 212706949810785870}
   - component: {fileID: 50422581883153432}
+  - component: {fileID: 210101424522798370}
   m_Layer: 0
   m_Name: lobproj
   m_TagString: Untagged
@@ -61,6 +62,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!210 &210101424522798370
+SortingGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1935500022754856}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 101
 --- !u!212 &212706949810785870
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -94,7 +105,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 230
   m_Sprite: {fileID: 21300000, guid: 1cc4e1c5a8362154f80af80dc4f1e8d2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

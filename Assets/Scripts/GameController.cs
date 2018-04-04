@@ -32,12 +32,25 @@ public class GameController : MonoBehaviour
     public RectTransform castCover2;
     public RectTransform castCover3;
     public RectTransform castCover4;
+    public Text cantCast;
 
     public Text spaceContinue;
 
     public Camera cam;
 
     public TextMesh heroHealthText;
+
+    public RectTransform tinyBox1;
+    public RectTransform tinyBox2;
+    public RectTransform tinyBox3;
+    public RectTransform tinyBox4;
+
+    public RectTransform bigBox1;
+    public RectTransform bigBox2;
+    public RectTransform bigBox3;
+    public RectTransform bigBox4;
+
+
 
     private List<SpellBinding> spellBindings = new List<SpellBinding>();
     private Transform instance;
@@ -48,8 +61,8 @@ public class GameController : MonoBehaviour
         SetStage();
         SetHero();
         SetSpells();
-        SetSpellToolTips();
         SetSpellBindings();
+        SetSpellToolTips();
         gameController = this;
     }
 
@@ -71,6 +84,7 @@ public class GameController : MonoBehaviour
 
     private void SetSpellToolTips()
     {
+        //SLOW dont use find
         List<TooltipHover> tooltips = new List<TooltipHover>(FindObjectsOfType<TooltipHover>());
 
         //Sort by transform x position
@@ -97,6 +111,23 @@ public class GameController : MonoBehaviour
             tooltip.spell = hero.spellbook[i];
             i++;
         }
+
+
+        tinyBox1.GetComponent<KeypressDownTiny>().k = spellBindings[0].GetKey();
+        tinyBox2.GetComponent<KeypressDownTiny>().k = spellBindings[1].GetKey();
+        tinyBox3.GetComponent<KeypressDownTiny>().k = spellBindings[2].GetKey();
+        tinyBox4.GetComponent<KeypressDownTiny>().k = spellBindings[3].GetKey();
+
+        bigBox1.GetComponent<KeypressDownBig>().k = spellBindings[0].GetKey();
+        bigBox2.GetComponent<KeypressDownBig>().k = spellBindings[1].GetKey();
+        bigBox3.GetComponent<KeypressDownBig>().k = spellBindings[2].GetKey();
+        bigBox4.GetComponent<KeypressDownBig>().k = spellBindings[3].GetKey();
+
+        castCover1.GetComponent<KeypressShrink>().k = spellBindings[0].GetKey();
+        castCover2.GetComponent<KeypressShrink>().k = spellBindings[1].GetKey();
+        castCover3.GetComponent<KeypressShrink>().k = spellBindings[2].GetKey();
+        castCover4.GetComponent<KeypressShrink>().k = spellBindings[3].GetKey();
+
     }
 
     /// <summary>

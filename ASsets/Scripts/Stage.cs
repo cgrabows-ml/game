@@ -104,17 +104,13 @@ public class Stage: IDeathObserver {
 
     public void DeathUpdate(Character character)
     {
-        gameController.StartCoroutine(HandleEnemyDeath(character));
-    }
-
-    IEnumerator HandleEnemyDeath(Character character)
-    {
-        yield return new WaitForSeconds(character.deathTime - .1f);
         RemoveEnemy((Enemy)character);
         if (enemies.Count == 0)
             EndEncounter();
         MoveEnemies();
     }
+
+
 
     public List<Enemy> getActiveEnemies()
     {
