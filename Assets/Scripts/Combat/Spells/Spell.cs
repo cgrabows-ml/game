@@ -66,7 +66,7 @@ public abstract class Spell
         return cooldown <= 0 && (caster.GCD <= 0 || GCDRespect == false);
     }
 
-    IEnumerator DamageAfterTime(float time, Character owner)
+    IEnumerator CastAfterTime(float time, Character owner)
     {
         float startTime = 0;
         while (startTime < time)

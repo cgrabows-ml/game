@@ -39,6 +39,7 @@ public class GameController : MonoBehaviour
     public Camera cam;
 
     public TextMesh heroHealthText;
+    public TextMesh heroEnergyText;
 
     public RectTransform tinyBox1;
     public RectTransform tinyBox2;
@@ -175,7 +176,6 @@ public class GameController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-
         stage.Update();
         if (stage.inCombat)
         {

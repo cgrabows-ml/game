@@ -34,7 +34,7 @@ public class Stage: IDeathObserver {
 
     private void SetHero()
     {
-        hero = new Hero(gameController.heroHealthText);
+        hero = new Hero();
         hero.Spawn(heroPosition);
         hero.MoveRight(heroPosition);
     }

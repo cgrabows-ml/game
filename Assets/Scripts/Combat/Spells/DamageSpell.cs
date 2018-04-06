@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class DamageSpell : Spell {
 
-    private float baseDamage;
+    protected float baseDamage;
 
     /// <summary>
     /// 
