@@ -17,7 +17,6 @@ public class StealLife : Spell
 
     public override void Cast(Character owner)
     {
-        Hero hero = (Hero)owner;
         base.Cast(owner);
         Enemy target = gameController.stage.getActiveEnemies()[0];
         float damageDealt = target.TakeDamage(owner.GetDamage(baseDamage));

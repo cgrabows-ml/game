@@ -22,7 +22,7 @@ public class Hero : Character
     /// <param name="health"></param>
     // Use this for initialization
     public Hero()
-        : base("blackKnight.prefab", gameController.heroHealthText, 200)
+        : base("blackKnight.prefab", gameController.heroHealthText, 20)
     {
            maxGCD = 1f;
            energyText.text = energy.ToString();

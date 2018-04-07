@@ -11,7 +11,7 @@ public abstract class Enemy : Character
 {
     public string name;
     private List<Transform> enemyGUI = new List<Transform> { };
-    private List<IDeathObserver> deathObservers = new List<IDeathObserver>();
+    public List<IDeathObserver> deathObservers = new List<IDeathObserver>();
 
     public float width;
     public Boolean isFixed = false;
@@ -19,6 +19,10 @@ public abstract class Enemy : Character
     private float walkSpeed = 1;
     private Boolean isMoving = false;
     public Boolean isActive = false;
+    public Transform healthBar;
+    public Transform healthText;
+    public Transform sprite;
+    protected float sizeScale = 1f;
 
     /// <summary>
     /// Constructor for enemy class
@@ -60,6 +64,7 @@ public abstract class Enemy : Character
     {
         if (health <= 0)
         {
+            MonoBehaviour.print("dead");
             anim.SetBool("Death", true);
             moveTo = instances[0].position;
             isActive = false;
@@ -89,35 +94,38 @@ public abstract class Enemy : Character
         moveTo = new Vector2(pos.x, pos.y);
     }
 
-    public void InstantiateEnemy(Vector2 position)
+    public virtual void InstantiateEnemy(Vector2 position)
     {
-        Transform instance;
-
-        Transform healthTextFab = 
-            (Transform)AssetDatabase.LoadAssetAtPath(
-                "Assets/Prefabs/enemy_text.prefab", typeof(Transform));
-
         //Instantiate Enemy 
-        instance = MonoBehaviour
+        sprite = MonoBehaviour
             .Instantiate(prefab, position, Quaternion.identity);
-        anim = instance.GetComponent<Animator>();
-        enemyGUI.Add(instance);
+        anim = sprite.GetComponent<Animator>();
+        //MonoBehaviour.print(sprite.localScale);
+        enemyGUI.Add(sprite);
+
+        sprite.localScale *= sizeScale;
+
+        // Vector2 healthBarOffset = new Vector2(0f, sprite.localScale.y)/4;
+        Vector2 healthBarOffset = new Vector2(0f, 1.8f);
 
         //Instantiate Enemy Health Bar
-        instance = MonoBehaviour
+        healthBar = MonoBehaviour
             .Instantiate((Transform)AssetDatabase.LoadAssetAtPath(
                 "Assets/Prefabs/healthbar_sprite.prefab", typeof(Transform)),
-                position + new Vector2(0f, 1.8f), Quaternion.identity);
+                position + healthBarOffset, Quaternion.identity);
 
-        enemyGUI.Add(instance);
+        enemyGUI.Add(healthBar);
+        //MonoBehaviour.print(healthBarOffset);
 
+        Transform healthTextFab = (Transform)AssetDatabase.LoadAssetAtPath(
+        "Assets/Prefabs/enemy_text.prefab", typeof(Transform));
 
         //Instantiate Text
-        instance = MonoBehaviour.Instantiate(healthTextFab,
-            position + new Vector2(0f, 1.8f), Quaternion.identity);
-        textBox = instance.GetComponent<TextMesh>();
+        healthText = MonoBehaviour.Instantiate(healthTextFab,
+            position + healthBarOffset, Quaternion.identity);
+        textBox = healthText.GetComponent<TextMesh>();
         textBox.text = Utils.ToDisplayText(health);
-        enemyGUI.Add(instance);
+        enemyGUI.Add(healthText);
 
         instances = enemyGUI;
         enemyGUI = new List<Transform> { };

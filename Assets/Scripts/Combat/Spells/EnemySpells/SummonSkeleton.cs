@@ -26,6 +26,8 @@ public class SummonSkeleton : Spell, IDeathObserver
     public void DeathUpdate(Character character)
     {
         skeletonsAlive -= 1;
+        MonoBehaviour.print(skeletonsAlive);
+
     }
 
     public override Boolean isCastable(Character caster)
