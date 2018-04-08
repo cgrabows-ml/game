@@ -28,6 +28,6 @@ public class EnergyHeal : Spell
         int energy = hero.GetEnergy();
         int healing = healingPerEnergy * energy;
         hero.LoseEnergy(energy);
-        hero.TakeDamage(-healing);
+        hero.TakeDamage(-healing, owner);
     }
 }

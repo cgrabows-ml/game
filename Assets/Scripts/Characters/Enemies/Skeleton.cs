@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class Skeleton : Enemy
 {
+    private static float baseSize = .75f;
     private static float sizeIncreasePerLevel = .25f;
     private static float baseDamage = 1;
     private static float damageIncreasePerLevel = 1;
@@ -18,7 +19,7 @@ public class Skeleton : Enemy
         : base("skeleton", "Warrior.prefab", getTextBox(), getHealth(level), maxGCD: 3)
     {
         this.level = level;
-        sizeScale *= 1 + ((level-1) * sizeIncreasePerLevel);
+        sizeScale *= baseSize + ((level-1) * sizeIncreasePerLevel);
     }
 
     private static float getHealth(int level)

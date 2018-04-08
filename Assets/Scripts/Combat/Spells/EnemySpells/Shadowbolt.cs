@@ -3,31 +3,36 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class EnergyDamage : DamageSpell
+public class ShadowBolt : DamageSpell
 {
 
-    private int damagePerEnergy = 1;
 
-    public EnergyDamage()
-        : base(baseCooldown: 0, baseDamage: 0, animationKey: "Use2",
-            triggersGCD: true, target: "front", GCDRespect: true, delay: .5f)
+    public ShadowBolt()
+        : base(baseCooldown: 4, baseDamage: 4, animationKey: "Use2",
+            triggersGCD: true, target: "player", GCDRespect: true, delay: .5f)
     {
 
     }
 
-    public override bool isCastable(Character caster)
+    public override List<Character> GetTargets()
     {
-        Hero hero = (Hero) caster;
-        return base.isCastable(caster) && hero.GetEnergy() > 0;
+        Character target = gameController.stage.hero;
+        List<Enemy> enemies = gameController.stage.getActiveEnemies();
+
+        foreach (Enemy enemy in enemies)
+        {
+            if (enemy.name == "crystal")
+            {
+                target = enemy;
+            }
+        }
+        return new List<Character>() { target };
     }
 
     public override void Cast(Character owner)
     {
-        Hero hero = (Hero) owner;
-        int energy = hero.GetEnergy();
-        baseDamage = damagePerEnergy * energy;
-        hero.LoseEnergy(energy);
         base.Cast(owner);
+        NecromancerBoss  boss = (NecromancerBoss)owner;
 
         Transform prefab = (Transform)AssetDatabase.LoadAssetAtPath(
             "Assets/Prefabs/lobproj.prefab", typeof(Transform));
@@ -38,3 +43,4 @@ public class EnergyDamage : DamageSpell
             delay);
     }
 }
+

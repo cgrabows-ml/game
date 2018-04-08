@@ -7,19 +7,27 @@ using UnityEngine.UI;
 public class NecromancerBoss : Enemy
 {
 
+    public int maxCharges = 5;
+    public List<Transform> charges = new List<Transform>();
+
     public NecromancerBoss()
-        : base("necromancer", "warrior.prefab", getTextBox(), 5, maxGCD: 3)
+        : base("necromancer", "warrior.prefab", getTextBox(), health:100, maxGCD: 1)
     {
         this.isFixed = true;
-        this.moveTo = new Vector2(4, -2.58f);
+        this.moveTo = new Vector2(5f, -2.58f);
         sizeScale = 2.5f;
+        hasCollision = false;
     }
 
     protected override List<Spell> getSpells()
     {
-        Spell spell1 = new SummonSkeleton();
-        //Spell spell2 = new DamageSpell(3, 4, "Use1", target: "player");
-        List<Spell> spells = new List<Spell>() { spell1 };
+        Spell spell1 = new MassSummonSkeleton();
+        Spell spell2 = new StoreCharge();
+        Spell spell3 = new FireCharges();
+        Spell spell4 = new SummonCrystal();
+        Spell spell5 = new ShadowBolt();
+
+        List<Spell> spells = new List<Spell>() { spell1, spell2, spell3, spell4, spell5 };
         return spells;
     }   
 

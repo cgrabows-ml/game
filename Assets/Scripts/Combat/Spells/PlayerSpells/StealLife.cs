@@ -19,17 +19,17 @@ public class StealLife : Spell
     {
         base.Cast(owner);
         Enemy target = gameController.stage.getActiveEnemies()[0];
-        float damageDealt = target.TakeDamage(owner.GetDamage(baseDamage));
+        float damageDealt = target.TakeDamage(owner.GetDamage(baseDamage), owner);
         if (target.health <= 0)
         {
             cooldown = 0;
         }
-        IEnumerator coroutine = HealAfterTime(delay, damageDealt);
+        IEnumerator coroutine = HealAfterTime(delay, damageDealt, owner);
         gameController.StartCoroutine(coroutine);
 
     }
 
-    IEnumerator HealAfterTime(float time, float damageDealt)
+    IEnumerator HealAfterTime(float time, float damageDealt, Character owner)
     {
         int startNum = numEncounter;
         float startTime = 0;
@@ -40,7 +40,7 @@ public class StealLife : Spell
         }
         if (startNum == numEncounter)
         {
-            gameController.hero.TakeDamage(-damageDealt);
+            gameController.hero.TakeDamage(-damageDealt, owner);
         }
     }
 }

@@ -11,7 +11,7 @@ public abstract class Enemy : Character
 {
     public string name;
     private List<Transform> enemyGUI = new List<Transform> { };
-    public List<IDeathObserver> deathObservers = new List<IDeathObserver>();
+    private List<IDeathObserver> deathObservers = new List<IDeathObserver>();
 
     public float width;
     public Boolean isFixed = false;
@@ -19,6 +19,7 @@ public abstract class Enemy : Character
     private float walkSpeed = 1;
     private Boolean isMoving = false;
     public Boolean isActive = false;
+    public Boolean hasCollision = true;
     public Transform healthBar;
     public Transform healthText;
     public Transform sprite;
@@ -64,11 +65,11 @@ public abstract class Enemy : Character
     {
         if (health <= 0)
         {
-            MonoBehaviour.print("dead");
             anim.SetBool("Death", true);
             moveTo = instances[0].position;
             isActive = false;
-            deathObservers.ForEach(observer => observer.DeathUpdate(this));
+            deathObservers.ForEach(observer => {
+                observer.DeathUpdate(this);});
             IEnumerator coroutine = DestroyAfterTime(deathTime);
             gameController.StartCoroutine(coroutine);
         }

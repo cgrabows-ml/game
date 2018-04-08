@@ -14,7 +14,7 @@ public class MassSummonSkeleton : Spell, IDeathObserver
 
 
     public MassSummonSkeleton()
-        : base(1, "Use2")
+        : base(10, "Use2")
     {
         stage = gameController.stage;
 
@@ -37,12 +37,12 @@ public class MassSummonSkeleton : Spell, IDeathObserver
     private List<int> GetLevels()
     {
         int combinedLevels = 0;
-        List<int> levels = new List<int>() { 1 };
+        List<int> levels = new List<int>() { };
         while(combinedLevels < totalLevel)
         {
             int level = 1;
             int num = rand.Next(0, 100);
-            if(num > 90)
+            if (num > 90)
             {
                 level = 4;
             }
@@ -54,6 +54,7 @@ public class MassSummonSkeleton : Spell, IDeathObserver
             {
                 level = 2;
             }
+            //level = 1;
             level = Math.Min(level, totalLevel - combinedLevels);
             combinedLevels += level;
             levels.Add(level);
@@ -73,13 +74,13 @@ public class MassSummonSkeleton : Spell, IDeathObserver
         {
             MonoBehaviour.print("level: " + level);
             int casterIndex = stage.enemies.IndexOf((Enemy)caster);
-            Enemy skeleton = new Skeleton(1);
+            Enemy skeleton = new Skeleton(level);
             stage.AddEnemyAtIndex(skeleton, casterIndex);
-            MonoBehaviour.print("count "+ skeleton.deathObservers.Count);
+            //MonoBehaviour.print("count "+ skeleton.deathObservers.Count);
             skeleton.RegisterDeathObserver(this);
-            MonoBehaviour.print("count " + skeleton.deathObservers.Count);
+            //MonoBehaviour.print("count " + skeleton.deathObservers.Count);
             skeletonsAlive += 1;
-            MonoBehaviour.print(skeletonsAlive);
+            //MonoBehaviour.print(skeletonsAlive);
         }   
     }
 }

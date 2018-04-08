@@ -147,7 +147,7 @@ public abstract class Character
     /// Takes damage given a base damage.
     /// </summary>
     /// <param name="baseDamage"></param>
-    public float TakeDamage(float baseDamage)
+    public virtual float TakeDamage(float baseDamage, Character source)
     {
         float damageTaken = inAdditive + (inMultiplier * baseDamage);
         health -= damageTaken;

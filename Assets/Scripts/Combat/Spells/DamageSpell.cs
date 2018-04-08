@@ -32,13 +32,13 @@ public class DamageSpell : Spell {
         gameController.StartCoroutine(coroutine);
     }
 
-    public void DealDamage(float damage)
+    public void DealDamage(float damage, Character caster)
     {
         List<Character> targets = GetTargets();
-        targets.ForEach(target => target.TakeDamage(damage));
+        targets.ForEach(target => target.TakeDamage(damage, caster));
     }
 
-    public List<Character> GetTargets()
+    public virtual List<Character> GetTargets()
     {
         List<Enemy> enemies = gameController.stage.getActiveEnemies();
         if (target == "player")
@@ -84,7 +84,7 @@ public class DamageSpell : Spell {
         }
         if(startNum == numEncounter)
         {
-            DealDamage(finalDamage);
+            DealDamage(finalDamage, owner);
         }
     }
 
