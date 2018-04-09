@@ -304,6 +304,7 @@
     <Compile Include="Assets\Scripts\Encounters\SampleEncounters\Encounter1.cs" />
     <Compile Include="Assets\Scripts\Encounters\SampleEncounters\Encounter2.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
+    <Compile Include="Assets\Scripts\MenuScript.cs" />
     <Compile Include="Assets\Scripts\Stage.cs" />
     <Compile Include="Assets\Scripts\UI\KeypressDownBig.cs" />
     <Compile Include="Assets\Scripts\UI\KeypressDownTiny.cs" />
@@ -316,6 +317,8 @@
     <Compile Include="Assets\Scripts\UI\Utils.cs" />
     <Compile Include="Assets\Scripts\Util\DeathObserver.cs" />
     <Compile Include="Assets\Scripts\Util\SpellCastObserver.cs" />
+    <Compile Include="Assets\Scripts\Victory.cs" />
+    <Compile Include="Assets\Scripts\VictoryStats.cs" />
     <Compile Include="Assets\Unused Assets\Black Knight\AnimationEvent.cs" />
     <Compile Include="Assets\Unused Assets\Black Knight\demo\UnitControl.cs" />
     <Compile Include="Assets\Unused Assets\Universal Pixel Hero (Warrior)\Scripts\Controller.cs" />

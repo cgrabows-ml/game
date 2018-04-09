@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,14 +19,14 @@ public class Hero : Character
     /// <param name="health"></param>
     // Use this for initialization
     public Hero(TextMesh textBox)
-        : base("blackKnight.prefab", textBox, 200)
+        : base("blackKnight", textBox, 200)
     {
         maxGCD = .2f;
     }
 
     protected override List<Spell> getSpells()
     {
-        Spell spell1 = new DamageSpell(3, 1, "Use1");
+        Spell spell1 = new DamageSpell(.2f, 1, "Use1");
         Spell spell2 = new Fireball();
         Spell spell3 = new DamageSpell(8, 3, "Use3", target: "aoe");
         //Spell spell4 = new Empower();
@@ -111,17 +110,17 @@ public class Hero : Character
 
     IEnumerator CooldownCover(int index, Transform instance)
     {
+        yield return new WaitForEndOfFrame();
         Vector3 basePos = instance.localPosition;
         float duration = spellbook[index].baseCooldown;
         float time = 0;
-        Transform r = instance.GetComponent<Transform>();
         while (time < duration)
         {
             if (gameController.stage.inCombat)
             {
                 time += Time.deltaTime;
-                r.localScale -= new Vector3(0, Time.deltaTime / duration, 0);
-                r.localPosition = basePos - new Vector3(0, time / duration * instance.GetComponent<RectTransform>().rect.height / 2, 0);
+                instance.localScale = new Vector3(1,1,0) - new Vector3(0, time / duration, 0);
+                instance.localPosition = basePos - new Vector3(0, time / duration * instance.GetComponent<RectTransform>().rect.height / 2, 0);
                 yield return null;
             }
             else
@@ -130,8 +129,8 @@ public class Hero : Character
             }
 
         }
-        r.localPosition = basePos;
-        r.localScale = new Vector3(0, 0, 0);
+        instance.localPosition = basePos;
+        instance.localScale = new Vector3(0, 0, 0);
     }
 
 

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Warrior : Enemy {
 
     public Warrior()
-        : base("warrior", "Warrior.prefab", getTextBox(), health: 4, maxGCD: 3)
+        : base("warrior", "Warrior", getTextBox(), health: 4, maxGCD: 3)
     {
 
     }
@@ -23,7 +22,7 @@ public class Warrior : Enemy {
 
     private static TextMesh getTextBox()
     {
-        string textBoxPath = "Assets/Prefabs/healthbar_sprite"; //TODO: read from config or other
-        return (TextMesh)AssetDatabase.LoadAssetAtPath(textBoxPath, typeof(Transform));
+        string textBoxPath = "healthbar_sprite"; //TODO: read from config or other
+        return (TextMesh)Resources.Load(textBoxPath, typeof(TextMesh));
     }
 }

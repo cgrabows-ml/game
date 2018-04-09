@@ -655,6 +655,26 @@ Prefab:
       propertyPath: m_Name
       value: Spell UI 1
       objectReference: {fileID: 0}
+    - target: {fileID: 224629439184293782, guid: 34894fc3d44a01841a693fa0850bb1c7,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224617996306231842, guid: 34894fc3d44a01841a693fa0850bb1c7,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224191821683178522, guid: 34894fc3d44a01841a693fa0850bb1c7,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 224690633241699890, guid: 34894fc3d44a01841a693fa0850bb1c7,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 34894fc3d44a01841a693fa0850bb1c7, type: 2}
   m_IsPrefabParent: 0

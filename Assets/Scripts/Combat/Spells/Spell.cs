@@ -16,7 +16,7 @@ public abstract class Spell
     public Boolean GCDRespect;
     protected String target;
     protected float delay;
-    public int numEncounter;
+    //public int numEncounter;
 
     /// <summary>
     /// 
@@ -58,7 +58,6 @@ public abstract class Spell
         {
             caster.GCD = caster.maxGCD;
         }
-        //caster.anim.SetBool(animationKey, true);
     }
 
     public virtual Boolean isCastable(Character caster)

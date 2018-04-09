@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +8,7 @@ public class Skeleton : Enemy
 {
 
     public Skeleton()
-        : base("skeleton", "Warrior.prefab", getTextBox(), 3, maxGCD: 3)
+        : base("skeleton", "Warrior", getTextBox(), 3, maxGCD: 3)
     {
 
     }
@@ -24,6 +23,6 @@ public class Skeleton : Enemy
     private static TextMesh getTextBox()
     {
         string textBoxPath = "Assets/Prefabs/healthbar_sprite"; //TODO: read from config or other
-        return (TextMesh)AssetDatabase.LoadAssetAtPath(textBoxPath, typeof(Transform));
+        return (TextMesh)Resources.Load(textBoxPath, typeof(Transform));
     }
 }

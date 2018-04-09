@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -60,6 +59,10 @@ public abstract class Enemy : Character
     {
         if (health <= 0)
         {
+            //Add to total kill number
+            VictoryStats.enemiesSlain += 1;
+
+            //Move enemy and uninstantiate
             anim.SetBool("Death", true);
             moveTo = instances[0].position;
             isActive = false;
@@ -94,8 +97,8 @@ public abstract class Enemy : Character
         Transform instance;
 
         Transform healthTextFab = 
-            (Transform)AssetDatabase.LoadAssetAtPath(
-                "Assets/Prefabs/enemy_text.prefab", typeof(Transform));
+            (Transform)Resources.Load(
+                "enemy_text", typeof(Transform));
 
         //Instantiate Enemy 
         instance = MonoBehaviour
@@ -105,8 +108,8 @@ public abstract class Enemy : Character
 
         //Instantiate Enemy Health Bar
         instance = MonoBehaviour
-            .Instantiate((Transform)AssetDatabase.LoadAssetAtPath(
-                "Assets/Prefabs/healthbar_sprite.prefab", typeof(Transform)),
+            .Instantiate((Transform)Resources.Load(
+                "healthbar_sprite", typeof(Transform)),
                 position + new Vector2(0f, 1.8f), Quaternion.identity);
 
         enemyGUI.Add(instance);
@@ -191,6 +194,11 @@ public abstract class Enemy : Character
         }
     }
 
+    public override void TakeDamage(float baseDamage)
+    {
+        VictoryStats.damageDone += inAdditive + (inMultiplier * baseDamage); //Won't work if there's another forumla for damagetaken
+        base.TakeDamage(baseDamage);
+    }
 
 }
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +8,7 @@ public class Necromancer : Enemy
 {
 
     public Necromancer()
-        : base("necromancer", "Warrior.prefab", getTextBox(), 5, maxGCD: 3)
+        : base("necromancer", "Warrior", getTextBox(), 5, maxGCD: 3)
     {
         this.isFixed = true;
         this.moveTo = new Vector2(5, -2.58f);
@@ -24,7 +23,7 @@ public class Necromancer : Enemy
 
     private static TextMesh getTextBox()
     {
-        string textBoxPath = "Assets/Prefabs/healthbar_sprite"; //TODO: read from config or other
-        return (TextMesh)AssetDatabase.LoadAssetAtPath(textBoxPath, typeof(Transform));
+        string textBoxPath = "healthbar_sprite"; //TODO: read from config or other
+        return (TextMesh)Resources.Load("test");
     }
 }

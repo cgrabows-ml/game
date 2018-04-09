@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -51,8 +50,8 @@ public abstract class Character
 
     private static Transform getPrefab(String path)
     {
-        string prefabPath = "Assets/Prefabs/" + path; //TODO: read from config or other
-        return (Transform)AssetDatabase.LoadAssetAtPath(prefabPath, typeof(Transform));
+        string prefabPath = "" + path; //TODO: read from config or other
+        return (Transform)Resources.Load(prefabPath, typeof(Transform));
     }
 
     protected abstract List<Spell> getSpells();
@@ -147,12 +146,13 @@ public abstract class Character
     /// Takes damage given a base damage.
     /// </summary>
     /// <param name="baseDamage"></param>
-    public void TakeDamage(float baseDamage)
+    public virtual void TakeDamage(float baseDamage)
     {
         float damageTaken = inAdditive + (inMultiplier * baseDamage);
         health -= damageTaken;
         textBox.text = Utils.ToDisplayText(Math.Max(health, 0));
         DrawDamageTaken(damageTaken);
+        anim.SetBool("TakeDamage", true);
         CheckDeadAndKill();
     }
 
@@ -173,7 +173,7 @@ public abstract class Character
     /// <param name="damageTaken"></param>
     public void DrawDamageTaken(float damageTaken) { 
     
-        Transform prefab = (Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/FCT.prefab", typeof(Transform));
+        Transform prefab = (Transform)Resources.Load("FCT", typeof(Transform));
         Transform instance = MonoBehaviour.Instantiate(prefab);
         TextMesh tmesh = instance.GetComponent<TextMesh>();
         tmesh.text = "- " + Utils.ToDisplayText(damageTaken);
