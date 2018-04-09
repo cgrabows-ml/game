@@ -7,13 +7,13 @@ public class Block : Spell
 
     public Buff blockBuff;
 
-    public Block()
-        : base(10, "Use4", false, GCDRespect: false)
+    public Block(Character caster)
+        : base(caster, 10, "Use4", false, GCDRespect: false)
     {
     }
-    public override void Cast(Character caster)
+    public override void Cast()
     {
-        base.Cast(caster);
+        base.Cast();
         blockBuff = new BlockBuff(caster);
     }
 

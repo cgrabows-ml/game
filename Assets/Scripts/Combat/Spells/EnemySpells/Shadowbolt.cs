@@ -3,29 +3,32 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class EnergyDamage : DamageSpell
+public class ShadowBolt : DamageSpell
 {
+    NecromancerBoss boss;
 
-    Hero hero;
-    private int damagePerEnergy = 1;
 
-    public EnergyDamage(Character caster)
-        : base(caster, baseCooldown: 0, baseDamage: 0, animationKey: "Use2",
-            triggersGCD: true, target: "front", GCDRespect: true, delay: .5f)
+    public ShadowBolt(Character caster)
+        : base(caster, baseCooldown: 6, baseDamage: 4, animationKey: "Use2",
+            triggersGCD: true, target: "player", GCDRespect: true, delay: .5f)
     {
-        hero = (Hero)caster;
+        boss = (NecromancerBoss)caster;
+        name = "Shadowbolt";
     }
 
-    public override bool isCastable()
+    public override List<Character> GetTargets()
     {
-        return base.isCastable() && hero.GetEnergy() > 0;
+        Character target = gameController.stage.hero;
+        List<Enemy> enemies = gameController.stage.getActiveEnemies();
+        if(boss.crystal != null)
+        {
+            target = boss.crystal;
+        }
+        return new List<Character>() { target };
     }
 
     public override void Cast()
     {
-        int energy = hero.GetEnergy();
-        baseDamage = damagePerEnergy * energy;
-        hero.LoseEnergy(energy);
         base.Cast();
 
         Transform prefab = (Transform)AssetDatabase.LoadAssetAtPath(
@@ -37,3 +40,4 @@ public class EnergyDamage : DamageSpell
             delay);
     }
 }
+

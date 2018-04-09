@@ -5,19 +5,20 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Warrior : Enemy {
+public class Giant : Enemy
+{
 
-    public Warrior()
-        : base("warrior", "Warrior.prefab", getTextBox(), health: 4, maxGCD: 3)
+    public Giant()
+        : base("Giant", "Warrior.prefab", getTextBox(), health: 100, maxGCD: 3)
     {
 
     }
 
     protected override List<Spell> getSpells()
     {
-        Spell spell1 = new DamageSpell(this, 4, 1, "Use1", target: "player");
-        Spell spell2 = new DamageSpell(this, 4, 1, "Use1", target: "player");
-        List<Spell> spells = new List<Spell> { spell1, spell2 };
+        Spell spell1 = new DamageSpell(this, baseCooldown: 4, baseDamage: 3,
+            animationKey:"Use1", target: "player");
+        List<Spell> spells = new List<Spell> { spell1 };
         return spells;
     }
 

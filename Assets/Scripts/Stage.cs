@@ -14,12 +14,12 @@ public class Stage: IDeathObserver {
     public Boolean inCombat = false;
 
     private List<Encounter> encounters;
-    private float leftMostPositionX = 0;
+    private float leftMostPositionX = -1;
     private float rightScreenEdgePositionX = 6.58f;
     private Boolean canProceed = false;
 
     private Vector3 heroPosition = new Vector3(-10,-2.58f,0); //replace me
-    private float bufferWidth = .5f; //replace me
+    private float bufferWidth = .4f; //replace me
     public float groundY = -2.58f; //replace me
     private float startingRun;
 
@@ -104,13 +104,17 @@ public class Stage: IDeathObserver {
 
     public void DeathUpdate(Character character)
     {
+        gameController.StartCoroutine(HandleEnemyDeath(character));
+    }
+
+    IEnumerator HandleEnemyDeath(Character character)
+    {
+        yield return new WaitForSeconds(character.deathTime - .1f);
         RemoveEnemy((Enemy)character);
         if (enemies.Count == 0)
             EndEncounter();
         MoveEnemies();
     }
-
-
 
     public List<Enemy> getActiveEnemies()
     {
@@ -159,7 +163,6 @@ public class Stage: IDeathObserver {
     {
         int index = enemies.IndexOf(enemy);
         enemies.Remove(enemy);
-        enemy.UnregisterDeathObserver(this);
     }
 
     IEnumerator MoveAfter(Enemy deadEnemy, float time)
@@ -251,7 +254,8 @@ public class Stage: IDeathObserver {
             if (i != targetIndex)
             {
                 Enemy enemy = enemies[i];
-                if (enemy.isActive && (i < targetIndex || enemy.isFixed))
+                if (enemy.hasCollision && enemy.isActive &&
+                    (i < targetIndex || enemy.isFixed))
                 {
                     float targetLeft = x;
                     float targetRight = x + target.width + bufferWidth;

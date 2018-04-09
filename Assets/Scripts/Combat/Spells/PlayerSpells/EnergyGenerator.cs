@@ -6,17 +6,17 @@ using UnityEngine;
 public class EnergyGenerator : DamageSpell
 {
 
-    public EnergyGenerator()
-        : base(baseCooldown: 1, baseDamage: 1, animationKey: "Use2",
+    public EnergyGenerator(Character caster)
+        : base(caster, baseCooldown: 1, baseDamage: 1, animationKey: "Use2",
             triggersGCD: true, target: "front", GCDRespect: true, delay:0)
     {
 
     }
 
-    public override void Cast(Character owner)
+    public override void Cast()
     {
-        base.Cast(owner);
-        Hero hero = (Hero)owner;
+        base.Cast();
+        Hero hero = (Hero)caster;
         hero.GainEnergy(1);
     }
 }

@@ -6,13 +6,13 @@ public class Empower : Spell {
 
     public Buff empowerBuff;
 
-    public Empower()
-        :base(10, "Use4", false, GCDRespect: false)
+    public Empower(Character caster)
+        :base(caster, 10, "Use4", false, GCDRespect: false)
     {
     }
-    public override void Cast(Character caster)
+    public override void Cast()
     {
-        base.Cast(caster);
+        base.Cast();
         empowerBuff = new EmpowerBuff(caster);
     }
 
