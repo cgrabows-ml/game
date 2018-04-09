@@ -9,15 +9,16 @@ public class MassSummonSkeleton : Spell, IDeathObserver
     private Stage stage;
     private int skeletonsAlive = 0;
     private int totalLevel = 4;
+    private int minSkeletons = 4;
+    private int maxSkeletons = 4;
 
     System.Random rand = new System.Random();
 
-
-    public MassSummonSkeleton()
-        : base(10, "Use2")
+    public MassSummonSkeleton(Character caster)
+        : base(caster, 5f, "Use2")
     {
         stage = gameController.stage;
-
+        name = "Mass Summon Skeletons";
     }
 
     public override void ReduceCooldown()
@@ -31,7 +32,6 @@ public class MassSummonSkeleton : Spell, IDeathObserver
     public void DeathUpdate(Character character)
     {
         skeletonsAlive -= 1;
-        MonoBehaviour.print(skeletonsAlive);
     }
 
     private List<int> GetLevels()
@@ -44,35 +44,41 @@ public class MassSummonSkeleton : Spell, IDeathObserver
             int num = rand.Next(0, 100);
             if (num > 90)
             {
-                level = 4;
+                level += 3;
             }
             else if (num > 70)
             {
-                level = 3;
+                level += 2;
             }
             else if (num > 40)
             {
-                level = 2;
+                level += 1;
             }
-            //level = 1;
-            level = Math.Min(level, totalLevel - combinedLevels);
-            combinedLevels += level;
+            int guarunteedLevels = minSkeletons - levels.Count - 1;
+            level = Math.Min(level, totalLevel - combinedLevels - guarunteedLevels);
+            //MonoBehaviour.print(guarunteedLevels);
+            if (levels.Count == maxSkeletons - 1)
+            {
+                level = totalLevel - combinedLevels;
+            }
+            combinedLevels += (level);
             levels.Add(level);
         }
         return levels;
     }
 
-    public override Boolean isCastable(Character caster)
+    public override Boolean isCastable()
     {
-        return base.isCastable(caster) && skeletonsAlive == 0;
+        return base.isCastable() && skeletonsAlive == 0;
     }
 
-    public override void Cast(Character caster)
+    public override void Cast()
     {
-        base.Cast(caster);
+        //MonoBehaviour.print("Summoning skeles");
+        base.Cast();
         foreach(int level in GetLevels())
         {
-            MonoBehaviour.print("level: " + level);
+            //MonoBehaviour.print("level: " + level);
             int casterIndex = stage.enemies.IndexOf((Enemy)caster);
             Enemy skeleton = new Skeleton(level);
             stage.AddEnemyAtIndex(skeleton, casterIndex);

@@ -53,7 +53,7 @@ public abstract class Enemy : Character
     /// and sees if it's valid for him to cast.
     /// This also triggers the enemy GCD, and animates the enemy.
     /// </summary>
-    public void Cast()
+    public virtual void Cast()
     {
         if (isActive)
         {
@@ -166,7 +166,6 @@ public abstract class Enemy : Character
                 gameController.StartCoroutine(coroutine);
            }
         }
-
     }
 
     //Moves enemy to it moveTo

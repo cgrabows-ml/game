@@ -6,41 +6,39 @@ using UnityEngine;
 public class FireCharges : DamageSpell
 {
 
+    private NecromancerBoss boss;
     private float timeBetweenShots = 1f;
 
-    public FireCharges()
-        : base(baseCooldown: 10, baseDamage: 3, animationKey: "Use2",
+    public FireCharges(Character caster)
+        : base(caster: caster, baseCooldown: 10, baseDamage: 3, animationKey: "Use2",
             triggersGCD: true, target: "player", GCDRespect: true, delay: .5f)
     {
-
+        boss = (NecromancerBoss)caster;
+        name = "Fire Charges";
     }
 
-    public override bool isCastable(Character caster)
+    public override bool isCastable()
     {
-        NecromancerBoss boss = (NecromancerBoss)caster;
-        return base.isCastable(caster) && boss.charges.Count == boss.maxCharges;
+        return base.isCastable() && boss.charges.Count == boss.maxCharges;
     }
 
-    public override void Cast(Character caster)
+    public override void Cast()
     {
-        base.Cast(caster);
+        base.Cast();
 
-        NecromancerBoss boss = (NecromancerBoss)caster;
-
-        Transform projectile = boss.charges[0];
-        boss.charges.Remove(projectile);
+        Transform projectile = boss.SpendCharge();
         Vector3 projectileOffset = new Vector2(0, .5f);
         new Projectile(GetTargets()[0].instances[0].position + projectileOffset, projectile,
             delay);
-        gameController.StartCoroutine(CastAgain(boss));
+        gameController.StartCoroutine(CastAgain());
     }
 
-    IEnumerator CastAgain(NecromancerBoss boss)
+    IEnumerator CastAgain()
     {
         if (boss.charges.Count != 0)
         {
             yield return new WaitForSeconds(timeBetweenShots);
-            Cast(boss);
+            Cast();
         }
     }
 }

@@ -30,7 +30,7 @@ public class Skeleton : Enemy
     protected override List<Spell> getSpells()
     {
         float damage = baseDamage + damageIncreasePerLevel * level;
-        Spell spell1 = new DamageSpell(4, damage, "Use1", target: "player");
+        Spell spell1 = new DamageSpell(this, 5, damage, "Use1", target: "player");
         List<Spell> spells = new List<Spell> { spell1 };
         return spells;
     }

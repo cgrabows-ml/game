@@ -8,8 +8,8 @@ public class SummonSkeleton : Spell, IDeathObserver
     private int skeletonsAlive = 0;
     private int maxSkeletons = 3;
 
-    public SummonSkeleton()
-        :base(5, "Use2")
+    public SummonSkeleton(Character caster)
+        :base(caster, 5, "Use2")
     {
         stage = gameController.stage;
 
@@ -30,14 +30,14 @@ public class SummonSkeleton : Spell, IDeathObserver
 
     }
 
-    public override Boolean isCastable(Character caster)
+    public override Boolean isCastable()
     {
-        return base.isCastable(caster) && skeletonsAlive < maxSkeletons;
+        return base.isCastable() && skeletonsAlive < maxSkeletons;
     }
 
-    public override void Cast(Character caster)
+    public override void Cast()
     {
-        base.Cast(caster);
+        base.Cast();
         int casterIndex = stage.enemies.IndexOf((Enemy)caster);
         Enemy skeleton = new Skeleton();
         stage.AddEnemyAtIndex(skeleton, casterIndex);

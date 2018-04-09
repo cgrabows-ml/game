@@ -15,8 +15,8 @@ public class Warrior : Enemy {
 
     protected override List<Spell> getSpells()
     {
-        Spell spell1 = new DamageSpell(4, 1, "Use1", target: "player");
-        Spell spell2 = new DamageSpell(4, 1, "Use1", target: "player");
+        Spell spell1 = new DamageSpell(this, 4, 1, "Use1", target: "player");
+        Spell spell2 = new DamageSpell(this, 4, 1, "Use1", target: "player");
         List<Spell> spells = new List<Spell> { spell1, spell2 };
         return spells;
     }

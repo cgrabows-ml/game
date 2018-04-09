@@ -76,11 +76,11 @@ public abstract class Character
             //Throw error
             MonoBehaviour.print("Spellbook does not contain spell.");
         }
-        Boolean castable = spell.isCastable(this);
+        Boolean castable = spell.isCastable();
         if (castable)
         {
             anim.SetBool(spell.animationKey, true);
-            spell.Cast(this);
+            spell.Cast();
             spellCastObservers.ForEach(observer => observer.SpellCastUpdate(spell, this));
         }
 

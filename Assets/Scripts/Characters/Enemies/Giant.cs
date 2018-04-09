@@ -16,7 +16,7 @@ public class Giant : Enemy
 
     protected override List<Spell> getSpells()
     {
-        Spell spell1 = new DamageSpell(baseCooldown: 4, baseDamage: 3,
+        Spell spell1 = new DamageSpell(this, baseCooldown: 4, baseDamage: 3,
             animationKey:"Use1", target: "player");
         List<Spell> spells = new List<Spell> { spell1 };
         return spells;

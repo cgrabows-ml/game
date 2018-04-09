@@ -4,19 +4,24 @@ using UnityEngine;
 public class SummonCrystal : Spell
 {
 
+    NecromancerBoss boss;
     private Stage stage;
 
-    public SummonCrystal()
-        : base(20, "Use2")
+    public SummonCrystal(Character caster)
+        : base(caster, 30, "Use2")
     {
         stage = gameController.stage;
+        boss = (NecromancerBoss)caster;
+        name = "Summon Crystal";
     }
 
-    public override void Cast(Character caster)
+    public override void Cast()
     {
-        base.Cast(caster);
+        base.Cast();
         int casterIndex = stage.enemies.IndexOf((Enemy)caster);
-        Enemy crystal = new Crystal();
+        Crystal crystal = new Crystal();
+        boss.crystal = crystal;
+        crystal.RegisterDeathObserver(boss);
         stage.AddEnemyAtIndex(crystal, casterIndex);
     }
 }

@@ -6,28 +6,28 @@ using UnityEngine;
 public class EnergyHeal : Spell
 {
 
+    Hero hero;
     private int healingPerEnergy = 1;
 
-    public EnergyHeal()
-        : base(baseCooldown: 0, animationKey: "Use1",
+    public EnergyHeal(Character caster)
+        : base(caster, baseCooldown: 0, animationKey: "Use1",
             triggersGCD: true, GCDRespect: true, delay: 0)
     {
-
+        hero = (Hero)caster;
     }
 
-    public override bool isCastable(Character caster)
+    public override bool isCastable()
     {
         Hero hero = (Hero)caster;
-        return base.isCastable(caster) && hero.GetEnergy() > 0;
+        return base.isCastable() && hero.GetEnergy() > 0;
     }
 
-    public override void Cast(Character owner)
+    public override void Cast()
     {
-        base.Cast(owner);
-        Hero hero = (Hero)owner;
+        base.Cast();
         int energy = hero.GetEnergy();
         int healing = healingPerEnergy * energy;
         hero.LoseEnergy(energy);
-        hero.TakeDamage(-healing, owner);
+        hero.TakeDamage(-healing, caster);
     }
 }

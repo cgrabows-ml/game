@@ -30,14 +30,15 @@ public class Hero : Character
 
     protected override List<Spell> getSpells()
     {
-        Spell spell1 = new EnergyGenerator();
-        //Spell spell2 = new Fireball();
-        Spell spell2 = new EnergyDamage();
-        Spell spell3 = new StealLife();
-        //Spell spell4 = new Empower();
-        //Spell spell4 = new Knockback();
-        //Spell spell4 = new EnergyHeal();
-        Spell spell4 = new Block();
+        Spell spell1 = new EnergyGenerator(this);
+        //Spell spell2 = new Fireball(this);
+        Spell spell2 = new EnergyDamage(this);
+        Spell spell3 = new StealLife(this);
+        //Spell spell4 = new Empower(this);
+        //Spell spell4 = new Knockback(this);
+        //Spell spell4 = new EnergyHeal(this);
+        //Spell spell4 = new Block(this);
+        Spell spell4 = new AOEAttack(this);
         return new List<Spell> { spell1, spell2, spell3, spell4 };
     }
 
