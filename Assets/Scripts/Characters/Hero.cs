@@ -8,8 +8,10 @@ using UnityEngine.UI;
 public class Hero : Character
 {
 
+    private TextMesh energyText = gameController.heroEnergyText;
+    private int energy = 0;
+    private int maxEnergy = 5;
     List<RectTransform> castCovers = new List<RectTransform>{ };
-
 
     /// <summary>
     /// Constructor for Hero class.
@@ -19,20 +21,42 @@ public class Hero : Character
     /// <param name="anim"></param>
     /// <param name="health"></param>
     // Use this for initialization
-    public Hero(TextMesh textBox)
-        : base("blackKnight.prefab", textBox, 200)
+    public Hero()
+        : base("blackKnight.prefab", gameController.heroHealthText, 200)
     {
-        maxGCD = .2f;
+           maxGCD = 1f;
+           energyText.text = energy.ToString();
     }
 
     protected override List<Spell> getSpells()
     {
-        Spell spell1 = new DamageSpell(3, 1, "Use1");
-        Spell spell2 = new Fireball();
-        Spell spell3 = new DamageSpell(8, 3, "Use3", target: "aoe");
-        //Spell spell4 = new Empower();
-        Spell spell4 = new Knockback();
+        Spell spell1 = new EnergyGenerator(this);
+        //Spell spell2 = new Fireball(this);
+        Spell spell2 = new EnergyDamage(this);
+        Spell spell3 = new StealLife(this);
+        //Spell spell4 = new Empower(this);
+        //Spell spell4 = new Knockback(this);
+        //Spell spell4 = new EnergyHeal(this);
+        //Spell spell4 = new Block(this);
+        Spell spell4 = new AOEAttack(this);
         return new List<Spell> { spell1, spell2, spell3, spell4 };
+    }
+
+    public int GetEnergy()
+    {
+        return energy;
+    }
+
+    public void GainEnergy(int amount)
+    {
+        energy = Math.Min(maxEnergy, energy + amount);
+        energyText.text = energy.ToString();
+    }
+
+    public void LoseEnergy(int amount)
+    {
+        energy = Math.Max(0, energy - amount);
+        energyText.text = energy.ToString();
     }
 
     public override void Spawn(Vector2 pos)

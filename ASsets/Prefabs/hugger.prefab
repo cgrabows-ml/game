@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4364733011649030}
   - component: {fileID: 212835847282104798}
   m_Layer: 0
-  m_Name: giant
+  m_Name: hugger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

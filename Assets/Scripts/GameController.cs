@@ -39,6 +39,7 @@ public class GameController : MonoBehaviour
     public Camera cam;
 
     public TextMesh heroHealthText;
+    public TextMesh heroEnergyText;
 
     public RectTransform tinyBox1;
     public RectTransform tinyBox2;
@@ -74,7 +75,9 @@ public class GameController : MonoBehaviour
             new Encounter1(stage),
             new Encounter2(stage), 
             //new Encounter3(stage)
-        };
+            new NecromancerBossEncounter(stage)
+    };
+            
         stage.SetEncounters(encounters);
         stage.StartStage();
     }
@@ -178,7 +181,6 @@ public class GameController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-
         stage.Update();
         if (stage.inCombat)
         {
