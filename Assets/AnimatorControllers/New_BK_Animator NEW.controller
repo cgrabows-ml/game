@@ -5,7 +5,7 @@ AnimatorController:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: New_BK_Animator
+  m_Name: New_BK_Animator NEW
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Use1
@@ -700,7 +700,7 @@ AnimatorStateMachine:
     m_Position: {x: 384, y: 276, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102802830518249266}
-    m_Position: {x: 372, y: -168, z: 0}
+    m_Position: {x: 456, y: -396, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 1101378247305025832}
