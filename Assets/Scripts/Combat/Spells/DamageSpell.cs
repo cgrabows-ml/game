@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class DamageSpell : Spell {
 
-    private float baseDamage;
+    protected float baseDamage;
 
     /// <summary>
     /// 
@@ -18,27 +18,28 @@ public class DamageSpell : Spell {
     /// <param name="target"></param>
     /// <param name="GCDRespect"></param>
     /// <param name="delay"></param>
-    public DamageSpell(float baseCooldown, float baseDamage, String animationKey,
-        Boolean triggersGCD = true, String target = "front", Boolean GCDRespect = true, float delay = 0)
-        : base(baseCooldown, animationKey, triggersGCD, GCDRespect, delay)
+    public DamageSpell(Character caster, float baseCooldown, float baseDamage,
+        String animationKey, Boolean triggersGCD = true, String target = "front",
+        Boolean GCDRespect = true, float delay = 0)
+        : base(caster, baseCooldown, animationKey, triggersGCD, GCDRespect, delay)
     {
         this.baseDamage = baseDamage;
         this.target = target;
     }
 
-    public override void Cast(Character owner)
+    public override void Cast()
     {
-        IEnumerator coroutine = DamageAfterTime(delay, owner);
+        IEnumerator coroutine = DamageAfterTime(delay);
         gameController.StartCoroutine(coroutine);
     }
 
     public void DealDamage(float damage)
     {
         List<Character> targets = GetTargets();
-        targets.ForEach(target => target.TakeDamage(damage));
+        targets.ForEach(target => target.TakeDamage(damage, caster));
     }
 
-    public List<Character> GetTargets()
+    public virtual List<Character> GetTargets()
     {
         List<Enemy> enemies = gameController.stage.getActiveEnemies();
         if (target == "player")
@@ -71,12 +72,12 @@ public class DamageSpell : Spell {
         }
     }
 
-    IEnumerator DamageAfterTime(float time, Character owner)
+    IEnumerator DamageAfterTime(float time)
     {
-        int startNum = gameController.stage.numEncounter;
-        float finalDamage = owner.GetDamage(baseDamage);
+        int startNum = numEncounter;
+        float finalDamage = caster.GetDamage(baseDamage);
         float startTime = 0;
-        base.Cast(owner);
+        base.Cast();
         while (startTime < time)
         {
             time -= Time.deltaTime;

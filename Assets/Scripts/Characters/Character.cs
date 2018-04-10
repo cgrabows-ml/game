@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public abstract class Character
 {
-    public GameController gameController = GameObject.Find("GameController").GetComponent<GameController>();
+    public static GameController gameController = GameObject.Find("GameController").GetComponent<GameController>();
 
     public List<Spell> spellbook;
     private float maxHealth;
@@ -75,11 +75,11 @@ public abstract class Character
             //Throw error
             MonoBehaviour.print("Spellbook does not contain spell.");
         }
-        Boolean castable = spell.isCastable(this);
+        Boolean castable = spell.isCastable();
         if (castable)
         {
             anim.SetBool(spell.animationKey, true);
-            spell.Cast(this);
+            spell.Cast();
             spellCastObservers.ForEach(observer => observer.SpellCastUpdate(spell, this));
         }
 
@@ -146,14 +146,17 @@ public abstract class Character
     /// Takes damage given a base damage.
     /// </summary>
     /// <param name="baseDamage"></param>
-    public virtual void TakeDamage(float baseDamage)
+    public virtual float TakeDamage(float baseDamage, Character source)
     {
         float damageTaken = inAdditive + (inMultiplier * baseDamage);
         health -= damageTaken;
-        textBox.text = Utils.ToDisplayText(Math.Max(health, 0));
+        health = Math.Min(maxHealth, health);
+        health = Math.Max(health, 0);
+        textBox.text = Utils.ToDisplayText(health);
         DrawDamageTaken(damageTaken);
         anim.SetBool("TakeDamage", true);
         CheckDeadAndKill();
+        return damageTaken;
     }
 
     public virtual void CheckDeadAndKill()
@@ -174,9 +177,15 @@ public abstract class Character
     public void DrawDamageTaken(float damageTaken) { 
     
         Transform prefab = (Transform)Resources.Load("FCT", typeof(Transform));
+
         Transform instance = MonoBehaviour.Instantiate(prefab);
         TextMesh tmesh = instance.GetComponent<TextMesh>();
-        tmesh.text = "- " + Utils.ToDisplayText(damageTaken);
+        String symbol = "-";
+        if (damageTaken < 0)
+        {
+            symbol = "+";
+        }
+        tmesh.text = symbol + " " + Utils.ToDisplayText(Math.Abs(damageTaken));
 
         //Assigns color to text based on amount of mitigation        
         if(inMultiplier > 1)
@@ -187,8 +196,13 @@ public abstract class Character
             tmesh.color = Color.blue;
         }
 
+        if (damageTaken < 0)
+        {
+            tmesh.color = Color.green;
+        }
+
         //Assigns size based on sqrt of damage
-        tmesh.fontSize = (int)Math.Round(tmesh.fontSize * Math.Sqrt(damageTaken));
+        tmesh.fontSize = (int)Math.Round(tmesh.fontSize * Math.Sqrt(Math.Abs(damageTaken)));
 
         Vector3 newPos = new Vector3(instances[0].position.x + .2f,
             instances[0].position.y + .4f, 0);

@@ -18,6 +18,11 @@ public abstract class Enemy : Character
     private float walkSpeed = 1;
     private Boolean isMoving = false;
     public Boolean isActive = false;
+    public Boolean hasCollision = true;
+    public Transform healthBar;
+    public Transform healthText;
+    public Transform sprite;
+    protected float sizeScale = 1f;
 
     /// <summary>
     /// Constructor for enemy class
@@ -47,7 +52,7 @@ public abstract class Enemy : Character
     /// and sees if it's valid for him to cast.
     /// This also triggers the enemy GCD, and animates the enemy.
     /// </summary>
-    public void Cast()
+    public virtual void Cast()
     {
         if (isActive)
         {
@@ -66,7 +71,8 @@ public abstract class Enemy : Character
             anim.SetBool("Death", true);
             moveTo = instances[0].position;
             isActive = false;
-            deathObservers.ForEach(observer => observer.DeathUpdate(this));
+            deathObservers.ForEach(observer => {
+                observer.DeathUpdate(this);});
             IEnumerator coroutine = DestroyAfterTime(deathTime);
             gameController.StartCoroutine(coroutine);
         }
@@ -92,35 +98,46 @@ public abstract class Enemy : Character
         moveTo = new Vector2(pos.x, pos.y);
     }
 
-    public void InstantiateEnemy(Vector2 position)
+    public virtual void InstantiateEnemy(Vector2 position)
     {
-        Transform instance;
+
+        /*Transform instance;
 
         Transform healthTextFab = 
             (Transform)Resources.Load(
                 "enemy_text", typeof(Transform));
-
+*/
         //Instantiate Enemy 
-        instance = MonoBehaviour
+        sprite = MonoBehaviour
             .Instantiate(prefab, position, Quaternion.identity);
-        anim = instance.GetComponent<Animator>();
-        enemyGUI.Add(instance);
+        anim = sprite.GetComponent<Animator>();
+        //MonoBehaviour.print(sprite.localScale);
+        enemyGUI.Add(sprite);
+
+        sprite.localScale *= sizeScale;
+
+        // Vector2 healthBarOffset = new Vector2(0f, sprite.localScale.y)/4;
+        Vector2 healthBarOffset = new Vector2(0f, 1.8f);
 
         //Instantiate Enemy Health Bar
-        instance = MonoBehaviour
+
+        healthBar = MonoBehaviour
             .Instantiate((Transform)Resources.Load(
                 "healthbar_sprite", typeof(Transform)),
                 position + new Vector2(0f, 1.8f), Quaternion.identity);
 
-        enemyGUI.Add(instance);
+        enemyGUI.Add(healthBar);
+        //MonoBehaviour.print(healthBarOffset);
 
+        Transform healthTextFab = (Transform)Resources.Load(
+        "Assets/Prefabs/enemy_text", typeof(Transform));
 
         //Instantiate Text
-        instance = MonoBehaviour.Instantiate(healthTextFab,
-            position + new Vector2(0f, 1.8f), Quaternion.identity);
-        textBox = instance.GetComponent<TextMesh>();
+        healthText = MonoBehaviour.Instantiate(healthTextFab,
+            position + healthBarOffset, Quaternion.identity);
+        textBox = healthText.GetComponent<TextMesh>();
         textBox.text = Utils.ToDisplayText(health);
-        enemyGUI.Add(instance);
+        enemyGUI.Add(healthText);
 
         instances = enemyGUI;
         enemyGUI = new List<Transform> { };
@@ -160,7 +177,6 @@ public abstract class Enemy : Character
                 gameController.StartCoroutine(coroutine);
            }
         }
-
     }
 
     //Moves enemy to it moveTo
@@ -194,10 +210,10 @@ public abstract class Enemy : Character
         }
     }
 
-    public override void TakeDamage(float baseDamage)
+    public override float TakeDamage(float baseDamage, Character source)
     {
         VictoryStats.damageDone += inAdditive + (inMultiplier * baseDamage); //Won't work if there's another forumla for damagetaken
-        base.TakeDamage(baseDamage);
+        return base.TakeDamage(baseDamage, source);
     }
 
 }

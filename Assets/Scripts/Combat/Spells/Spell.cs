@@ -11,12 +11,14 @@ public abstract class Spell
 
     public String animationKey;
     public float baseCooldown;
-    protected float cooldown = 0;
+    public float cooldown = 0;
     public Boolean triggersGCD;
     public Boolean GCDRespect;
     protected String target;
     protected float delay;
-    //public int numEncounter;
+    public int numEncounter;
+    protected Character caster;
+    public String name;
 
     /// <summary>
     /// 
@@ -27,9 +29,11 @@ public abstract class Spell
     /// <param name="target"></param>
     /// <param name="GCDRespect"></param>
     /// <param name="delay"></param>
-    public Spell(float baseCooldown, String animationKey, Boolean triggersGCD = true,
+    public Spell(Character caster,
+        float baseCooldown, String animationKey, Boolean triggersGCD = true,
         Boolean GCDRespect = true, float delay = 0)
     {
+        this.caster = caster;
         this.baseCooldown = baseCooldown;
         this.triggersGCD = triggersGCD;
         this.GCDRespect = true;
@@ -51,7 +55,7 @@ public abstract class Spell
         cooldown = Math.Max(0, cooldown - Time.deltaTime);
     }
 
-    public virtual void Cast(Character caster)
+    public virtual void Cast()
     {
         cooldown = baseCooldown;
         if (triggersGCD)
@@ -60,12 +64,12 @@ public abstract class Spell
         }
     }
 
-    public virtual Boolean isCastable(Character caster)
+    public virtual Boolean isCastable()
     {
         return cooldown <= 0 && (caster.GCD <= 0 || GCDRespect == false);
     }
 
-    IEnumerator DamageAfterTime(float time, Character owner)
+    IEnumerator CastAfterTime(float time)
     {
         float startTime = 0;
         while (startTime < time)
@@ -73,6 +77,6 @@ public abstract class Spell
             time -= Time.deltaTime;
             yield return null;
         }
-        Cast(owner);
+        Cast();
     }
 }

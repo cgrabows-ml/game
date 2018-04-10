@@ -6,16 +6,30 @@ using UnityEngine.UI;
 
 public class Skeleton : Enemy
 {
+    private static float baseSize = .75f;
+    private static float sizeIncreasePerLevel = .25f;
+    private static float baseDamage = 1;
+    private static float damageIncreasePerLevel = 1;
+    private int level;
+    private static float baseHealth = 3;
+    private static float healthIncreasePerLevel = 3;
 
-    public Skeleton()
+    public Skeleton(int level)
         : base("skeleton", "Warrior", getTextBox(), 3, maxGCD: 3)
     {
+        this.level = level;
+        sizeScale *= baseSize + ((level-1) * sizeIncreasePerLevel);
+    }
 
+    private static float getHealth(int level)
+    {
+        return baseHealth + ((level-1) * healthIncreasePerLevel);
     }
 
     protected override List<Spell> getSpells()
     {
-        Spell spell1 = new DamageSpell(4, 1, "Use1", target: "player");
+        float damage = baseDamage + damageIncreasePerLevel * level;
+        Spell spell1 = new DamageSpell(this, 5, damage, "Use1", target: "player");
         List<Spell> spells = new List<Spell> { spell1 };
         return spells;
     }
