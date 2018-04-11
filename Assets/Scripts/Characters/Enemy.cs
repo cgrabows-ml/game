@@ -100,7 +100,6 @@ public abstract class Enemy : Character
 
     public virtual void InstantiateEnemy(Vector2 position)
     {
-
         /*Transform instance;
 
         Transform healthTextFab = 
@@ -127,6 +126,7 @@ public abstract class Enemy : Character
 
         Transform healthTextFab = (Transform)Resources.Load(
         "enemy_text", typeof(Transform));
+
 
         //Instantiate Text
         healthText = MonoBehaviour.Instantiate(healthTextFab,

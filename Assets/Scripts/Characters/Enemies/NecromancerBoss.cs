@@ -51,7 +51,6 @@ public class NecromancerBoss : Enemy, IDeathObserver
         {
             if (CastIfAble(summonSkeleSpellbook[0]))
             {
-                //MonoBehaviour.print("Cast summon skeles");
                 ChangeSpellbook(fireChargesSpellbook);
             }
         }
