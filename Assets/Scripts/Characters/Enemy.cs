@@ -127,7 +127,6 @@ public abstract class Enemy : Character
         Transform healthTextFab = (Transform)Resources.Load(
         "enemy_text", typeof(Transform));
 
-
         //Instantiate Text
         healthText = MonoBehaviour.Instantiate(healthTextFab,
             position + healthBarOffset, Quaternion.identity);
