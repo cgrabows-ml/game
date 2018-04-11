@@ -75,6 +75,7 @@ public class MassSummonSkeleton : Spell, IDeathObserver
     public override void Cast()
     {
         //MonoBehaviour.print("Summoning skeles");
+        totalLevel += 2;
         base.Cast();
         foreach(int level in GetLevels())
         {
