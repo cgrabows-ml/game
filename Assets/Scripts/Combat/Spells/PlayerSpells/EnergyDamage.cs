@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class EnergyDamage : DamageSpell
@@ -28,8 +27,8 @@ public class EnergyDamage : DamageSpell
         hero.LoseEnergy(energy);
         base.Cast();
 
-        Transform prefab = (Transform)AssetDatabase.LoadAssetAtPath(
-            "Assets/Prefabs/lobproj.prefab", typeof(Transform));
+        Transform prefab = (Transform)Resources.Load(
+            "lobproj", typeof(Transform));
         Transform projectile = MonoBehaviour.Instantiate(prefab);
         Vector3 projectileOffset = new Vector2(0, .5f);
         projectile.position = caster.instances[0].position + projectileOffset;

@@ -39,7 +39,7 @@ public class SummonSkeleton : Spell, IDeathObserver
     {
         base.Cast();
         int casterIndex = stage.enemies.IndexOf((Enemy)caster);
-        Enemy skeleton = new Skeleton(1);
+        Enemy skeleton = new Skeleton();
         stage.AddEnemyAtIndex(skeleton, casterIndex);
         skeleton.RegisterDeathObserver(this);
         skeletonsAlive += 1;

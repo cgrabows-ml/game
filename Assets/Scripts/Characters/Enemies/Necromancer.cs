@@ -8,7 +8,7 @@ public class Necromancer : Enemy
 {
 
     public Necromancer()
-        : base("necromancer", "Warrior", getTextBox(), 5, maxGCD: 3)
+        : base("necromancer", "warrior", getTextBox(), 5, maxGCD: 3)
     {
         this.isFixed = true;
         this.moveTo = new Vector2(5, -2.58f);

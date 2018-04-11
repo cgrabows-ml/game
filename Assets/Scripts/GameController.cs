@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour
     public Animator heroAnim;
     public List<Spell> spellbook = new List<Spell>() { };
     public Character hero;
+    public Canvas canvas;
 
     public Transform herofab;
     public Transform warriorfab;
@@ -64,7 +65,9 @@ public class GameController : MonoBehaviour
         SetSpells();
         SetSpellBindings();
         SetSpellToolTips();
+        canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
         gameController = this;
+
     }
 
     private void SetStage()

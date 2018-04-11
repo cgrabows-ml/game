@@ -14,8 +14,8 @@ public class Skeleton : Enemy
     private static float baseHealth = 3;
     private static float healthIncreasePerLevel = 3;
 
-    public Skeleton(int level)
-        : base("skeleton", "Warrior", getTextBox(), 3, maxGCD: 3)
+    public Skeleton(int level = 1)
+        : base("skeleton", "warrior", getTextBox(), 3, maxGCD: 3)
     {
         this.level = level;
         sizeScale *= baseSize + ((level-1) * sizeIncreasePerLevel);
@@ -36,7 +36,7 @@ public class Skeleton : Enemy
 
     private static TextMesh getTextBox()
     {
-        string textBoxPath = "Assets/Prefabs/healthbar_sprite"; //TODO: read from config or other
-        return (TextMesh)Resources.Load(textBoxPath, typeof(Transform));
+        string textBoxPath = "healthbar_sprite"; //TODO: read from config or other
+        return (TextMesh)Resources.Load(textBoxPath, typeof(TextMesh));
     }
 }

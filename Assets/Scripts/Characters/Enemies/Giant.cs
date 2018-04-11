@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +8,7 @@ public class Giant : Enemy
 {
 
     public Giant()
-        : base("Giant", "Warrior.prefab", getTextBox(), health: 100, maxGCD: 3)
+        : base("Giant", "warrior", getTextBox(), health: 100, maxGCD: 3)
     {
 
     }
@@ -24,7 +23,7 @@ public class Giant : Enemy
 
     private static TextMesh getTextBox()
     {
-        string textBoxPath = "Assets/Prefabs/healthbar_sprite"; //TODO: read from config or other
-        return (TextMesh)AssetDatabase.LoadAssetAtPath(textBoxPath, typeof(Transform));
+        string textBoxPath = "healthbar_sprite"; //TODO: read from config or other
+        return (TextMesh)Resources.Load(textBoxPath, typeof(Transform));
     }
 }

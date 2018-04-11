@@ -108,8 +108,7 @@ public abstract class Enemy : Character
                 "enemy_text", typeof(Transform));
 */
         //Instantiate Enemy 
-        sprite = MonoBehaviour
-            .Instantiate(prefab, position, Quaternion.identity);
+        sprite = MonoBehaviour.Instantiate(prefab, position, Quaternion.identity);
         anim = sprite.GetComponent<Animator>();
         //MonoBehaviour.print(sprite.localScale);
         enemyGUI.Add(sprite);
@@ -121,16 +120,13 @@ public abstract class Enemy : Character
 
         //Instantiate Enemy Health Bar
 
-        healthBar = MonoBehaviour
-            .Instantiate((Transform)Resources.Load(
-                "healthbar_sprite", typeof(Transform)),
-                position + new Vector2(0f, 1.8f), Quaternion.identity);
+        healthBar = MonoBehaviour.Instantiate((Transform)Resources.Load("healthbar_sprite", typeof(Transform)), position + new Vector2(0f, 1.8f), Quaternion.identity);
 
         enemyGUI.Add(healthBar);
         //MonoBehaviour.print(healthBarOffset);
 
         Transform healthTextFab = (Transform)Resources.Load(
-        "Assets/Prefabs/enemy_text", typeof(Transform));
+        "enemy_text", typeof(Transform));
 
         //Instantiate Text
         healthText = MonoBehaviour.Instantiate(healthTextFab,

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class CrystalBuff : Buff
@@ -20,7 +19,7 @@ public class CrystalBuff : Buff
         owner.outMultiplier += multiplierDiff;
 
         //Create game object for Empower graphic
-        Transform prefab = (Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/PWS.prefab", typeof(Transform));
+        Transform prefab = (Transform)Resources.Load("PWS", typeof(Transform));
         crystalBuff = MonoBehaviour.Instantiate(prefab);
     }
 

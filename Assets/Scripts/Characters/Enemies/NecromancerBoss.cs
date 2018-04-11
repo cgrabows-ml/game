@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,7 +28,7 @@ public class NecromancerBoss : Enemy, IDeathObserver
     private List<Spell> currentSpellbook;
 
     public NecromancerBoss()
-        : base("necromancer", "warrior.prefab", getTextBox(), health:100, maxGCD: 1)
+        : base("necromancer", "warrior", getTextBox(), health:100, maxGCD: 1)
     {
         this.isFixed = true;
         this.moveTo = new Vector2(5f, -2.58f);
@@ -52,7 +51,7 @@ public class NecromancerBoss : Enemy, IDeathObserver
         {
             if (CastIfAble(summonSkeleSpellbook[0]))
             {
-                MonoBehaviour.print("Cast summon skeles");
+                //MonoBehaviour.print("Cast summon skeles");
                 ChangeSpellbook(fireChargesSpellbook);
             }
         }
@@ -122,16 +121,16 @@ public class NecromancerBoss : Enemy, IDeathObserver
     {
         yield return new WaitForSeconds(seconds);
         currentSpellbook = spellbook;
-        MonoBehaviour.print("Changed Spellbook");
+        //MonoBehaviour.print("Changed Spellbook");
         foreach(Spell spell in spellbook)
         {
-            MonoBehaviour.print(spell.name);
+            //MonoBehaviour.print(spell.name);
         }
     }
 
     private static TextMesh getTextBox()
     {
-        string textBoxPath = "Assets/Prefabs/healthbar_sprite"; //TODO: read from config or other
-        return (TextMesh)AssetDatabase.LoadAssetAtPath(textBoxPath, typeof(Transform));
+        string textBoxPath = "healthbar_sprite"; //TODO: read from config or other
+        return (TextMesh)Resources.Load(textBoxPath, typeof(TextMesh));
     }
 }

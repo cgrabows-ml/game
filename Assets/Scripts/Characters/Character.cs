@@ -176,10 +176,16 @@ public abstract class Character
     /// <param name="damageTaken"></param>
     public void DrawDamageTaken(float damageTaken) { 
     
-        Transform prefab = (Transform)Resources.Load("FCT", typeof(Transform));
+        GameObject prefab = (GameObject)Resources.Load("FCT");
 
-        Transform instance = MonoBehaviour.Instantiate(prefab);
-        TextMesh tmesh = instance.GetComponent<TextMesh>();
+        //Instantiate floating combat text
+        GameObject FCTGameObject = MonoBehaviour.Instantiate(prefab);
+        Transform FCT = FCTGameObject.GetComponent<Transform>();
+        FCT.transform.SetParent(gameController.canvas.transform);
+        TextMesh tmesh = FCT.GetComponent<TextMesh>();
+
+        tmesh.color = new Color(255, 255, 255, 1);
+
         String symbol = "-";
         if (damageTaken < 0)
         {
@@ -206,9 +212,9 @@ public abstract class Character
 
         Vector3 newPos = new Vector3(instances[0].position.x + .2f,
             instances[0].position.y + .4f, 0);
-        instance.transform.position = newPos;
-        
-        IEnumerator coroutine = DestroyFCT(instance, 1.5f);
+        FCT.transform.position = newPos;
+
+        IEnumerator coroutine = DestroyFCT(FCT, 1.5f);
         gameController.StartCoroutine(coroutine);
     }
 
