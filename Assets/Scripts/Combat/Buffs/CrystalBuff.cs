@@ -22,6 +22,7 @@ public class CrystalBuff : Buff
         //Create game object for Empower graphic
         Transform prefab = (Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/PWS.prefab", typeof(Transform));
         crystalBuff = MonoBehaviour.Instantiate(prefab);
+        crystalBuff.position = owner.instances[0].position + new Vector3(0, 1f, 0);
     }
 
     public override void RemoveBuff()
