@@ -20,9 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4912826329278210}
   - component: {fileID: 212568175382389862}
-  - component: {fileID: 95883784575413208}
   - component: {fileID: 210476513795015866}
   - component: {fileID: 114074188356535094}
+  - component: {fileID: 95460134551631226}
   m_Layer: 0
   m_Name: warrior
   m_TagString: Untagged
@@ -43,7 +43,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &95883784575413208
+--- !u!95 &95460134551631226
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Hero : Character
 {
 
-    private TextMesh energyText = gameController.heroEnergyText;
+    private TextMesh energyText = GameController.gameController.heroEnergyText;
     private int energy = 0;
     private int maxEnergy = 5;
     List<RectTransform> castCovers = new List<RectTransform>{ };
@@ -21,7 +21,7 @@ public class Hero : Character
     /// <param name="health"></param>
     // Use this for initialization
     public Hero()
-        : base("blackKnight", gameController.heroHealthText, 200)
+        : base("blackKnight", GameController.gameController.heroHealthText, 200)
 
     {
            maxGCD = 1f;
@@ -38,7 +38,8 @@ public class Hero : Character
         //Spell spell4 = new Knockback(this);
         //Spell spell4 = new EnergyHeal(this);
         //Spell spell4 = new Block(this);
-        Spell spell4 = new AOEAttack(this);
+        //Spell spell4 = new AOEAttack(this);
+        Spell spell4 = new Bomb(this);
         return new List<Spell> { spell1, spell2, spell3, spell4 };
     }
 
@@ -139,13 +140,21 @@ public class Hero : Character
         Vector3 basePos = instance.localPosition;
         float duration = spellbook[index].baseCooldown;
         float time = 0;
-        while (time < duration)
+        float recentMax = spellbook[index].recentMaxCD;
+        while (spellbook[index].GetCooldown() > 0)
         {
             if (gameController.stage.inCombat)
             {
+                //Check if recentMaxCD changed
+                if(spellbook[index].recentMaxCD != recentMax)
+                {
+                    time = 0;
+                    recentMax = spellbook[index].recentMaxCD;
+                    instance.localScale = new Vector3(1, 1, 0);
+                }
                 time += Time.deltaTime;
-                instance.localScale = new Vector3(1,1,0) - new Vector3(0, time / duration, 0);
-                instance.localPosition = basePos - new Vector3(0, time / duration * instance.GetComponent<RectTransform>().rect.height / 2, 0);
+                instance.localScale = new Vector3(1,1,0) - new Vector3(0, time / spellbook[index].recentMaxCD, 0);
+                instance.localPosition = basePos - new Vector3(0, time / spellbook[index].recentMaxCD * instance.GetComponent<RectTransform>().rect.height / 2, 0);
                 yield return null;
             }
             else
@@ -154,6 +163,7 @@ public class Hero : Character
             }
 
         }
+        spellbook[index].recentMaxCD = spellbook[index].baseCooldown;
         instance.localPosition = basePos;
         instance.localScale = new Vector3(0, 0, 0);
     }

@@ -22,6 +22,7 @@ public abstract class Enemy : Character
     public Transform healthBar;
     public Transform healthText;
     public Transform sprite;
+    public Boolean isDying = false;
     protected float sizeScale = 1f;
 
     /// <summary>
@@ -41,10 +42,14 @@ public abstract class Enemy : Character
         this.name = name;
     }
 
-    new public void Update()
+    new public virtual void Update()
     {
-        base.Update();
-        Cast();
+        if (isActive)
+        {
+            base.Update();
+            Cast();
+        }
+
     }
 
     /// <summary>
@@ -73,6 +78,7 @@ public abstract class Enemy : Character
             isActive = false;
             deathObservers.ForEach(observer => {
                 observer.DeathUpdate(this);});
+            isDying = true;
             IEnumerator coroutine = DestroyAfterTime(deathTime);
             gameController.StartCoroutine(coroutine);
         }
@@ -100,18 +106,22 @@ public abstract class Enemy : Character
 
     public virtual void InstantiateEnemy(Vector2 position)
     {
-        /*Transform instance;
-
-        Transform healthTextFab = 
-            (Transform)Resources.Load(
-                "enemy_text", typeof(Transform));
-*/
         //Instantiate Enemy 
         sprite = MonoBehaviour.Instantiate(prefab, position, Quaternion.identity);
         anim = sprite.GetComponent<Animator>();
-        //MonoBehaviour.print(sprite.localScale);
+        //Set enemies inactive until animation is done (1 sec while testing) NEED TO SET ACTIVE TO FALSE HERE
+        if (GameController.gameController.stage.inCombat)
+        {
+            anim.SetBool("Entrance", true);
+            //isActive = false;
+
+            IEnumerator coroutine = SetActive();
+            gameController.StartCoroutine(coroutine);
+        }
+
         enemyGUI.Add(sprite);
 
+       
         sprite.localScale *= sizeScale;
 
         // Vector2 healthBarOffset = new Vector2(0f, sprite.localScale.y)/4;
@@ -136,6 +146,21 @@ public abstract class Enemy : Character
 
         instances = enemyGUI;
         enemyGUI = new List<Transform> { };
+    }
+
+    IEnumerator SetActive()
+    {
+        float time = 0;
+        while(time <= 1)
+        {
+            //Only updates time to become active if youre in combat
+            if (gameController.stage.inCombat)
+            {
+                time += Time.deltaTime;
+            }
+            yield return null;
+        }
+        isActive = true;
     }
 
     public void RegisterDeathObserver(IDeathObserver observer)

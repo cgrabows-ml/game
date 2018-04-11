@@ -287,6 +287,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Characters\Character.cs" />
     <Compile Include="Assets\Scripts\Characters\Enemies\Crystal.cs" />
+    <Compile Include="Assets\Scripts\Characters\Enemies\Dummy.cs" />
     <Compile Include="Assets\Scripts\Characters\Enemies\Giant.cs" />
     <Compile Include="Assets\Scripts\Characters\Enemies\Necromancer.cs" />
     <Compile Include="Assets\Scripts\Characters\Enemies\NecromancerBoss.cs" />
@@ -307,6 +308,7 @@
     <Compile Include="Assets\Scripts\Combat\Spells\EnemySpells\SummonSkeleton.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\AOEAttack.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\Block.cs" />
+    <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\Bomb.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\Empower.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\EnergyDamage.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\EnergyGenerator.cs" />
@@ -319,6 +321,7 @@
     <Compile Include="Assets\Scripts\Encounters\NecromancerBossEncounter.cs" />
     <Compile Include="Assets\Scripts\Encounters\SampleEncounters\Encounter1.cs" />
     <Compile Include="Assets\Scripts\Encounters\SampleEncounters\Encounter2.cs" />
+    <Compile Include="Assets\Scripts\FPSDisplay.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
     <Compile Include="Assets\Scripts\MenuScript.cs" />
     <Compile Include="Assets\Scripts\Stage.cs" />

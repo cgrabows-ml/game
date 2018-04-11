@@ -25,7 +25,7 @@ public class MassSummonSkeleton : Spell, IDeathObserver
     {
         if (skeletonsAlive == 0)
         {
-            cooldown = Math.Max(0, cooldown - Time.deltaTime);
+            SetCooldown(Math.Max(0, GetCooldown() - Time.deltaTime));
         }
     }
 

@@ -8,12 +8,12 @@ using UnityEngine.UI;
 
 public abstract class Character
 {
-    public static GameController gameController = GameObject.Find("GameController").GetComponent<GameController>();
+    public GameController gameController = GameController.gameController;
 
     public List<Spell> spellbook;
     private float maxHealth;
     public float health;
-    public float GCD = 0;
+    public float GCD = .5f;
     public float maxGCD;
     public float inAdditive = 0;
     public float outAdditive = 0;
@@ -44,14 +44,8 @@ public abstract class Character
         this.spellbook = getSpells();
         this.textBox = textBox;
         this.maxGCD = maxGCD;
-        this.prefab = getPrefab(prefabPath);
+        this.prefab = (Transform)Resources.Load(prefabPath, typeof(Transform));
         //this.anim = prefab.GetComponent<Animator>();        
-    }
-
-    private static Transform getPrefab(String path)
-    {
-        string prefabPath = "" + path; //TODO: read from config or other
-        return (Transform)Resources.Load(prefabPath, typeof(Transform));
     }
 
     protected abstract List<Spell> getSpells();
@@ -120,7 +114,11 @@ public abstract class Character
         GCD = Math.Max(GCD - Time.deltaTime, 0);
 
         //Reduces Spell CDs
-        spellbook.ForEach(spell => spell.ReduceCooldown());
+        if(spellbook != null)
+        {
+            spellbook.ForEach(spell => spell.ReduceCooldown());
+        }
+        
     }
 
     /// <summary>
@@ -176,13 +174,13 @@ public abstract class Character
     /// <param name="damageTaken"></param>
     public void DrawDamageTaken(float damageTaken) { 
     
-        GameObject prefab = (GameObject)Resources.Load("FCT");
+        GameObject prefab = (GameObject)Resources.Load("FCTNew");
 
         //Instantiate floating combat text
         GameObject FCTGameObject = MonoBehaviour.Instantiate(prefab);
         Transform FCT = FCTGameObject.GetComponent<Transform>();
         FCT.transform.SetParent(gameController.canvas.transform);
-        TextMesh tmesh = FCT.GetComponent<TextMesh>();
+        Text tmesh = FCT.GetComponent<Text>();
 
         tmesh.color = new Color(255, 255, 255, 1);
 
@@ -209,6 +207,11 @@ public abstract class Character
 
         //Assigns size based on sqrt of damage
         tmesh.fontSize = (int)Math.Round(tmesh.fontSize * Math.Sqrt(Math.Abs(damageTaken)));
+
+
+        //Scales FCT from non-canvas to canvas
+        //103 is the scale from canvas to non-canvas, at least it's really close
+        FCT.transform.localScale /= 103;
 
         Vector3 newPos = new Vector3(instances[0].position.x + .2f,
             instances[0].position.y + .4f, 0);

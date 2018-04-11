@@ -6,8 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Stage: IDeathObserver {
 
-    public GameController gameController =
-        GameObject.Find("GameController").GetComponent<GameController>();
+    public GameController gameController = GameController.gameController;
     public Hero hero;
     public List<Enemy> enemies = new List<Enemy>();
     public List<Enemy> movableEnemies = new List<Enemy>();

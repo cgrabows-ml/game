@@ -21,7 +21,7 @@ public class StealLife : Spell
         float damageDealt = target.TakeDamage(caster.GetDamage(baseDamage), caster);
         if (target.health <= 0)
         {
-            cooldown = 0;
+            SetCooldown(0);
         }
         IEnumerator coroutine = HealAfterTime(delay, damageDealt, caster);
         gameController.StartCoroutine(coroutine);

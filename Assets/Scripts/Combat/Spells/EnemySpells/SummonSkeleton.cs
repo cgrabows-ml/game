@@ -19,7 +19,7 @@ public class SummonSkeleton : Spell, IDeathObserver
     {
         if (skeletonsAlive < maxSkeletons)
         {
-            cooldown = Math.Max(0, cooldown - Time.deltaTime);
+            SetCooldown(Math.Max(0, GetCooldown() - Time.deltaTime));
         }
     }
 

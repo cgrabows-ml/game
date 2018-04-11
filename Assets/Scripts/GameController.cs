@@ -14,7 +14,7 @@ public class GameController : MonoBehaviour
     public Text cast3Text;
     public Text cast4Text;
     public Text GCDText;
-    public Animator heroAnim;
+
     public List<Spell> spellbook = new List<Spell>() { };
     public Character hero;
     public Canvas canvas;
@@ -54,20 +54,19 @@ public class GameController : MonoBehaviour
 
 
 
-    private List<SpellBinding> spellBindings = new List<SpellBinding>();
+    public List<SpellBinding> spellBindings = new List<SpellBinding>();
     private Transform instance;
 
     // Use this for initialization
     void Start()
     {
+        gameController = GetComponent<GameController>();
         SetStage();
         SetHero();
         SetSpells();
         SetSpellBindings();
         SetSpellToolTips();
         canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
-        gameController = this;
-
     }
 
     private void SetStage()

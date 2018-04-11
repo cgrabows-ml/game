@@ -6,8 +6,7 @@ using UnityEngine.UI;
 
 public class SpellBinding
 {
-    public GameController gameController =
-        GameObject.Find("GameController").GetComponent<GameController>();
+    public GameController gameController = GameController.gameController;
     public Spell spell;
     private KeyCode key;
     private Text textBox;

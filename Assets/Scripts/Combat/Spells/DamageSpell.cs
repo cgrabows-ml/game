@@ -27,6 +27,11 @@ public class DamageSpell : Spell {
         this.target = target;
     }
 
+    public void CastParent()
+    {
+        base.Cast();
+    }
+
     public override void Cast()
     {
         IEnumerator coroutine = DamageAfterTime(delay);
