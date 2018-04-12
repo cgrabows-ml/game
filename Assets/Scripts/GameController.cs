@@ -34,6 +34,7 @@ public class GameController : MonoBehaviour
     public RectTransform castCover3;
     public RectTransform castCover4;
     public Text cantCast;
+    public List<RectTransform> castCovers;
 
     public Text spaceContinue;
 
@@ -74,7 +75,7 @@ public class GameController : MonoBehaviour
         stage = new Stage();
         //Encounter encounter = new Encounter(stage, enemies);
         List<Encounter> encounters = new List<Encounter>() {
-            new NecromancerBossEncounter(stage) };
+            new Encounter1(stage) };
         stage.SetEncounters(encounters);
         stage.StartStage();
     }
@@ -89,6 +90,11 @@ public class GameController : MonoBehaviour
     {
         //SLOW dont use find
         List<TooltipHover> tooltips = new List<TooltipHover>(FindObjectsOfType<TooltipHover>());
+
+        castCovers.Add(castCover1);
+        castCovers.Add(castCover2);
+        castCovers.Add(castCover3);
+        castCovers.Add(castCover4);
 
         //Sort by transform x position
         int j = 1;
@@ -141,6 +147,10 @@ public class GameController : MonoBehaviour
         foreach(Spell spell in hero.spellbook)
         {
             spellbook.Add(spell);
+        }
+        foreach (Spell spell in hero.spellbook)
+        {
+            spell.getSpellIndex();
         }
     }
 

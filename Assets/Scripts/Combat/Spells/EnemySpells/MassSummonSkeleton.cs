@@ -80,6 +80,7 @@ public class MassSummonSkeleton : Spell, IDeathObserver
         {
             //MonoBehaviour.print("level: " + level);
             int casterIndex = stage.enemies.IndexOf((Enemy)caster);
+            //Enemy skeleton = new Skeleton(level);
             Enemy skeleton = new Skeleton(level);
             stage.AddEnemyAtIndex(skeleton, casterIndex);
             //MonoBehaviour.print("count "+ skeleton.deathObservers.Count);

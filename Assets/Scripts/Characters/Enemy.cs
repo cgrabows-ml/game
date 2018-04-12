@@ -113,11 +113,13 @@ public abstract class Enemy : Character
         if (GameController.gameController.stage.inCombat)
         {
             anim.SetBool("Entrance", true);
-            //isActive = false;
+            isActive = false;
 
             IEnumerator coroutine = SetActive();
             gameController.StartCoroutine(coroutine);
         }
+
+        //Vector2 healthBarOffset = new Vector2(0f, sprite.localScale.y);
 
         enemyGUI.Add(sprite);
 

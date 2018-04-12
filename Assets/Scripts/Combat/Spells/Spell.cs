@@ -19,6 +19,7 @@ public abstract class Spell
     protected Character caster;
     public String name;
     public float recentMaxCD;
+    protected int index;
 
     /// <summary>
     /// 
@@ -51,6 +52,19 @@ public abstract class Spell
     {
         cooldown = newCooldown;
         recentMaxCD = newCooldown;
+    }
+
+    public void getSpellIndex()
+    {
+        for (int i = 0; i < gameController.spellbook.Count; i++)
+        {
+            //MonoBehaviour.print("run");
+            if (gameController.spellbook[i] == this)
+            {
+                index = i;
+                //MonoBehaviour.print(this);
+            }
+        }
     }
 
     public float GetCooldown()

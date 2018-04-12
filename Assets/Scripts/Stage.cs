@@ -257,7 +257,7 @@ public class Stage: IDeathObserver {
             if (i != targetIndex)
             {
                 Enemy enemy = enemies[i];
-                if (enemy.hasCollision && enemy.isActive &&
+                if (enemy.hasCollision &&
                     (i < targetIndex || enemy.isFixed))
                 {
                     float targetLeft = x;
