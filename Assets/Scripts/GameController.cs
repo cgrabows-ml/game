@@ -75,7 +75,7 @@ public class GameController : MonoBehaviour
         stage = new Stage();
         //Encounter encounter = new Encounter(stage, enemies);
         List<Encounter> encounters = new List<Encounter>() {
-            new Encounter1(stage) };
+            new NecromancerBossEncounter(stage) };
         stage.SetEncounters(encounters);
         stage.StartStage();
     }

@@ -18,7 +18,7 @@ public class EnergyDamage : DamageSpell
 
     }
 
-
+    //Called every update
     public override void ReduceCooldown()
     {
         base.ReduceCooldown();

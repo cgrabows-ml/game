@@ -7,6 +7,9 @@ public class CrystalBuff : Buff
     private float multiplierDiff = 1f;
     private Transform crystalBuff;
     private Vector3 startPos;
+    private float delay;
+    private Transform prefab;
+    private Vector3 projectileOffset = new Vector3(0, .4f, 0);
 
 
     public CrystalBuff(Character owner, Vector3 startPos)
@@ -21,14 +24,24 @@ public class CrystalBuff : Buff
         owner.outMultiplier += multiplierDiff;
 
         //Create game object for Empower graphic
-        Vector3 projectileOffset = new Vector3(0, 0,0);
-        float delay = 2;
-        Transform prefab = (Transform)Resources.Load("PWS", typeof(Transform));
+        delay = 2;
+        prefab = (Transform)Resources.Load("PWS", typeof(Transform));
         crystalBuff = MonoBehaviour.Instantiate(prefab);
 
         crystalBuff.localPosition = startPos;
-        //new Projectile(owner.instances[0].localPosition + projectileOffset, crystalBuff,
-        //    delay);
+        new Projectile(owner.instances[0].localPosition + projectileOffset, crystalBuff,
+            delay);
+
+        IEnumerator coroutine = makeAfterDelay();
+        GameController.gameController.StartCoroutine(coroutine);
+
+    }
+
+    IEnumerator makeAfterDelay()
+    {
+        yield return new WaitForSeconds(delay);
+        crystalBuff = MonoBehaviour.Instantiate(prefab);
+        crystalBuff.localPosition = owner.instances[0].localPosition + projectileOffset;
     }
 
     public override void RemoveBuff()

@@ -15,6 +15,7 @@ public class Block : Spell
     {
         base.Cast();
         blockBuff = new BlockBuff(caster);
+        blockBuff.ApplyBuff();
     }
 
 }

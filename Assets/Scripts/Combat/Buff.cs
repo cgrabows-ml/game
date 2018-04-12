@@ -14,7 +14,6 @@ public class Buff {
         this.duration = duration;
         this.owner = owner;
         this.name = name;
-        ApplyBuff();
     }
 
     public String getName()

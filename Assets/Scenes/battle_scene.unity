@@ -1519,6 +1519,7 @@ MonoBehaviour:
   castCover3: {fileID: 1307410984}
   castCover4: {fileID: 1155910}
   cantCast: {fileID: 799209531}
+  castCovers: []
   spaceContinue: {fileID: 254311610}
   cam: {fileID: 965116806}
   heroHealthText: {fileID: 5842849}
