@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -51,10 +52,11 @@ public class GameController : MonoBehaviour
     public RectTransform bigBox3;
     public RectTransform bigBox4;
 
-
+    public Timer timer = new Timer();
 
     private List<SpellBinding> spellBindings = new List<SpellBinding>();
     private Transform instance;
+    private OrderedDictionary bufferedSpellBinding = new OrderedDictionary();
 
     // Use this for initialization
     void Start()
@@ -179,6 +181,7 @@ public class GameController : MonoBehaviour
         stage.Update();
         if (stage.inCombat)
         {
+            timer.Increment();
             CheckInput();
             hero.Update();
             UpdateView();
@@ -203,11 +206,29 @@ public class GameController : MonoBehaviour
     {
         foreach (SpellBinding binding in spellBindings)
         {
-            if (Input.GetKeyDown(binding.GetKey()))
+            KeyCode key = binding.GetKey();
+            if (Input.GetKeyDown(key))
             {
-                //CanCast also does the cast
-                hero.CastIfAble(binding.spell);
+                // a usable key has been pressed
+                // add this key to a 'list' of keys that were pressed recently
+                // order matters
+
+                // update ordering if that key has already been pressed recently
+                if (bufferedSpellBinding.Contains(key))
+                {
+                    bufferedSpellBinding.Remove(key);
+                }
+                bufferedSpellBinding.Add(key, binding);
+                // after 30 frames, no longer recently pressed
+                timer.SetTimer(30, () => bufferedSpellBinding.Remove(key));
             }
+            
+        }
+        // loop over recently pressed keys, and attempt to apply them
+        foreach (KeyCode key in bufferedSpellBinding.Keys)
+        {
+            SpellBinding binding = (SpellBinding)(bufferedSpellBinding[key]);
+            hero.CastIfAble(binding.spell);
         }
     }
 }

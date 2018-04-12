@@ -12,9 +12,10 @@ public class Timer
     /// <summary>
     /// Increment the global frame counter, and call any functions scheduled at the new frame
     /// </summary>
-    public void incrementTimer()
+    public void Increment()
     {
         counter++;
+        // MonoBehaviour.print(counter);
         if (eventsToFire.ContainsKey(counter)){
             eventsToFire[counter].ForEach(func => func());
             eventsToFire.Remove(counter);
@@ -26,7 +27,7 @@ public class Timer
     /// </summary>
     /// <param name="delay"></param>
     /// <param name="func"></param>
-    public void setTimer(uint delay, Action func)
+    public void SetTimer(uint delay, Action func)
     {
         uint currentTime = counter;
         uint timeToRun = currentTime + delay;
@@ -35,7 +36,7 @@ public class Timer
             eventsToFire[timeToRun].Add(func);
         }
         else {
-            eventsToFire.Add(timeToRun, [func]);
+            eventsToFire.Add(timeToRun, new List<Action> { func });
         }
         
     }
