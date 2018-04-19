@@ -27,6 +27,11 @@ public class DamageSpell : Spell {
         this.target = target;
     }
 
+    public void CastParent()
+    {
+        base.Cast();
+    }
+
     public override void Cast()
     {
         IEnumerator coroutine = DamageAfterTime(delay);
@@ -83,7 +88,7 @@ public class DamageSpell : Spell {
             time -= Time.deltaTime;
             yield return null;
         }
-        if(startNum == numEncounter)
+        if(startNum == gameController.stage.numEncounter)
         {
             DealDamage(finalDamage);
         }

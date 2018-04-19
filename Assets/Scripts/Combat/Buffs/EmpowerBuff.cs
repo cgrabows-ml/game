@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class EmpowerBuff : Buff, SpellCastObserver {
@@ -37,7 +36,7 @@ public class EmpowerBuff : Buff, SpellCastObserver {
         owner.RegisterCastListener(this);
 
         //Create game object for Empower graphic
-        Transform prefab = (Transform)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/PWS.prefab", typeof(Transform));
+        Transform prefab = (Transform)Resources.Load("PWS", typeof(Transform));
         empowerBuff = MonoBehaviour.Instantiate(prefab);
         Transform ownerPrefab = owner.instances[0];
         empowerBuff.position = ownerPrefab.position + new Vector3(0, 1.8f);

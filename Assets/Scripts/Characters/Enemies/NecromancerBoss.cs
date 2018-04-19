@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,7 +34,7 @@ public class NecromancerBoss : Enemy, IDeathObserver
     private List<Spell> currentSpellbook;
 
     public NecromancerBoss()
-        : base("necromancer", "warrior.prefab", getTextBox(), health:100, maxGCD: 3)
+        : base("necromancer", "warrior", getTextBox(), health:100, maxGCD: 1)
     {
         this.isFixed = true;
         this.moveTo = new Vector2(4.5f, -2.58f);
@@ -177,7 +176,7 @@ public class NecromancerBoss : Enemy, IDeathObserver
 
     private static TextMesh getTextBox()
     {
-        string textBoxPath = "Assets/Prefabs/healthbar_sprite"; //TODO: read from config or other
-        return (TextMesh)AssetDatabase.LoadAssetAtPath(textBoxPath, typeof(Transform));
+        string textBoxPath = "healthbar_sprite"; //TODO: read from config or other
+        return (TextMesh)Resources.Load(textBoxPath, typeof(TextMesh));
     }
 }

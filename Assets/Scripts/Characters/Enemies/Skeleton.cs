@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +15,7 @@ public class Skeleton : Enemy
     private static float healthIncreasePerLevel = 3;
 
     public Skeleton(int level = 1)
-        : base("skeleton", "Warrior.prefab", getTextBox(), getHealth(level), maxGCD: 3)
+        : base("skeleton", "warrior", getTextBox(), 3, maxGCD: 3)
     {
         this.level = level;
         sizeScale *= baseSize + ((level-1) * sizeIncreasePerLevel);
@@ -37,7 +36,7 @@ public class Skeleton : Enemy
 
     private static TextMesh getTextBox()
     {
-        string textBoxPath = "Assets/Prefabs/healthbar_sprite"; //TODO: read from config or other
-        return (TextMesh)AssetDatabase.LoadAssetAtPath(textBoxPath, typeof(Transform));
+        string textBoxPath = "healthbar_sprite"; //TODO: read from config or other
+        return (TextMesh)Resources.Load(textBoxPath, typeof(TextMesh));
     }
 }

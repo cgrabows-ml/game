@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -14,9 +14,10 @@ public class GameController : MonoBehaviour
     public Text cast3Text;
     public Text cast4Text;
     public Text GCDText;
-    public Animator heroAnim;
+
     public List<Spell> spellbook = new List<Spell>() { };
     public Character hero;
+    public Canvas canvas;
 
     public Transform herofab;
     public Transform warriorfab;
@@ -53,18 +54,19 @@ public class GameController : MonoBehaviour
 
 
 
-    private List<SpellBinding> spellBindings = new List<SpellBinding>();
+    public List<SpellBinding> spellBindings = new List<SpellBinding>();
     private Transform instance;
 
     // Use this for initialization
     void Start()
     {
+        gameController = GetComponent<GameController>();
         SetStage();
         SetHero();
         SetSpells();
         SetSpellBindings();
         SetSpellToolTips();
-        gameController = this;
+        canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
     }
 
     private void SetStage()

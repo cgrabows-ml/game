@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class StoreCharge : Spell
@@ -32,8 +31,8 @@ public class StoreCharge : Spell
         base.Cast();
         for(int i = 0; i < chargesPerCast; i++)
         {
-            Transform prefab = (Transform)AssetDatabase.LoadAssetAtPath(
-    "Assets/Prefabs/fireball.prefab", typeof(Transform));
+            Transform prefab = (Transform)Resources.Load(
+                "fireball", typeof(Transform));
             Transform charge = MonoBehaviour.Instantiate(prefab);
 
             int numCharges = boss.charges.Count;
