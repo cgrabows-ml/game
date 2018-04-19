@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
     public Text GCDText;
 
     public List<Spell> spellbook = new List<Spell>() { };
-    public Character hero;
+    public Hero hero;
     public Canvas canvas;
 
     public Transform herofab;
@@ -34,7 +34,6 @@ public class GameController : MonoBehaviour
     public RectTransform castCover3;
     public RectTransform castCover4;
     public Text cantCast;
-    public List<RectTransform> castCovers;
 
     public Text spaceContinue;
 
@@ -91,11 +90,6 @@ public class GameController : MonoBehaviour
         //SLOW dont use find
         List<TooltipHover> tooltips = new List<TooltipHover>(FindObjectsOfType<TooltipHover>());
 
-        castCovers.Add(castCover1);
-        castCovers.Add(castCover2);
-        castCovers.Add(castCover3);
-        castCovers.Add(castCover4);
-
         //Sort by transform x position
         int j = 1;
         while(j < tooltips.Count)
@@ -148,10 +142,6 @@ public class GameController : MonoBehaviour
         {
             spellbook.Add(spell);
         }
-        foreach (Spell spell in hero.spellbook)
-        {
-            spell.getSpellIndex();
-        }
     }
 
     /// <summary>
@@ -172,16 +162,26 @@ public class GameController : MonoBehaviour
         return new List<KeyCode>() { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4 };
     }
 
+    private List<RectTransform> GetCastCovers()
+    {
+        return new List<RectTransform> { gameController.castCover1,
+            gameController.castCover2,
+            gameController.castCover3,
+            gameController.castCover4 };
+    }
+
     /// <summary>
     /// Initializes spellBindings to tie together the keybinds, spells, and text boxes.
     /// </summary>
     private void SetSpellBindings()
     {
+        List<RectTransform> castCovers = GetCastCovers();
         List<Text> textBoxes = GetTextBoxes();
         List<KeyCode> keys = GetKeys();
         for (int i = 0; i < spellbook.Count; i++)
         {
-            SpellBinding binding = new SpellBinding(hero.spellbook[i], keys[i], textBoxes[i]);
+            SpellBinding binding = new SpellBinding(hero.spellbook[i], keys[i], textBoxes[i],
+                castCovers[i]);
             spellBindings.Add(binding);
         }
     }

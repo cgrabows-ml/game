@@ -10,7 +10,6 @@ public class Hero : Character
     private TextMesh energyText = GameController.gameController.heroEnergyText;
     private int energy = 0;
     private int maxEnergy = 5;
-    List<RectTransform> castCovers = new List<RectTransform>{ };
 
     /// <summary>
     /// Constructor for Hero class.
@@ -66,32 +65,17 @@ public class Hero : Character
 
         //set camera
         gameController.cam.transform.position = new Vector3(pos.x + 3.91f, 0, -6); 
-
-        castCovers = new List<RectTransform> { gameController.castCover1, gameController.castCover2, gameController.castCover3, gameController.castCover4 };
     }
 
     //Also casts the spell
     public override Boolean CastIfAble(Spell spell)
     {
-        if (base.CastIfAble(spell))
-        {
-            //Make cast cover "visible"
-            int i = spellbook.IndexOf(spell);
-            RectTransform cover = castCovers[i]; //throws error if there are more spells than casts on the screen
-
-            cover.localScale = new Vector3(1,1,0);
-
-            IEnumerator coroutine = CooldownCover(i, cover);
-            gameController.StartCoroutine(coroutine);
-            return true;
-        }
-        else
-        {
+        Boolean wasCast = base.CastIfAble(spell);
+        if (wasCast) {
             CantCastMessage();
-            return false;
         }
+        return wasCast;
     }
-
 
     public override void CheckDeadAndKill()
     {
@@ -133,41 +117,7 @@ public class Hero : Character
         anim.SetBool("Idle", true);
 
     }
-
-    IEnumerator CooldownCover(int index, Transform instance)
-    {
-        yield return new WaitForEndOfFrame();
-        Vector3 basePos = instance.localPosition;
-        float duration = spellbook[index].baseCooldown;
-        float time = 0;
-        float recentMax = spellbook[index].recentMaxCD;
-        while (spellbook[index].GetCooldown() > 0)
-        {
-            if (gameController.stage.inCombat)
-            {
-                //Check if recentMaxCD changed
-                if(spellbook[index].recentMaxCD != recentMax)
-                {
-                    time = 0;
-                    recentMax = spellbook[index].recentMaxCD;
-                    instance.localScale = new Vector3(1, 1, 0);
-                }
-                time += Time.deltaTime;
-                instance.localScale = new Vector3(1,1,0) - new Vector3(0, time / spellbook[index].recentMaxCD, 0);
-                instance.localPosition = basePos - new Vector3(0, time / spellbook[index].recentMaxCD * instance.GetComponent<RectTransform>().rect.height / 2, 0);
-                yield return null;
-            }
-            else
-            {
-                yield return null;
-            }
-
-        }
-        spellbook[index].recentMaxCD = spellbook[index].baseCooldown;
-        instance.localPosition = basePos;
-        instance.localScale = new Vector3(0, 0, 0);
-    }
-
+    
 
     /// <summary>
     /// Displays a fading message when the player attempts to cast an uncastable spell

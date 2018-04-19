@@ -54,19 +54,6 @@ public abstract class Spell
         recentMaxCD = newCooldown;
     }
 
-    public void getSpellIndex()
-    {
-        for (int i = 0; i < gameController.spellbook.Count; i++)
-        {
-            //MonoBehaviour.print("run");
-            if (gameController.spellbook[i] == this)
-            {
-                index = i;
-                //MonoBehaviour.print(this);
-            }
-        }
-    }
-
     public float GetCooldown()
     {
         return cooldown;
@@ -82,7 +69,7 @@ public abstract class Spell
 
     public virtual void Cast()
     {
-        cooldown = baseCooldown;
+        SetCooldown(baseCooldown);
         if (triggersGCD)
         {
             caster.GCD = caster.maxGCD;

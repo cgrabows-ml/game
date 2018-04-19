@@ -25,12 +25,12 @@ public class EnergyDamage : DamageSpell
         if (GetCooldown() <= 0 && !(hero.GetEnergy() > 0))
         {
             toReset = true;
-            gameController.castCovers[index].localScale = new Vector3(1,1,0);
+            //gameController.castCovers[index].localScale = new Vector3(1,1,0);
         }
         if(toReset && GetCooldown() <= 0 && (hero.GetEnergy() > 0))
         {
             toReset = false;
-            gameController.castCovers[index].localScale = new Vector3(0, 0, 0);
+            //gameController.castCovers[index].localScale = new Vector3(0, 0, 0);
         }
     }
 

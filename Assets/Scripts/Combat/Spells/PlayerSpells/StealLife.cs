@@ -11,6 +11,7 @@ public class StealLife : Spell
         : base(caster, baseCooldown: 5, animationKey: "Use2",
             triggersGCD: true, GCDRespect: true, delay: .5f)
     {
+        name = "Steal Life";
 
     }
 
