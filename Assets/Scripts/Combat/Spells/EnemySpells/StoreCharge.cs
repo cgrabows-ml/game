@@ -6,14 +6,19 @@ using UnityEngine;
 
 public class StoreCharge : Spell
 {
-    private float distanceFromCenter = .5f;
+    private float distanceFromCenter;
+    private float distanceGrowth = 0;
     private Vector3 chargeOffsetCenter = new Vector2(0, 4.5f);
     NecromancerBoss boss;
 
-    public StoreCharge(Character caster)
+    private int chargesPerCast;
+
+    public StoreCharge(Character caster, int chargesPerCast = 1)
         : base(caster, baseCooldown: 6f, animationKey: "Use2")
     {
+        this.chargesPerCast = chargesPerCast;
         boss = (NecromancerBoss)caster;
+        distanceFromCenter = .5f + distanceGrowth * boss.maxCharges;
         name = "Store Charge";
     }
 
@@ -25,20 +30,23 @@ public class StoreCharge : Spell
     public override void Cast()
     {
         base.Cast();
-        Transform prefab = (Transform)AssetDatabase.LoadAssetAtPath(
-            "Assets/Prefabs/fireball.prefab", typeof(Transform));
-        Transform charge = MonoBehaviour.Instantiate(prefab);
+        for(int i = 0; i < chargesPerCast; i++)
+        {
+            Transform prefab = (Transform)AssetDatabase.LoadAssetAtPath(
+    "Assets/Prefabs/fireball.prefab", typeof(Transform));
+            Transform charge = MonoBehaviour.Instantiate(prefab);
 
-        int numCharges = boss.charges.Count;
+            int numCharges = boss.charges.Count;
 
-        Vector3 chargeCenter = chargeOffsetCenter + caster.instances[0].position;
+            Vector3 chargeCenter = chargeOffsetCenter + caster.instances[0].position;
 
-        float angle = (2*Mathf.PI/boss.maxCharges) * (numCharges + 1);
-        Vector3 chargeOffset = new Vector3(distanceFromCenter * Mathf.Cos(angle),
-            distanceFromCenter*Mathf.Sin(angle));
-        //MonoBehaviour.print(chargeOffset.x + ", " +  chargeOffset.y);
-        charge.position = chargeCenter + chargeOffset;
-        boss.StoreCharge(charge);
+            float angle = (2 * Mathf.PI / boss.maxCharges) * (numCharges + 1);
+            Vector3 chargeOffset = new Vector3(distanceFromCenter * Mathf.Cos(angle),
+                distanceFromCenter * Mathf.Sin(angle));
+            //MonoBehaviour.print(chargeOffset.x + ", " +  chargeOffset.y);
+            charge.position = chargeCenter + chargeOffset;
+            boss.StoreCharge(charge);
+        }
     }
 
 }

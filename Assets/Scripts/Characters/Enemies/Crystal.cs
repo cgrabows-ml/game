@@ -9,7 +9,7 @@ public class Crystal : Enemy
 {
 
     public Crystal()
-        : base("crystal", "Warrior.prefab", getTextBox(), health:15, maxGCD: 3)
+        : base("crystal", "Warrior.prefab", getTextBox(), health:8, maxGCD: 3)
     {
         isFixed = true;
         this.moveTo = new Vector2(3f, -2.58f);

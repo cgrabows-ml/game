@@ -107,7 +107,9 @@ public abstract class Enemy : Character
         sprite.localScale *= sizeScale;
 
         // Vector2 healthBarOffset = new Vector2(0f, sprite.localScale.y)/4;
-        Vector2 healthBarOffset = new Vector2(0f, 1.8f);
+        Vector2 enemyHeight = new Vector2(0f, sprite.GetComponent<Renderer>().bounds.size.y);
+        Vector2 floatDistance = new Vector2(0f, .3f);
+        Vector2 healthBarOffset = enemyHeight + floatDistance;
 
         //Instantiate Enemy Health Bar
         healthBar = MonoBehaviour

@@ -14,7 +14,7 @@ public class Stage: IDeathObserver {
     public Boolean inCombat = false;
 
     private List<Encounter> encounters;
-    private float leftMostPositionX = -1;
+    private float leftMostPositionX = -2f;
     private float rightScreenEdgePositionX = 6.58f;
     private Boolean canProceed = false;
 

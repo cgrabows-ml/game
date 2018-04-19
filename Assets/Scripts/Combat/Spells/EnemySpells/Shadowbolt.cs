@@ -9,7 +9,7 @@ public class ShadowBolt : DamageSpell
 
 
     public ShadowBolt(Character caster)
-        : base(caster, baseCooldown: 6, baseDamage: 4, animationKey: "Use2",
+        : base(caster, baseCooldown: 4, baseDamage: 4, animationKey: "Use2",
             triggersGCD: true, target: "player", GCDRespect: true, delay: .5f)
     {
         boss = (NecromancerBoss)caster;
