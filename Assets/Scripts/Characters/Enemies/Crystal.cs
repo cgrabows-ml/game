@@ -20,7 +20,9 @@ public class Crystal : Enemy
         float damageTaken =  base.TakeDamage(damage, source);
         if (health == 0 && healthBefore > 0)
         {
-            new CrystalBuff(source);
+            CrystalBuff c = new CrystalBuff(source, instances[0].localPosition);
+            c.ApplyBuff();
+
         }
         return damageTaken;
     }

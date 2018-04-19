@@ -14,6 +14,7 @@ public class Empower : Spell {
     {
         base.Cast();
         empowerBuff = new EmpowerBuff(caster);
+        empowerBuff.ApplyBuff();
     }
 
 }

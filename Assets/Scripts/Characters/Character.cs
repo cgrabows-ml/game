@@ -207,6 +207,9 @@ public abstract class Character
 
         //Assigns size based on sqrt of damage
         tmesh.fontSize = (int)Math.Round(tmesh.fontSize * Math.Sqrt(Math.Abs(damageTaken)));
+        Vector2 size = tmesh.GetComponent<RectTransform>().sizeDelta;
+        tmesh.GetComponent<RectTransform>().sizeDelta = new Vector2(size.x * (float)Math.Sqrt(Math.Abs(damageTaken)),
+            size.y * (float)Math.Sqrt(Math.Abs(damageTaken)));
 
 
         //Scales FCT from non-canvas to canvas
