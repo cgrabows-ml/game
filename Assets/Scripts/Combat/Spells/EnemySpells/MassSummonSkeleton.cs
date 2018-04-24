@@ -8,15 +8,21 @@ public class MassSummonSkeleton : Spell, IDeathObserver
 
     private Stage stage;
     private int skeletonsAlive = 0;
-    private int totalLevel = 4;
-    private int minSkeletons = 4;
-    private int maxSkeletons = 4;
+    private int totalLevel;
+    private int minSkeletons;
+    private int maxSkeletons;
+    private int levelGainPerCast;
 
     System.Random rand = new System.Random();
 
-    public MassSummonSkeleton(Character caster)
-        : base(caster, 5f, "Use2")
+    public MassSummonSkeleton(Character caster, int minSkeletons=4,
+        int maxSkeletons=4, int totalLevel=4, int levelGainPerCast=2)
+        : base(caster, 5f, "Use2", GCDRespect:false)
     {
+        this.levelGainPerCast = levelGainPerCast;
+        this.minSkeletons = minSkeletons;
+        this.maxSkeletons = maxSkeletons;
+        this.totalLevel = totalLevel;
         stage = gameController.stage;
         name = "Mass Summon Skeletons";
     }
@@ -25,7 +31,7 @@ public class MassSummonSkeleton : Spell, IDeathObserver
     {
         if (skeletonsAlive == 0)
         {
-            cooldown = Math.Max(0, cooldown - Time.deltaTime);
+            SetCooldown(Math.Max(0, GetCooldown() - Time.deltaTime));
         }
     }
 
@@ -80,6 +86,7 @@ public class MassSummonSkeleton : Spell, IDeathObserver
         {
             //MonoBehaviour.print("level: " + level);
             int casterIndex = stage.enemies.IndexOf((Enemy)caster);
+            //Enemy skeleton = new Skeleton(level);
             Enemy skeleton = new Skeleton(level);
             stage.AddEnemyAtIndex(skeleton, casterIndex);
             //MonoBehaviour.print("count "+ skeleton.deathObservers.Count);
@@ -87,6 +94,7 @@ public class MassSummonSkeleton : Spell, IDeathObserver
             //MonoBehaviour.print("count " + skeleton.deathObservers.Count);
             skeletonsAlive += 1;
             //MonoBehaviour.print(skeletonsAlive);
-        }   
+        }
+        totalLevel += levelGainPerCast;
     }
 }

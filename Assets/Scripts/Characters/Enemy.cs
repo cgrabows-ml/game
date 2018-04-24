@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +22,7 @@ public abstract class Enemy : Character
     public Transform healthBar;
     public Transform healthText;
     public Transform sprite;
+    public Boolean isDying = false;
     protected float sizeScale = 1f;
 
     /// <summary>
@@ -42,10 +42,14 @@ public abstract class Enemy : Character
         this.name = name;
     }
 
-    new public void Update()
+    new public virtual void Update()
     {
-        base.Update();
-        Cast();
+        if (isActive)
+        {
+            base.Update();
+            Cast();
+        }
+
     }
 
     /// <summary>
@@ -65,11 +69,16 @@ public abstract class Enemy : Character
     {
         if (health <= 0)
         {
+            //Add to total kill number
+            VictoryStats.enemiesSlain += 1;
+
+            //Move enemy and uninstantiate
             anim.SetBool("Death", true);
             moveTo = instances[0].position;
             isActive = false;
             deathObservers.ForEach(observer => {
                 observer.DeathUpdate(this);});
+            isDying = true;
             IEnumerator coroutine = DestroyAfterTime(deathTime);
             gameController.StartCoroutine(coroutine);
         }
@@ -98,28 +107,40 @@ public abstract class Enemy : Character
     public virtual void InstantiateEnemy(Vector2 position)
     {
         //Instantiate Enemy 
-        sprite = MonoBehaviour
-            .Instantiate(prefab, position, Quaternion.identity);
+        sprite = MonoBehaviour.Instantiate(prefab, position, Quaternion.identity);
         anim = sprite.GetComponent<Animator>();
-        //MonoBehaviour.print(sprite.localScale);
+        //Set enemies inactive until animation is done (1 sec while testing) NEED TO SET ACTIVE TO FALSE HERE
+        if (GameController.gameController.stage.inCombat)
+        {
+            anim.SetBool("Entrance", true);
+            isActive = false;
+
+            IEnumerator coroutine = SetActive();
+            gameController.StartCoroutine(coroutine);
+        }
+
+        //Vector2 healthBarOffset = new Vector2(0f, sprite.localScale.y);
+
         enemyGUI.Add(sprite);
 
+       
         sprite.localScale *= sizeScale;
 
         // Vector2 healthBarOffset = new Vector2(0f, sprite.localScale.y)/4;
-        Vector2 healthBarOffset = new Vector2(0f, 1.8f);
+        Vector2 enemyHeight = new Vector2(0f, sprite.GetComponent<Renderer>().bounds.size.y);
+        Vector2 floatDistance = new Vector2(0f, .3f);
+        Vector2 healthBarOffset = enemyHeight + floatDistance;
 
         //Instantiate Enemy Health Bar
-        healthBar = MonoBehaviour
-            .Instantiate((Transform)AssetDatabase.LoadAssetAtPath(
-                "Assets/Prefabs/healthbar_sprite.prefab", typeof(Transform)),
-                position + healthBarOffset, Quaternion.identity);
+
+        healthBar = MonoBehaviour.Instantiate((Transform)Resources.Load("healthbar_sprite",
+            typeof(Transform)), position + healthBarOffset, Quaternion.identity);
 
         enemyGUI.Add(healthBar);
         //MonoBehaviour.print(healthBarOffset);
 
-        Transform healthTextFab = (Transform)AssetDatabase.LoadAssetAtPath(
-        "Assets/Prefabs/enemy_text.prefab", typeof(Transform));
+        Transform healthTextFab = (Transform)Resources.Load(
+        "enemy_text", typeof(Transform));
 
         //Instantiate Text
         healthText = MonoBehaviour.Instantiate(healthTextFab,
@@ -130,6 +151,21 @@ public abstract class Enemy : Character
 
         instances = enemyGUI;
         enemyGUI = new List<Transform> { };
+    }
+
+    IEnumerator SetActive()
+    {
+        float time = 0;
+        while(time <= 1)
+        {
+            //Only updates time to become active if youre in combat
+            if (gameController.stage.inCombat)
+            {
+                time += Time.deltaTime;
+            }
+            yield return null;
+        }
+        isActive = true;
     }
 
     public void RegisterDeathObserver(IDeathObserver observer)
@@ -199,6 +235,11 @@ public abstract class Enemy : Character
         }
     }
 
+    public override float TakeDamage(float baseDamage, Character source)
+    {
+        VictoryStats.damageDone += inAdditive + (inMultiplier * baseDamage); //Won't work if there's another forumla for damagetaken
+        return base.TakeDamage(baseDamage, source);
+    }
 
 }
 

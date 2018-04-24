@@ -2,19 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Stage: IDeathObserver {
 
-    public GameController gameController =
-        GameObject.Find("GameController").GetComponent<GameController>();
+    public GameController gameController = GameController.gameController;
     public Hero hero;
     public List<Enemy> enemies = new List<Enemy>();
     public List<Enemy> movableEnemies = new List<Enemy>();
     public List<Enemy> fixedEnemies = new List<Enemy>();
     public Boolean inCombat = false;
+    public int numEncounter = 0;
+    public int damageDone;
 
     private List<Encounter> encounters;
-    private float leftMostPositionX = -1;
+    private float leftMostPositionX = -2f;
     private float rightScreenEdgePositionX = 6.58f;
     private Boolean canProceed = false;
 
@@ -61,7 +63,7 @@ public class Stage: IDeathObserver {
 
     public void EndStage()
     {
-        MonoBehaviour.print("Stage Done");
+        SceneManager.LoadScene("Victory");
         inCombat = false;
     }
 
@@ -88,7 +90,8 @@ public class Stage: IDeathObserver {
     {
         inCombat = false;
         encounters.Remove(encounters[0]);
-        hero.spellbook.ForEach(i => i.numEncounter++);
+        //hero.spellbook.ForEach(i => i.numEncounter++);
+        numEncounter++;
 
         IEnumerator coroutine = SetProceed();
         gameController.StartCoroutine(coroutine);
@@ -254,7 +257,7 @@ public class Stage: IDeathObserver {
             if (i != targetIndex)
             {
                 Enemy enemy = enemies[i];
-                if (enemy.hasCollision && enemy.isActive &&
+                if (enemy.hasCollision &&
                     (i < targetIndex || enemy.isFixed))
                 {
                     float targetLeft = x;

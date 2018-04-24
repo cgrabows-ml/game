@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 90215708}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: Canvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -655,6 +655,26 @@ Prefab:
     - target: {fileID: 1984764014608746, guid: 34894fc3d44a01841a693fa0850bb1c7, type: 2}
       propertyPath: m_Name
       value: Spell UI 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224629439184293782, guid: 34894fc3d44a01841a693fa0850bb1c7,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224617996306231842, guid: 34894fc3d44a01841a693fa0850bb1c7,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224191821683178522, guid: 34894fc3d44a01841a693fa0850bb1c7,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 224690633241699890, guid: 34894fc3d44a01841a693fa0850bb1c7,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 34894fc3d44a01841a693fa0850bb1c7, type: 2}
@@ -1205,7 +1225,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1110489474}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -403, y: 100, z: 551.73975}
+  m_LocalPosition: {x: -404, y: 163, z: 551.73975}
   m_LocalScale: {x: 11.03455, y: 11.03455, z: 110.347916}
   m_Children: []
   m_Father: {fileID: 90215707}
@@ -1241,7 +1261,7 @@ TextMesh:
   m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190335
+    rgba: 4294921216
 --- !u!23 &1110489478
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1464,6 +1484,7 @@ GameObject:
   - component: {fileID: 1466786624}
   - component: {fileID: 1466786623}
   - component: {fileID: 1466786625}
+  - component: {fileID: 1466786626}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -1482,13 +1503,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 870068e4dd4e06841bcc1a936319ceeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gc: {fileID: 0}
+  gc: {fileID: 1466786623}
   cast1Text: {fileID: 1730171158}
   cast2Text: {fileID: 222695342}
   cast3Text: {fileID: 329354267}
   cast4Text: {fileID: 1155911}
   GCDText: {fileID: 1585808361}
-  heroAnim: {fileID: 0}
+  canvas: {fileID: 0}
   herofab: {fileID: 0}
   warriorfab: {fileID: 0}
   healthbarFab: {fileID: 0}
@@ -1498,6 +1519,7 @@ MonoBehaviour:
   castCover3: {fileID: 1307410984}
   castCover4: {fileID: 1155910}
   cantCast: {fileID: 799209531}
+  castCovers: []
   spaceContinue: {fileID: 254311610}
   cam: {fileID: 965116806}
   heroHealthText: {fileID: 5842849}
@@ -1603,6 +1625,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &1466786626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1466786622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41db76ce1e6de09488a5e44fb0e13437, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1510806823
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,12 +6,11 @@ using UnityEngine.UI;
 
 public abstract class Spell
 {
-    public GameController gameController =
-        GameObject.Find("GameController").GetComponent<GameController>();
+    public GameController gameController = GameController.gameController;
 
     public String animationKey;
     public float baseCooldown;
-    public float cooldown = 0;
+    private float cooldown = 0;
     public Boolean triggersGCD;
     public Boolean GCDRespect;
     protected String target;
@@ -19,6 +18,8 @@ public abstract class Spell
     public int numEncounter;
     protected Character caster;
     public String name;
+    public float recentMaxCD;
+    protected int index;
 
     /// <summary>
     /// 
@@ -35,11 +36,22 @@ public abstract class Spell
     {
         this.caster = caster;
         this.baseCooldown = baseCooldown;
+        recentMaxCD = baseCooldown;
         this.triggersGCD = triggersGCD;
         this.GCDRespect = true;
         this.animationKey = animationKey;
         this.GCDRespect = GCDRespect;
         this.delay = delay;
+    }
+
+    /// <summary>
+    /// Sets the cooldown to the newCooldown
+    /// </summary>
+    /// <param name="newCooldown"></param>
+    public void SetCooldown(float newCooldown)
+    {
+        cooldown = newCooldown;
+        recentMaxCD = newCooldown;
     }
 
     public float GetCooldown()
@@ -57,12 +69,11 @@ public abstract class Spell
 
     public virtual void Cast()
     {
-        cooldown = baseCooldown;
+        SetCooldown(baseCooldown);
         if (triggersGCD)
         {
             caster.GCD = caster.maxGCD;
         }
-        //caster.anim.SetBool(animationKey, true);
     }
 
     public virtual Boolean isCastable()

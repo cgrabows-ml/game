@@ -14,7 +14,7 @@ public class Encounter2 : Encounter
 
     protected override List<Enemy> getStartingEnemies()
     {
-        return new List<Enemy>() { new Warrior(), new Warrior(),
+        return new List<Enemy>() { new Dummy(), new Warrior(),
             new Warrior() };
     }
 

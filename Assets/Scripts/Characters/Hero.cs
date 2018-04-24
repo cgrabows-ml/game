@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Hero : Character
 {
 
-    private TextMesh energyText = gameController.heroEnergyText;
+    private TextMesh energyText = GameController.gameController.heroEnergyText;
     private int energy = 0;
     private int maxEnergy = 5;
-    List<RectTransform> castCovers = new List<RectTransform>{ };
 
     /// <summary>
     /// Constructor for Hero class.
@@ -22,7 +20,8 @@ public class Hero : Character
     /// <param name="health"></param>
     // Use this for initialization
     public Hero()
-        : base("blackKnight.prefab", gameController.heroHealthText, 200)
+        : base("blackKnight", GameController.gameController.heroHealthText, 200)
+
     {
            maxGCD = 1f;
            energyText.text = energy.ToString();
@@ -38,7 +37,8 @@ public class Hero : Character
         //Spell spell4 = new Knockback(this);
         //Spell spell4 = new EnergyHeal(this);
         //Spell spell4 = new Block(this);
-        Spell spell4 = new AOEAttack(this);
+        //Spell spell4 = new AOEAttack(this);
+        Spell spell4 = new Bomb(this);
         return new List<Spell> { spell1, spell2, spell3, spell4 };
     }
 
@@ -65,32 +65,17 @@ public class Hero : Character
 
         //set camera
         gameController.cam.transform.position = new Vector3(pos.x + 3.91f, 0, -6); 
-
-        castCovers = new List<RectTransform> { gameController.castCover1, gameController.castCover2, gameController.castCover3, gameController.castCover4 };
     }
 
     //Also casts the spell
     public override Boolean CastIfAble(Spell spell)
     {
-        if (base.CastIfAble(spell))
-        {
-            //Make cast cover "visible"
-            int i = spellbook.IndexOf(spell);
-            RectTransform cover = castCovers[i]; //throws error if there are more spells than casts on the screen
-
-            cover.localScale = new Vector3(1,1,0);
-
-            IEnumerator coroutine = CooldownCover(i, cover);
-            gameController.StartCoroutine(coroutine);
-            return true;
-        }
-        else
-        {
+        Boolean wasCast = base.CastIfAble(spell);
+        if (!wasCast) {
             CantCastMessage();
-            return false;
         }
+        return wasCast;
     }
-
 
     public override void CheckDeadAndKill()
     {
@@ -132,32 +117,7 @@ public class Hero : Character
         anim.SetBool("Idle", true);
 
     }
-
-    IEnumerator CooldownCover(int index, Transform instance)
-    {
-        Vector3 basePos = instance.localPosition;
-        float duration = spellbook[index].baseCooldown;
-        float time = 0;
-        Transform r = instance.GetComponent<Transform>();
-        while (time < duration)
-        {
-            if (gameController.stage.inCombat)
-            {
-                time += Time.deltaTime;
-                r.localScale -= new Vector3(0, Time.deltaTime / duration, 0);
-                r.localPosition = basePos - new Vector3(0, time / duration * instance.GetComponent<RectTransform>().rect.height / 2, 0);
-                yield return null;
-            }
-            else
-            {
-                yield return null;
-            }
-
-        }
-        r.localPosition = basePos;
-        r.localScale = new Vector3(0, 0, 0);
-    }
-
+    
 
     /// <summary>
     /// Displays a fading message when the player attempts to cast an uncastable spell

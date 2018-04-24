@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +8,7 @@ public class Crystal : Enemy
 {
 
     public Crystal()
-        : base("crystal", "Warrior.prefab", getTextBox(), health:15, maxGCD: 3)
+        : base("crystal", "warrior", getTextBox(), health:15, maxGCD: 3)
     {
         isFixed = true;
         this.moveTo = new Vector2(3f, -2.58f);
@@ -21,7 +20,9 @@ public class Crystal : Enemy
         float damageTaken =  base.TakeDamage(damage, source);
         if (health == 0 && healthBefore > 0)
         {
-            new CrystalBuff(source);
+            CrystalBuff c = new CrystalBuff(source, instances[0].localPosition);
+            c.ApplyBuff();
+
         }
         return damageTaken;
     }
@@ -34,7 +35,7 @@ public class Crystal : Enemy
 
     private static TextMesh getTextBox()
     {
-        string textBoxPath = "Assets/Prefabs/healthbar_sprite"; //TODO: read from config or other
-        return (TextMesh)AssetDatabase.LoadAssetAtPath(textBoxPath, typeof(Transform));
+        string textBoxPath = "healthbar_sprite"; //TODO: read from config or other
+        return (TextMesh)Resources.Load(textBoxPath, typeof(TextMesh));
     }
 }

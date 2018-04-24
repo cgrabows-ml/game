@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -15,9 +15,10 @@ public class GameController : MonoBehaviour
     public Text cast3Text;
     public Text cast4Text;
     public Text GCDText;
-    public Animator heroAnim;
+
     public List<Spell> spellbook = new List<Spell>() { };
-    public Character hero;
+    public Hero hero;
+    public Canvas canvas;
 
     public Transform herofab;
     public Transform warriorfab;
@@ -54,19 +55,20 @@ public class GameController : MonoBehaviour
 
     public Timer timer = new Timer();
 
-    private List<SpellBinding> spellBindings = new List<SpellBinding>();
+    public List<SpellBinding> spellBindings = new List<SpellBinding>();
     private Transform instance;
     private OrderedDictionary bufferedSpellBinding = new OrderedDictionary();
 
     // Use this for initialization
     void Start()
     {
+        gameController = GetComponent<GameController>();
         SetStage();
         SetHero();
         SetSpells();
         SetSpellBindings();
         SetSpellToolTips();
-        gameController = this;
+        canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
     }
 
     private void SetStage()
@@ -162,16 +164,26 @@ public class GameController : MonoBehaviour
         return new List<KeyCode>() { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4 };
     }
 
+    private List<RectTransform> GetCastCovers()
+    {
+        return new List<RectTransform> { gameController.castCover1,
+            gameController.castCover2,
+            gameController.castCover3,
+            gameController.castCover4 };
+    }
+
     /// <summary>
     /// Initializes spellBindings to tie together the keybinds, spells, and text boxes.
     /// </summary>
     private void SetSpellBindings()
     {
+        List<RectTransform> castCovers = GetCastCovers();
         List<Text> textBoxes = GetTextBoxes();
         List<KeyCode> keys = GetKeys();
         for (int i = 0; i < spellbook.Count; i++)
         {
-            SpellBinding binding = new SpellBinding(hero.spellbook[i], keys[i], textBoxes[i]);
+            SpellBinding binding = new SpellBinding(hero.spellbook[i], keys[i], textBoxes[i],
+                castCovers[i]);
             spellBindings.Add(binding);
         }
     }

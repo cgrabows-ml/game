@@ -13,7 +13,7 @@ public class Encounter1 : Encounter {
 
     protected override List<Enemy> getStartingEnemies()
     {
-        return new List<Enemy>() { new Necromancer() };
+        return new List<Enemy>() { new Crystal() };
     }
 
 }

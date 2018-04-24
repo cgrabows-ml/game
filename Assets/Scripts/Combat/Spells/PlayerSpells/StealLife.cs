@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class StealLife : Spell
@@ -12,6 +11,7 @@ public class StealLife : Spell
         : base(caster, baseCooldown: 5, animationKey: "Use2",
             triggersGCD: true, GCDRespect: true, delay: .5f)
     {
+        name = "Steal Life";
 
     }
 
@@ -22,7 +22,7 @@ public class StealLife : Spell
         float damageDealt = target.TakeDamage(caster.GetDamage(baseDamage), caster);
         if (target.health <= 0)
         {
-            cooldown = 0;
+            SetCooldown(0);
         }
         IEnumerator coroutine = HealAfterTime(delay, damageDealt, caster);
         gameController.StartCoroutine(coroutine);
