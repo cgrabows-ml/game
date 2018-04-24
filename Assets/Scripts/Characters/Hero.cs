@@ -71,7 +71,7 @@ public class Hero : Character
     public override Boolean CastIfAble(Spell spell)
     {
         Boolean wasCast = base.CastIfAble(spell);
-        if (wasCast) {
+        if (!wasCast) {
             CantCastMessage();
         }
         return wasCast;
