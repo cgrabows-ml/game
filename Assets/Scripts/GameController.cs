@@ -58,7 +58,7 @@ public class GameController : MonoBehaviour
     public List<SpellBinding> spellBindings = new List<SpellBinding>();
     private Transform instance;
     private OrderedDictionary bufferedSpellBinding = new OrderedDictionary();
-
+    private Dictionary<KeyCode, int> bufferedSpellBindingCounts = new Dictionary<KeyCode,int>();
     // Use this for initialization
     void Start()
     {
@@ -216,6 +216,7 @@ public class GameController : MonoBehaviour
     /// </summary>
     void CheckInput()
     {
+        var keysToRemove = new List<KeyCode>();
         foreach (SpellBinding binding in spellBindings)
         {
             KeyCode key = binding.GetKey();
@@ -228,19 +229,41 @@ public class GameController : MonoBehaviour
                 // update ordering if that key has already been pressed recently
                 if (bufferedSpellBinding.Contains(key))
                 {
+                    bufferedSpellBindingCounts[key] --;
                     bufferedSpellBinding.Remove(key);
                 }
+                else{
+                    bufferedSpellBindingCounts[key] = 0;
+                }
                 bufferedSpellBinding.Add(key, binding);
+                bufferedSpellBindingCounts[key] ++;
                 // after 30 frames, no longer recently pressed
-                timer.SetTimer(30, () => bufferedSpellBinding.Remove(key));
+                timer.SetTimer(30, () => {
+                    if (bufferedSpellBindingCounts.ContainsKey(key)){
+                    
+                        bufferedSpellBindingCounts[key] --;
+                        if (bufferedSpellBindingCounts[key] == 0){
+                            bufferedSpellBinding.Remove(key);
+                            hero.CantCastMessage();
+                        }
+                    }
+                    
+                });
             }
-            
-        }
+        }   
         // loop over recently pressed keys, and attempt to apply them
         foreach (KeyCode key in bufferedSpellBinding.Keys)
         {
             SpellBinding binding = (SpellBinding)(bufferedSpellBinding[key]);
-            hero.CastIfAble(binding.spell);
+            if (binding.spell.isCastable()){
+                hero.Cast(binding.spell);
+                // bufferedSpellBinding.Remove(key);
+                keysToRemove.Add(key);
+            }
+        }
+        foreach (KeyCode key in keysToRemove){
+            bufferedSpellBinding.Remove(key);
+            bufferedSpellBindingCounts.Remove(key);
         }
     }
 }

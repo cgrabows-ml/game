@@ -122,7 +122,7 @@ public class Hero : Character
     /// <summary>
     /// Displays a fading message when the player attempts to cast an uncastable spell
     /// </summary>
-    private void CantCastMessage()
+    public void CantCastMessage()
     {
         Boolean toStart = true;
         float r = gameController.cantCast.GetComponent<Text>().color.r;

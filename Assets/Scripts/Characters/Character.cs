@@ -72,12 +72,22 @@ public abstract class Character
         Boolean castable = spell.isCastable();
         if (castable)
         {
-            anim.SetBool(spell.animationKey, true);
-            spell.Cast();
-            spellCastObservers.ForEach(observer => observer.SpellCastUpdate(spell, this));
+            Cast(spell);
         }
 
         return castable;
+    }
+
+    public virtual void Cast(Spell spell)
+    {
+        if (!spellbook.Contains(spell))
+        {
+            //Throw error
+            MonoBehaviour.print("Spellbook does not contain spell.");
+        }
+        anim.SetBool(spell.animationKey, true);
+        spell.Cast();
+        spellCastObservers.ForEach(observer => observer.SpellCastUpdate(spell, this));
     }
 
     /// <summary>
