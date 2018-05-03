@@ -21,10 +21,9 @@ public class FireCharges : DamageSpell
         return base.isCastable() && boss.charges.Count == boss.maxCharges;
     }
 
-    public override void Cast()
+    public override void CastEffect()
     {
-        base.Cast();
-
+        base.CastEffect();
         Transform projectile = boss.SpendCharge();
         Vector3 projectileOffset = new Vector2(0, .5f);
         new Projectile(GetTargets()[0].instances[0].position + projectileOffset, projectile,

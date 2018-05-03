@@ -10,9 +10,9 @@ public class Empower : Spell {
         :base(caster, 10, "Use4", false, GCDRespect: false)
     {
     }
-    public override void Cast()
+
+    public override void CastEffect()
     {
-        base.Cast();
         empowerBuff = new EmpowerBuff(caster);
         empowerBuff.ApplyBuff();
     }

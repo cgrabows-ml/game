@@ -9,7 +9,7 @@ public class Hero : Character
 
     private TextMesh energyText = GameController.gameController.heroEnergyText;
     private int energy = 0;
-    private int maxEnergy = 5;
+    public int maxEnergy = 5;
 
     /// <summary>
     /// Constructor for Hero class.
@@ -23,23 +23,24 @@ public class Hero : Character
         : base("blackKnight", GameController.gameController.heroHealthText, 200)
 
     {
-           maxGCD = 1f;
-           energyText.text = energy.ToString();
+        maxGCD = 1f;
+        GCD = 0;
+        energyText.text = energy.ToString();
     }
 
     protected override List<Spell> getSpells()
     {
         Spell spell1 = new EnergyGenerator(this);
         //Spell spell2 = new Fireball(this);
-        Spell spell2 = new EnergyDamage(this);
+        Spell spell2 = new BigDamage(this);
         Spell spell3 = new StealLife(this);
         //Spell spell4 = new Empower(this);
         //Spell spell4 = new Knockback(this);
         //Spell spell4 = new EnergyHeal(this);
         //Spell spell4 = new Block(this);
         //Spell spell4 = new AOEAttack(this);
-        Spell spell4 = new Bomb(this);
-        return new List<Spell> { spell1, spell2, spell3, spell4 };
+        //Spell spell4 = new Bomb(this);
+        return new List<Spell> { spell1, spell2, spell3, spell1 };
     }
 
     public int GetEnergy()
@@ -57,6 +58,11 @@ public class Hero : Character
     {
         energy = Math.Max(0, energy - amount);
         energyText.text = energy.ToString();
+    }
+
+    public void LoseAllEnergy()
+    {
+        LoseEnergy(energy);
     }
 
     public override void Spawn(Vector2 pos)

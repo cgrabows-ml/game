@@ -9,13 +9,14 @@ public class Skeleton : Enemy
     private static float baseSize = .75f;
     private static float sizeIncreasePerLevel = .25f;
     private static float baseDamage = 1;
+    private static float attackCooldown = 5;
     private static float damageIncreasePerLevel = 1;
     private int level;
     private static float baseHealth = 3;
     private static float healthIncreasePerLevel = 3;
 
     public Skeleton(int level = 1)
-        : base("skeleton", "warrior", getTextBox(), 3, maxGCD: 3)
+        : base("skeleton", "warrior", getTextBox(), getHealth(level), maxGCD: 3)
     {
         this.level = level;
         sizeScale *= baseSize + ((level-1) * sizeIncreasePerLevel);
@@ -29,7 +30,7 @@ public class Skeleton : Enemy
     protected override List<Spell> getSpells()
     {
         float damage = baseDamage + damageIncreasePerLevel * level;
-        Spell spell1 = new DamageSpell(this, 5, damage, "Use1", target: "player");
+        Spell spell1 = new DamageSpell(this, attackCooldown, damage, "Use1", target: "player");
         List<Spell> spells = new List<Spell> { spell1 };
         return spells;
     }

@@ -26,9 +26,8 @@ public class StoreCharge : Spell
         return base.isCastable() && boss.charges.Count < boss.maxCharges;
     }
 
-    public override void Cast()
+    public override void CastEffect()
     {
-        base.Cast();
         for(int i = 0; i < chargesPerCast; i++)
         {
             Transform prefab = (Transform)Resources.Load(

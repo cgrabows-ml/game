@@ -21,9 +21,8 @@ public class EnergyHeal : Spell
         return base.isCastable() && hero.GetEnergy() > 0;
     }
 
-    public override void Cast()
+    public override void CastEffect()
     {
-        base.Cast();
         int energy = hero.GetEnergy();
         int healing = healingPerEnergy * energy;
         hero.LoseEnergy(energy);

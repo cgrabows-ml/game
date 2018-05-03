@@ -27,21 +27,9 @@ public class DamageSpell : Spell {
         this.target = target;
     }
 
-    public void CastParent()
+    public override void CastEffect()
     {
-        base.Cast();
-    }
-
-    public override void Cast()
-    {
-        IEnumerator coroutine = DamageAfterTime(delay);
-        gameController.StartCoroutine(coroutine);
-    }
-
-    public void DealDamage(float damage)
-    {
-        List<Character> targets = GetTargets();
-        targets.ForEach(target => target.TakeDamage(damage, caster));
+        CombatUtils.DamageAfterTime(caster, GetTargets(), baseDamage, delay);
     }
 
     public virtual List<Character> GetTargets()
@@ -76,22 +64,4 @@ public class DamageSpell : Spell {
             return new List<Character>(); //should instead raise error
         }
     }
-
-    IEnumerator DamageAfterTime(float time)
-    {
-        int startNum = numEncounter;
-        float finalDamage = caster.GetDamage(baseDamage);
-        float startTime = 0;
-        base.Cast();
-        while (startTime < time)
-        {
-            time -= Time.deltaTime;
-            yield return null;
-        }
-        if(startNum == gameController.stage.numEncounter)
-        {
-            DealDamage(finalDamage);
-        }
-    }
-
 }

@@ -11,9 +11,8 @@ public class Knockback : Spell
 
     }
 
-    public override void Cast()
+    public override void CastEffect()
     {
-        base.Cast();
         Stage stage = gameController.stage;
         Enemy enemy = stage.getActiveEnemies()[0];
         stage.enemies.Remove(enemy);

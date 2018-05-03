@@ -15,9 +15,8 @@ public class SummonCrystal : Spell
         name = "Summon Crystal";
     }
 
-    public override void Cast()
+    public override void CastEffect()
     {
-        base.Cast();
         int casterIndex = stage.enemies.IndexOf((Enemy)caster);
         Crystal crystal = new Crystal();
         boss.crystal = crystal;

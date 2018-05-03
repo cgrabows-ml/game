@@ -124,7 +124,8 @@ public class NecromancerBoss : Enemy, IDeathObserver
         superChargeSpellbook = new List<Spell>() { superCharge, shadowBolt };
 
         totalSpellbook = new List<Spell>(){
-            summonSkeles, summonCrystal, fireCharges, shadowBolt, storeCharge, superCharge};
+            summonSkeles, summonCrystal, fireCharges, shadowBolt, storeCharge,
+            weakSummonSkeles, superCharge };
         currentSpellbook = pureDPSSpellbook;
         return totalSpellbook;
     }

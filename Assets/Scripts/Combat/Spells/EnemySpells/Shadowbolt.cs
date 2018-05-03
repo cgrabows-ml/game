@@ -9,7 +9,7 @@ public class ShadowBolt : DamageSpell
 
     public ShadowBolt(Character caster)
         : base(caster, baseCooldown: 4, baseDamage: 4, animationKey: "Use2",
-            triggersGCD: true, target: "player", GCDRespect: true, delay: .5f)
+            triggersGCD: true, target: "player", GCDRespect: true, delay: 0.5f)
     {
         boss = (NecromancerBoss)caster;
         name = "Shadowbolt";
@@ -18,7 +18,6 @@ public class ShadowBolt : DamageSpell
     public override List<Character> GetTargets()
     {
         Character target = gameController.stage.hero;
-        List<Enemy> enemies = gameController.stage.getActiveEnemies();
         if(boss.crystal != null)
         {
             target = boss.crystal;
@@ -26,10 +25,9 @@ public class ShadowBolt : DamageSpell
         return new List<Character>() { target };
     }
 
-    public override void Cast()
+    public override void CastEffect()
     {
-        base.Cast();
-
+        base.CastEffect();
         Transform prefab = (Transform)Resources.Load(
             "lobproj", typeof(Transform));
         Transform projectile = MonoBehaviour.Instantiate(prefab);

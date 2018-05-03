@@ -35,9 +35,8 @@ public class SummonSkeleton : Spell, IDeathObserver
         return base.isCastable() && skeletonsAlive < maxSkeletons;
     }
 
-    public override void Cast()
+    public override void CastEffect()
     {
-        base.Cast();
         int casterIndex = stage.enemies.IndexOf((Enemy)caster);
         Enemy skeleton = new Skeleton();
         stage.AddEnemyAtIndex(skeleton, casterIndex);

@@ -11,9 +11,8 @@ public class Block : Spell
         : base(caster, 10, "Use4", false, GCDRespect: false)
     {
     }
-    public override void Cast()
+    public override void CastEffect()
     {
-        base.Cast();
         blockBuff = new BlockBuff(caster);
         blockBuff.ApplyBuff();
     }

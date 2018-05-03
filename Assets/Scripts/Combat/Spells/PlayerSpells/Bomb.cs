@@ -12,9 +12,8 @@ public class Bomb : DamageSpell {
         finalDamage = baseDamage;
     }
 
-    public override void Cast()
+    public override void CastEffect()
     {
-        base.CastParent();
         IEnumerator coroutine = DamageAfterTime();
         gameController.StartCoroutine(coroutine);
     }
@@ -54,7 +53,7 @@ public class Bomb : DamageSpell {
 
         if (startNum == gameController.stage.numEncounter)
         {
-            DealDamage(finalDamage);
+            CombatUtils.DealDamage(caster, GetTargets(), finalDamage);
             finalDamage = baseDamage;
         }
     }

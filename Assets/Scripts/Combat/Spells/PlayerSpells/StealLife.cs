@@ -2,31 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StealLife : Spell
+public class StealLife : HeroSpell
 {
 
     private float baseDamage = 3;
+    private float empoweredDamage = 6;
 
-    public StealLife(Character caster)
-        : base(caster, baseCooldown: 5, animationKey: "Use2",
+    public StealLife(Hero hero)
+        : base(hero, baseCooldown: 5, animationKey: "Use2",
             triggersGCD: true, GCDRespect: true, delay: .5f)
     {
         name = "Steal Life";
 
     }
 
-    public override void Cast()
+    protected override void EmpoweredCast()
     {
-        base.Cast();
+        stealLife(empoweredDamage);
+    }
+
+    private void stealLife(float damage)
+    {
         Enemy target = gameController.stage.getActiveEnemies()[0];
-        float damageDealt = target.TakeDamage(caster.GetDamage(baseDamage), caster);
+        float damageDealt = CombatUtils.DealDamage(hero, target, damage);
         if (target.health <= 0)
         {
             SetCooldown(0);
         }
         IEnumerator coroutine = HealAfterTime(delay, damageDealt, caster);
         gameController.StartCoroutine(coroutine);
+    }
 
+    protected override void BasicCast()
+    {
+        stealLife(baseDamage);
     }
 
     IEnumerator HealAfterTime(float time, float damageDealt, Character owner)

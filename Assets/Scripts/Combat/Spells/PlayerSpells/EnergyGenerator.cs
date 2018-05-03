@@ -1,21 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnergyGenerator : DamageSpell
+public class EnergyGenerator : HeroSpell
 {
+    private float baseDamage = 1;
+    private int energyGained = 1;
 
-    public EnergyGenerator(Character caster)
-        : base(caster, baseCooldown: 1, baseDamage: 1, animationKey: "Use2",
-            triggersGCD: true, target: "front", GCDRespect: true, delay:0)
+    public EnergyGenerator(Hero hero)
+        : base(hero, baseCooldown: 1, animationKey: "Use2",
+            triggersGCD: true, GCDRespect: true, delay:0, canBeEmpowered: false)
     {
 
     }
 
-    public override void Cast()
+    protected override void BasicCast()
     {
-        base.Cast();
-        Hero hero = (Hero)caster;
-        hero.GainEnergy(1);
+        hero.GainEnergy(energyGained);
+        Enemy target = gameController.stage.getActiveEnemies()[0];
+        CombatUtils.DealDamage(caster, target, baseDamage);
+    }
+
+    protected override void EmpoweredCast()
+    {
+        // can't be empowered
     }
 }

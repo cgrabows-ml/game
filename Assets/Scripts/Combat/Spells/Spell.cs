@@ -74,11 +74,20 @@ public abstract class Spell
         {
             caster.GCD = caster.maxGCD;
         }
+        CastEffect();
+    }
+
+    public abstract void CastEffect();
+
+    public virtual Boolean PreconditionsMet()
+    {
+        return true;
     }
 
     public virtual Boolean isCastable()
     {
-        return cooldown <= 0 && (caster.GCD <= 0 || GCDRespect == false);
+        return PreconditionsMet() && 
+            cooldown <= 0 && (caster.GCD <= 0 || GCDRespect == false);
     }
 
     IEnumerator CastAfterTime(float time)

@@ -78,10 +78,8 @@ public class MassSummonSkeleton : Spell, IDeathObserver
         return base.isCastable() && skeletonsAlive == 0;
     }
 
-    public override void Cast()
+    public override void CastEffect()
     {
-        //MonoBehaviour.print("Summoning skeles");
-        base.Cast();
         foreach(int level in GetLevels())
         {
             //MonoBehaviour.print("level: " + level);
