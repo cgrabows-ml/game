@@ -270,7 +270,6 @@ public abstract class Character
         tmesh.GetComponent<RectTransform>().sizeDelta = new Vector2(size.x * (float)Math.Sqrt(Math.Abs(damageTaken)),
             size.y * (float)Math.Sqrt(Math.Abs(damageTaken)));
 
-
         //Scales FCT from non-canvas to canvas
         //103 is the scale from canvas to non-canvas, at least it's really close
         FCT.transform.localScale /= 103;
