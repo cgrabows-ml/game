@@ -36,7 +36,7 @@ public class StoreCharge : Spell
 
             int numCharges = boss.charges.Count;
 
-            Vector3 chargeCenter = chargeOffsetCenter + caster.instances[0].position;
+            Vector3 chargeCenter = chargeOffsetCenter + caster.sprite.position;
 
             float angle = (2 * Mathf.PI / boss.maxCharges) * (numCharges + 1);
             Vector3 chargeOffset = new Vector3(distanceFromCenter * Mathf.Cos(angle),

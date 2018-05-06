@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public abstract class Enemy : Character
 {
     public string name;
-    private List<Transform> enemyGUI = new List<Transform> { };
     private List<IDeathObserver> deathObservers = new List<IDeathObserver>();
 
     public float width;
@@ -19,11 +18,7 @@ public abstract class Enemy : Character
     private Boolean isMoving = false;
     public Boolean isActive = false;
     public Boolean hasCollision = true;
-    public Transform healthBar;
-    public Transform healthText;
-    public Transform sprite;
     public Boolean isDying = false;
-    protected float sizeScale = 1f;
 
     /// <summary>
     /// Constructor for enemy class
@@ -33,10 +28,10 @@ public abstract class Enemy : Character
     /// <param name="textBox"></param>
     /// <param name="anim"></param>
     /// <param name="health"></param>
-    public Enemy(string name,String prefabPath, TextMesh textBox,
+    public Enemy(string name,String prefabPath,
         float health = 100, float width = 1,
         float maxGCD = 2)
-        : base(prefabPath, textBox, health)
+        : base(prefabPath, health)
     {
         this.width = width;
         this.name = name;
@@ -65,6 +60,20 @@ public abstract class Enemy : Character
         }
     }
 
+    public override void InstantiateCharacter(Vector2 position)
+    {
+        base.InstantiateCharacter(position);
+
+        if (GameController.gameController.stage.inCombat)
+        {
+            anim.SetBool("Entrance", true);
+            isActive = false;
+
+            IEnumerator coroutine = SetActive();
+            gameController.StartCoroutine(coroutine);
+        }
+    }
+
     public override void CheckDeadAndKill()
     {
         if (health <= 0)
@@ -74,7 +83,7 @@ public abstract class Enemy : Character
 
             //Move enemy and uninstantiate
             anim.SetBool("Death", true);
-            moveTo = instances[0].position;
+            moveTo = sprite.position;
             isActive = false;
             deathObservers.ForEach(observer => {
                 observer.DeathUpdate(this);});
@@ -99,59 +108,12 @@ public abstract class Enemy : Character
 
     public override void Spawn(Vector2 pos)
     {
+        base.Spawn(pos);
         isActive = true;
-        InstantiateEnemy(new Vector2(pos.x, pos.y));
         moveTo = new Vector2(pos.x, pos.y);
     }
 
-    public virtual void InstantiateEnemy(Vector2 position)
-    {
-        //Instantiate Enemy 
-        sprite = MonoBehaviour.Instantiate(prefab, position, Quaternion.identity);
-        anim = sprite.GetComponent<Animator>();
-        //Set enemies inactive until animation is done (1 sec while testing) NEED TO SET ACTIVE TO FALSE HERE
-        if (GameController.gameController.stage.inCombat)
-        {
-            anim.SetBool("Entrance", true);
-            isActive = false;
 
-            IEnumerator coroutine = SetActive();
-            gameController.StartCoroutine(coroutine);
-        }
-
-        //Vector2 healthBarOffset = new Vector2(0f, sprite.localScale.y);
-
-        enemyGUI.Add(sprite);
-
-       
-        sprite.localScale *= sizeScale;
-
-        // Vector2 healthBarOffset = new Vector2(0f, sprite.localScale.y)/4;
-        Vector2 enemyHeight = new Vector2(0f, sprite.GetComponent<Renderer>().bounds.size.y);
-        Vector2 floatDistance = new Vector2(0f, .3f);
-        Vector2 healthBarOffset = enemyHeight + floatDistance;
-
-        //Instantiate Enemy Health Bar
-
-        healthBar = MonoBehaviour.Instantiate((Transform)Resources.Load("healthbar_sprite",
-            typeof(Transform)), position + healthBarOffset, Quaternion.identity);
-
-        enemyGUI.Add(healthBar);
-        //MonoBehaviour.print(healthBarOffset);
-
-        Transform healthTextFab = (Transform)Resources.Load(
-        "enemy_text", typeof(Transform));
-
-        //Instantiate Text
-        healthText = MonoBehaviour.Instantiate(healthTextFab,
-            position + healthBarOffset, Quaternion.identity);
-        textBox = healthText.GetComponent<TextMesh>();
-        textBox.text = Utils.ToDisplayText(health);
-        enemyGUI.Add(healthText);
-
-        instances = enemyGUI;
-        enemyGUI = new List<Transform> { };
-    }
 
     IEnumerator SetActive()
     {
@@ -213,22 +175,22 @@ public abstract class Enemy : Character
 
             //Get End position of everything
             List<Vector3> startPositions = new List<Vector3> { };
-            foreach (Transform i in instances)
+            foreach (Transform i in characterGUI)
             {
                 startPositions.Add(i.position);
             }
 
-            while (instances[0].position.x > moveTo.x)
+            while (sprite.position.x > moveTo.x)
             {
                 //Use the coded out one for dynamic move speed
-                //instances.ForEach(i => i.position += new Vector3((moveTo.x - startPositions[instances.IndexOf(i)].x) * Time.deltaTime * walkSpeed, 0, 0));
-                instances.ForEach(i => 
+                //characterGUI.ForEach(i => i.position += new Vector3((moveTo.x - startPositions[characterGUI.IndexOf(i)].x) * Time.deltaTime * walkSpeed, 0, 0));
+                characterGUI.ForEach(i => 
                 i.position -= new Vector3(Time.deltaTime * walkSpeed, 0, 0));
 
                 yield return null;
             }
 
-            instances.ForEach(i =>
+            characterGUI.ForEach(i =>
             i.position = new Vector2(moveTo.x, i.position.y));
             anim.SetBool("Idle", true);
             isMoving = false;

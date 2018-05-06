@@ -136,7 +136,7 @@ public class Stage: IDeathObserver {
     {
         if (encounters.Count > 0)
         {
-            heroPosition = new Vector3(hero.instances[0].position.x, -2.58f, 0);
+            heroPosition = new Vector3(hero.sprite.position.x, -2.58f, 0);
             leftMostPositionX += 6.09f;
             hero.MoveRight(heroPosition);
             encounters[0].StartEncounter();

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Warrior : Enemy {
 
     public Warrior()
-        : base("warrior", "Warrior", getTextBox(), health: 4, maxGCD: 3)
+        : base("warrior", "Warrior", health: 4, maxGCD: 3)
     {
 
     }
@@ -18,11 +18,5 @@ public class Warrior : Enemy {
         Spell spell2 = new DamageSpell(this, 4, 1, "Use1", target: "player");
         List<Spell> spells = new List<Spell> { spell1, spell2 };
         return spells;
-    }
-
-    private static TextMesh getTextBox()
-    {
-        string textBoxPath = "healthbar_sprite"; //TODO: read from config or other
-        return (TextMesh)Resources.Load(textBoxPath, typeof(TextMesh));
     }
 }

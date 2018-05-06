@@ -8,7 +8,7 @@ public class Dummy : Enemy
 {
 
     public Dummy()
-        : base("warrior", "Warrior", getTextBox(), health: 4, maxGCD: 100000)
+        : base("warrior", "Warrior", health: 4, maxGCD: 100000)
     {
         GCD = 1000000;
     }
@@ -21,11 +21,5 @@ public class Dummy : Enemy
     public override void Update()
     {
 
-    }
-
-    private static TextMesh getTextBox()
-    {
-        string textBoxPath = "healthbar_sprite"; //TODO: read from config or other
-        return (TextMesh)Resources.Load(textBoxPath, typeof(TextMesh));
     }
 }

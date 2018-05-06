@@ -16,7 +16,7 @@ public class Skeleton : Enemy
     private static float healthIncreasePerLevel = 3;
 
     public Skeleton(int level = 1)
-        : base("skeleton", "warrior", getTextBox(), getHealth(level), maxGCD: 3)
+        : base("skeleton", "warrior", getHealth(level), maxGCD: 3)
     {
         this.level = level;
         sizeScale *= baseSize + ((level-1) * sizeIncreasePerLevel);
@@ -33,11 +33,5 @@ public class Skeleton : Enemy
         Spell spell1 = new DamageSpell(this, attackCooldown, damage, "Use1", target: "player");
         List<Spell> spells = new List<Spell> { spell1 };
         return spells;
-    }
-
-    private static TextMesh getTextBox()
-    {
-        string textBoxPath = "healthbar_sprite"; //TODO: read from config or other
-        return (TextMesh)Resources.Load(textBoxPath, typeof(TextMesh));
     }
 }

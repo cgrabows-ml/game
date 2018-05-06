@@ -8,7 +8,7 @@ public class Giant : Enemy
 {
 
     public Giant()
-        : base("Giant", "warrior", getTextBox(), health: 100, maxGCD: 3)
+        : base("Giant", "warrior", health: 100, maxGCD: 3)
     {
 
     }
@@ -19,11 +19,5 @@ public class Giant : Enemy
             animationKey:"Use1", target: "player");
         List<Spell> spells = new List<Spell> { spell1 };
         return spells;
-    }
-
-    private static TextMesh getTextBox()
-    {
-        string textBoxPath = "healthbar_sprite"; //TODO: read from config or other
-        return (TextMesh)Resources.Load(textBoxPath, typeof(Transform));
     }
 }

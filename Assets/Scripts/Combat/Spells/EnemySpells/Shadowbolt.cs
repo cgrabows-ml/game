@@ -32,8 +32,8 @@ public class ShadowBolt : DamageSpell
             "lobproj", typeof(Transform));
         Transform projectile = MonoBehaviour.Instantiate(prefab);
         Vector3 projectileOffset = new Vector2(0, .5f);
-        projectile.position = caster.instances[0].position + projectileOffset;
-        new Lob(GetTargets()[0].instances[0].position + projectileOffset, projectile,
+        projectile.position = caster.sprite.position + projectileOffset;
+        new Lob(GetTargets()[0].sprite.position + projectileOffset, projectile,
             delay);
     }
 }

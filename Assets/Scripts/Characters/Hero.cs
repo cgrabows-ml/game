@@ -7,9 +7,15 @@ using UnityEngine.UI;
 public class Hero : Character
 {
 
-    private TextMesh energyText = GameController.gameController.heroEnergyText;
+    private TextMesh energyText = gameController.heroEnergyText;
     private int energy = 0;
     public int maxEnergy = 5;
+
+    private Sprite emptyEnergy = gameController.emptyEnergy;
+    private Sprite filledEnergy = gameController.filledEnergy;
+    private Sprite empoweredEnergy = gameController.empoweredEnergy;
+
+    private List<Transform> energyUI = gameController.energyUI;
 
     /// <summary>
     /// Constructor for Hero class.
@@ -20,11 +26,11 @@ public class Hero : Character
     /// <param name="health"></param>
     // Use this for initialization
     public Hero()
-        : base("blackKnight", GameController.gameController.heroHealthText, 200)
-
+        : base("warrior", 200)
     {
         maxGCD = 1f;
         GCD = 0;
+        healthText = gameController.heroHealthText;
         energyText.text = energy.ToString();
     }
 
@@ -50,19 +56,52 @@ public class Hero : Character
 
     public void GainEnergy(int amount)
     {
-        energy = Math.Min(maxEnergy, energy + amount);
-        energyText.text = energy.ToString();
+        SetEnergy(Math.Min(maxEnergy, energy + amount));
     }
 
     public void LoseEnergy(int amount)
     {
-        energy = Math.Max(0, energy - amount);
+        SetEnergy(Math.Max(0, energy - amount));
+    }
+
+    public void SetEnergy(int amount)
+    {
+        energy = amount;
         energyText.text = energy.ToString();
+        Sprite energySprite;
+        for(int i = 0; i < energyUI.Count; i++)
+        {
+            if(energy == 5)
+            {
+                energySprite = empoweredEnergy;
+            }
+            else if(i < energy)
+            {
+                energySprite = filledEnergy;
+            }
+            else
+            {
+                energySprite = emptyEnergy;
+            }
+            energyUI[i].GetComponent<SpriteRenderer>().sprite
+                = energySprite;
+        }
     }
 
     public void LoseAllEnergy()
     {
         LoseEnergy(energy);
+    }
+
+    public override void InstantiateCharacter(Vector2 position)
+    {
+        base.InstantiateCharacter(position);
+        instantiateEnergyBar();
+    }
+
+    public void instantiateEnergyBar()
+    {
+        
     }
 
     public override void Spawn(Vector2 pos)
@@ -94,11 +133,11 @@ public class Hero : Character
 
     public void MoveRight(Vector3 startingPosition)
     {
-        IEnumerator coroutine = MoveRight2(startingPosition);
+        IEnumerator coroutine = MoveRightCoroutine(startingPosition);
         gameController.StartCoroutine(coroutine);
     }
 
-    IEnumerator MoveRight2(Vector3 startingPosition)
+    IEnumerator MoveRightCoroutine(Vector3 startingPosition)
     {
         float time = 0;
         float walkTime = 2;
@@ -110,7 +149,7 @@ public class Hero : Character
         while (time < walkTime)
         {
             //Move hero
-            instances[0].position += new Vector3(6.09f, 0,0) * Time.deltaTime / walkTime;
+            sprite.position += new Vector3(6.09f, 0,0) * Time.deltaTime / walkTime;
 
             //Move camera
             gameController.cam.transform.position += new Vector3(6.09f, 0, 0) * Time.deltaTime / walkTime;
@@ -118,7 +157,7 @@ public class Hero : Character
             time += Time.deltaTime;
             yield return null;
         }
-        instances[0].transform.position = new Vector3(startingPosition.x + 6.09f, -2.58f,0);
+        sprite.transform.position = new Vector3(startingPosition.x + 6.09f, -2.58f,0);
         gameController.cam.transform.position = new Vector3(camStartPos.x + 6.09f, 0, -6);
         anim.SetBool("Idle", true);
 
@@ -169,5 +208,22 @@ public class Hero : Character
             yield return null;
         }
         gameController.cantCast.gameObject.SetActive(false);
+    }
+
+    public override void instantiateHealthBar(Vector2 position)
+    {
+        //Set height one time so health bar doesnt move
+        characterHeight = new Vector2(0f,
+            sprite.GetComponent<Renderer>().bounds.size.y);
+        characterGUI.Add(healthBar);
+        characterGUI.Add((Transform)healthText);
+        textBox = healthText.GetComponent<TextMesh>();
+    }
+
+    public override void UpdateStatusBars()
+    {
+        //Get positioning
+        Vector2 position = sprite.position;
+        textBox.text = Utils.ToDisplayText(health);
     }
 }

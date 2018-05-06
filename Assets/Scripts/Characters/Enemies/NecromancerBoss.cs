@@ -34,7 +34,7 @@ public class NecromancerBoss : Enemy, IDeathObserver
     private List<Spell> currentSpellbook;
 
     public NecromancerBoss()
-        : base("necromancer", "warrior", getTextBox(), health:100, maxGCD: 1)
+        : base("necromancer", "warrior", health:100, maxGCD: 1)
     {
         this.isFixed = true;
         this.moveTo = new Vector2(4.5f, -2.58f);
@@ -173,11 +173,5 @@ public class NecromancerBoss : Enemy, IDeathObserver
         {
             currentSpellbook = spellbook;
         }
-    }
-
-    private static TextMesh getTextBox()
-    {
-        string textBoxPath = "healthbar_sprite"; //TODO: read from config or other
-        return (TextMesh)Resources.Load(textBoxPath, typeof(TextMesh));
     }
 }

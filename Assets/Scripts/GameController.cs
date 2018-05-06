@@ -39,8 +39,19 @@ public class GameController : MonoBehaviour
 
     public Camera cam;
 
-    public TextMesh heroHealthText;
+    public Transform heroHealthText;
     public TextMesh heroEnergyText;
+    public Transform energy1;
+    public Transform energy2;
+    public Transform energy3;
+    public Transform energy4;
+    public Transform energy5;
+
+    public Sprite emptyEnergy;
+    public Sprite filledEnergy;
+    public Sprite empoweredEnergy;
+
+    public List<Transform> energyUI;
 
     public RectTransform tinyBox1;
     public RectTransform tinyBox2;
@@ -52,21 +63,24 @@ public class GameController : MonoBehaviour
     public RectTransform bigBox3;
     public RectTransform bigBox4;
 
-
-
     public List<SpellBinding> spellBindings = new List<SpellBinding>();
-    private Transform instance;
 
     // Use this for initialization
     void Start()
     {
         gameController = GetComponent<GameController>();
+        SetEnergyUI();
         SetStage();
         SetHero();
         SetSpells();
         SetSpellBindings();
         SetSpellToolTips();
         canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
+    }
+
+    private void SetEnergyUI()
+    {
+        energyUI = new List<Transform>() { energy1, energy2, energy3, energy4, energy5 };
     }
 
     private void SetStage()
@@ -81,6 +95,7 @@ public class GameController : MonoBehaviour
 
     private void SetHero()
     {
+
         this.hero = stage.hero;
     }
 
@@ -189,6 +204,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update() {
         stage.Update();
+        
         if (stage.inCombat)
         {
             CheckInput();

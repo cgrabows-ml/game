@@ -29,7 +29,7 @@ public class CrystalBuff : Buff
         crystalBuff = MonoBehaviour.Instantiate(prefab);
 
         crystalBuff.localPosition = startPos;
-        new Projectile(owner.instances[0].localPosition + projectileOffset, crystalBuff,
+        new Projectile(owner.sprite.localPosition + projectileOffset, crystalBuff,
             delay);
 
         IEnumerator coroutine = makeAfterDelay();
@@ -41,7 +41,7 @@ public class CrystalBuff : Buff
     {
         yield return new WaitForSeconds(delay);
         crystalBuff = MonoBehaviour.Instantiate(prefab);
-        crystalBuff.localPosition = owner.instances[0].localPosition + projectileOffset;
+        crystalBuff.localPosition = owner.sprite.localPosition + projectileOffset;
     }
 
     public override void RemoveBuff()

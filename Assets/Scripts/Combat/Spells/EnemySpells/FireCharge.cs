@@ -26,7 +26,7 @@ public class FireCharges : DamageSpell
         base.CastEffect();
         Transform projectile = boss.SpendCharge();
         Vector3 projectileOffset = new Vector2(0, .5f);
-        new Projectile(GetTargets()[0].instances[0].position + projectileOffset, projectile,
+        new Projectile(GetTargets()[0].sprite.position + projectileOffset, projectile,
             delay);
         gameController.StartCoroutine(CastAgain());
     }

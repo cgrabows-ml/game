@@ -8,7 +8,8 @@ using UnityEngine.UI;
 
 public abstract class Character
 {
-    public GameController gameController = GameController.gameController;
+    public static GameController gameController = GameController.gameController;
+    public List<Transform> characterGUI = new List<Transform> { };
 
     public List<Spell> spellbook;
     private float maxHealth;
@@ -20,10 +21,17 @@ public abstract class Character
     public float inMultiplier = 1;
     public float outMultiplier = 1;
     public float deathTime = 2;
+    protected float sizeScale = 1f;
+
+    public Vector2 characterHeight;
+    public Vector2 floatDistance = new Vector2(0f, .3f);
+
     public TextMesh textBox;
+    public Transform healthBar;
+    public Transform healthText;
+    public Transform sprite;
     public Animator anim;
     public List<Buff> buffs = new List<Buff> { };
-    public List<Transform> instances = new List<Transform> { };
     public List<TextMesh> floatingCombatText = new List<TextMesh> { };
     public Transform prefab;
     protected List<SpellCastObserver> spellCastObservers = new List<SpellCastObserver>();
@@ -35,30 +43,80 @@ public abstract class Character
     /// <param name="textBox"></param>
     /// <param name="anim"></param>
     /// <param name="max_health"></param>
-    public Character(String prefabPath, TextMesh textBox,
+    public Character(String prefabPath,
         float maxHealth = 10,
         float maxGCD = 2)
     {
         this.maxHealth = maxHealth;
         this.health = maxHealth;
         this.spellbook = getSpells();
-        this.textBox = textBox;
         this.maxGCD = maxGCD;
         this.prefab = (Transform)Resources.Load(prefabPath, typeof(Transform));
-        //this.anim = prefab.GetComponent<Animator>();        
     }
 
     protected abstract List<Spell> getSpells();
 
     public virtual void Spawn(Vector2 pos)
     {
-        Transform instance = MonoBehaviour.Instantiate(prefab);
-        instance.position = pos;
-        instances.Add(instance);
-        anim = instance.GetComponent<Animator>();
-        textBox.text = Utils.ToDisplayText(health);
+        //Transform instance = MonoBehaviour.Instantiate(prefab);
+        //anim = instance.GetComponent<Animator>();
+        //instance.position = pos;
+        //characterGUI.Add(instance);
+        //textBox.text = Utils.ToDisplayText(health);
+        InstantiateCharacter(new Vector2(pos.x, pos.y));
+    }
 
+    public virtual void InstantiateCharacter(Vector2 position)
+    {
+        instantiateSprite(position);
+        instantiateHealthBar(position);
+        UpdateStatusBars();
+    }
 
+    public void instantiateSprite(Vector2 position)
+    {
+        sprite = MonoBehaviour.Instantiate(prefab, position, Quaternion.identity);
+        anim = sprite.GetComponent<Animator>();
+        sprite.localScale *= sizeScale;
+        characterGUI.Add(sprite);
+    }
+
+    public virtual void instantiateHealthBar(Vector2 position)
+    {
+        //Set height one time so health bar doesnt move
+        characterHeight = new Vector2(0f,
+            sprite.GetComponent<Renderer>().bounds.size.y);
+
+        //Instantiate health bar
+        healthBar = MonoBehaviour.Instantiate(
+             (Transform)Resources.Load("healthbar_sprite",
+             typeof(Transform)), new Vector2(0,0), Quaternion.identity);
+        characterGUI.Add(healthBar);
+
+        // Get healthTextFab
+        Transform healthTextFab = (Transform)Resources.Load(
+        "enemy_text", typeof(Transform));
+
+        //Instantiate Text
+        healthText = MonoBehaviour.Instantiate(healthTextFab, new Vector2(0, 0),
+            Quaternion.identity);
+        characterGUI.Add(healthText);
+        textBox = healthText.GetComponent<TextMesh>();
+        textBox.text = Utils.ToDisplayText(health); 
+    }
+
+    public virtual void UpdateStatusBars()
+    {
+        //Get positioning
+        Vector2 position = sprite.position;
+        Vector2 healthBarOffset = characterHeight + floatDistance;
+
+        //Move health bar
+        healthBar.position = position + healthBarOffset;
+
+        //Update health text
+        healthText.position = position + healthBarOffset;
+        //textBox.text = Utils.ToDisplayText(health);
     }
 
     //Also casts the spell
@@ -102,6 +160,7 @@ public abstract class Character
     public void Update()
     {
         ReduceCooldowns();
+        UpdateStatusBars();
         buffs.ForEach(buff => buff.Update());
     }
 
@@ -160,7 +219,7 @@ public abstract class Character
     public virtual void CheckDeadAndKill()
     { 
         if (health <= 0) {
-            foreach (Transform instance in instances)
+            foreach (Transform uiElement in characterGUI)
             {
                 MonoBehaviour.print("You Lose.");
                 //MonoBehaviour.Destroy(instance.gameObject);
@@ -216,8 +275,8 @@ public abstract class Character
         //103 is the scale from canvas to non-canvas, at least it's really close
         FCT.transform.localScale /= 103;
 
-        Vector3 newPos = new Vector3(instances[0].position.x + .2f,
-            instances[0].position.y + .4f, 0);
+        Vector3 newPos = new Vector3(sprite.position.x + .2f,
+            sprite.position.y + .4f, 0);
         FCT.transform.position = newPos;
 
         IEnumerator coroutine = DestroyFCT(FCT, 1.5f);
@@ -257,9 +316,9 @@ public abstract class Character
             time -= Time.deltaTime;
             yield return null;
         }
-        foreach (Transform instance in instances)
+        foreach (Transform uiElement in characterGUI)
         {
-            MonoBehaviour.Destroy(instance.gameObject);
+            MonoBehaviour.Destroy(uiElement.gameObject);
         }
     }
 }

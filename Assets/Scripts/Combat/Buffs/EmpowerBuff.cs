@@ -38,7 +38,7 @@ public class EmpowerBuff : Buff, SpellCastObserver {
         //Create game object for Empower graphic
         Transform prefab = (Transform)Resources.Load("PWS", typeof(Transform));
         empowerBuff = MonoBehaviour.Instantiate(prefab);
-        Transform ownerPrefab = owner.instances[0];
+        Transform ownerPrefab = owner.sprite;
         empowerBuff.position = ownerPrefab.position + new Vector3(0, 1.8f);
     }
 

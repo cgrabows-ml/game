@@ -8,7 +8,7 @@ public class Crystal : Enemy
 {
 
     public Crystal()
-        : base("crystal", "warrior", getTextBox(), health:15, maxGCD: 3)
+        : base("crystal", "warrior", health:15, maxGCD: 3)
     {
         isFixed = true;
         this.moveTo = new Vector2(3f, -2.58f);
@@ -20,7 +20,7 @@ public class Crystal : Enemy
         float damageTaken =  base.TakeDamage(damage, source);
         if (health == 0 && healthBefore > 0)
         {
-            CrystalBuff c = new CrystalBuff(source, instances[0].localPosition);
+            CrystalBuff c = new CrystalBuff(source, sprite.localPosition);
             c.ApplyBuff();
 
         }
@@ -31,11 +31,5 @@ public class Crystal : Enemy
     {
         List<Spell> spells = new List<Spell> {};
         return spells;
-    }
-
-    private static TextMesh getTextBox()
-    {
-        string textBoxPath = "healthbar_sprite"; //TODO: read from config or other
-        return (TextMesh)Resources.Load(textBoxPath, typeof(TextMesh));
     }
 }
