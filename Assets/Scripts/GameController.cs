@@ -40,7 +40,6 @@ public class GameController : MonoBehaviour
     public Camera cam;
 
     public Transform heroHealthText;
-    public TextMesh heroEnergyText;
     public Transform energy1;
     public Transform energy2;
     public Transform energy3;
@@ -129,8 +128,7 @@ public class GameController : MonoBehaviour
             tooltip.spell = hero.spellbook[i];
             i++;
         }
-
-
+        
         tinyBox1.GetComponent<KeypressDownTiny>().k = spellBindings[0].GetKey();
         tinyBox2.GetComponent<KeypressDownTiny>().k = spellBindings[1].GetKey();
         tinyBox3.GetComponent<KeypressDownTiny>().k = spellBindings[2].GetKey();
@@ -204,11 +202,11 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update() {
         stage.Update();
-        
+        hero.Update();
+
         if (stage.inCombat)
         {
             CheckInput();
-            hero.Update();
             UpdateView();
         }
 

@@ -318,11 +318,12 @@
     <Compile Include="Assets\Scripts\Combat\Spells\EnemySpells\StoreCharge.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\EnemySpells\SummonCrystal.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\EnemySpells\SummonSkeleton.cs" />
+    <Compile Include="Assets\Scripts\Combat\Spells\HeroSpell.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\AOEAttack.cs" />
+    <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\BigDamage.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\Block.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\Bomb.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\Empower.cs" />
-    <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\EnergyDamage.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\EnergyGenerator.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\EnergyHeal.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\Knockback.cs" />
@@ -345,6 +346,7 @@
     <Compile Include="Assets\Scripts\UI\SpellBinding.cs" />
     <Compile Include="Assets\Scripts\UI\TooltipHover.cs" />
     <Compile Include="Assets\Scripts\UI\TooltipTrigger.cs" />
+    <Compile Include="Assets\Scripts\Util\CombatUtils.cs" />
     <Compile Include="Assets\Scripts\Util\DeathObserver.cs" />
     <Compile Include="Assets\Scripts\Util\SpellCastObserver.cs" />
     <Compile Include="Assets\Scripts\Util\Utils.cs" />

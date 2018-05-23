@@ -51,7 +51,6 @@ public class NecromancerBoss : Enemy, IDeathObserver
         if (phase == 1  && health <= transitionHealthThreshhold)
         {
             //Transition to stage 2
-            MonoBehaviour.print("Transitioning");
             maxCharges = phaseTwoMaxCharges;
             phase = 2;
             foreach (Transform charge in charges)

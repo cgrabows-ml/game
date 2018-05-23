@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class Hero : Character
 {
 
-    private TextMesh energyText = gameController.heroEnergyText;
     private int energy = 0;
     public int maxEnergy = 5;
 
@@ -30,8 +29,9 @@ public class Hero : Character
     {
         maxGCD = 1f;
         GCD = 0;
+        healthBarScale = 2f;
         healthText = gameController.heroHealthText;
-        energyText.text = energy.ToString();
+        healthBarFloatDistance = new Vector2(0, 1);
     }
 
     protected override List<Spell> getSpells()
@@ -67,7 +67,6 @@ public class Hero : Character
     public void SetEnergy(int amount)
     {
         energy = amount;
-        energyText.text = energy.ToString();
         Sprite energySprite;
         for(int i = 0; i < energyUI.Count; i++)
         {
@@ -133,8 +132,14 @@ public class Hero : Character
 
     public void MoveRight(Vector3 startingPosition)
     {
+        Vector3 endPosition = startingPosition + new Vector3(6, 0, 0);
         IEnumerator coroutine = MoveRightCoroutine(startingPosition);
         gameController.StartCoroutine(coroutine);
+    }
+
+    public override void Move(Vector2 position)
+    {
+        base.Move(position);
     }
 
     IEnumerator MoveRightCoroutine(Vector3 startingPosition)
@@ -149,7 +154,7 @@ public class Hero : Character
         while (time < walkTime)
         {
             //Move hero
-            sprite.position += new Vector3(6.09f, 0,0) * Time.deltaTime / walkTime;
+            sprite.position += new Vector3(6.09f, 0, 0) * Time.deltaTime / walkTime;
 
             //Move camera
             gameController.cam.transform.position += new Vector3(6.09f, 0, 0) * Time.deltaTime / walkTime;
@@ -157,12 +162,12 @@ public class Hero : Character
             time += Time.deltaTime;
             yield return null;
         }
-        sprite.transform.position = new Vector3(startingPosition.x + 6.09f, -2.58f,0);
+        sprite.transform.position = new Vector3(startingPosition.x + 6.09f, -2.58f, 0);
         gameController.cam.transform.position = new Vector3(camStartPos.x + 6.09f, 0, -6);
         anim.SetBool("Idle", true);
 
     }
-    
+
 
     /// <summary>
     /// Displays a fading message when the player attempts to cast an uncastable spell
@@ -210,20 +215,20 @@ public class Hero : Character
         gameController.cantCast.gameObject.SetActive(false);
     }
 
-    public override void instantiateHealthBar(Vector2 position)
-    {
-        //Set height one time so health bar doesnt move
-        characterHeight = new Vector2(0f,
-            sprite.GetComponent<Renderer>().bounds.size.y);
-        characterGUI.Add(healthBar);
-        characterGUI.Add((Transform)healthText);
-        textBox = healthText.GetComponent<TextMesh>();
-    }
+    //public override void instantiateHealthBar(Vector2 position)
+    //{
+    //    //Set height one time so health bar doesnt move
+    //    characterHeight = new Vector2(0f,
+    //        sprite.GetComponent<Renderer>().bounds.size.y);
+    //    characterGUI.Add(healthBar);
+    //    characterGUI.Add((Transform)healthText);
+    //    textBox = healthText.GetComponent<TextMesh>();
+    //}
 
-    public override void UpdateStatusBars()
-    {
-        //Get positioning
-        Vector2 position = sprite.position;
-        textBox.text = Utils.ToDisplayText(health);
-    }
+    //public override void UpdateStatusBars()
+    //{
+    //    //Get positioning
+    //    Vector2 position = sprite.position;
+    //    textBox.text = Utils.ToDisplayText(health);
+    //}
 }

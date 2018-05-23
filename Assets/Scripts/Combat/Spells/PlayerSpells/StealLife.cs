@@ -24,6 +24,7 @@ public class StealLife : HeroSpell
     private void stealLife(float damage)
     {
         Enemy target = gameController.stage.getActiveEnemies()[0];
+
         float damageDealt = CombatUtils.DealDamage(hero, target, damage);
         if (target.health <= 0)
         {

@@ -23,12 +23,20 @@ public abstract class Character
     public float deathTime = 2;
     protected float sizeScale = 1f;
 
+    public Vector2 moveTo = new Vector3(-100, 0);
+    protected float walkSpeed = 1;
+    protected Boolean isMoving = false;
+
     public Vector2 characterHeight;
-    public Vector2 floatDistance = new Vector2(0f, .3f);
+    public Vector2 healthBarFloatDistance = new Vector2(0f, .3f);
+    public float healthBarScale = 1f;
 
     public TextMesh textBox;
     public Transform healthBar;
     public Transform healthText;
+    public Transform healthBarFill;
+    private float healthBarFillWidth;
+    private Vector3 healthFillScale;
     public Transform sprite;
     public Animator anim;
     public List<Buff> buffs = new List<Buff> { };
@@ -92,10 +100,25 @@ public abstract class Character
              (Transform)Resources.Load("healthbar_sprite",
              typeof(Transform)), new Vector2(0,0), Quaternion.identity);
         characterGUI.Add(healthBar);
+        healthBar.localScale *= healthBarScale;
 
         // Get healthTextFab
         Transform healthTextFab = (Transform)Resources.Load(
-        "enemy_text", typeof(Transform));
+        "health_text", typeof(Transform));
+
+        //Create Health Bar Fill
+        healthBarFill =
+            MonoBehaviour.Instantiate(
+             (Transform)Resources.Load("healthbar_fill",
+             typeof(Transform)), new Vector2(0, 0), Quaternion.identity);
+        characterGUI.Add(healthBarFill);
+        //healthBarFill.localScale *= healthBarScale;
+        Bounds healthFillBounds = healthBarFill.GetComponent<SpriteRenderer>().bounds;
+        healthFillBounds.size = healthBar.GetComponent<Renderer>().bounds.size;
+        healthBarFill.localScale *= healthBarScale;
+        healthFillScale = healthBarFill.localScale;
+
+        healthBarFillWidth = healthBarFill.GetComponent<Renderer>().bounds.size.x;
 
         //Instantiate Text
         healthText = MonoBehaviour.Instantiate(healthTextFab, new Vector2(0, 0),
@@ -109,14 +132,90 @@ public abstract class Character
     {
         //Get positioning
         Vector2 position = sprite.position;
-        Vector2 healthBarOffset = characterHeight + floatDistance;
+        Vector2 healthBarOffset = characterHeight +
+            healthBarFloatDistance;
 
         //Move health bar
         healthBar.position = position + healthBarOffset;
 
         //Update health text
         healthText.position = position + healthBarOffset;
-        //textBox.text = Utils.ToDisplayText(health);
+
+        //Update health bar fill
+        healthBarFill.position = position + healthBarOffset;
+        float percentFilled = health / maxHealth;
+        healthBarFill.localScale =  new Vector2(healthFillScale.x* percentFilled, healthFillScale.y);
+        float currentWidth = healthBarFill.GetComponent<Renderer>().bounds.size.x;
+        float offset = (healthBarFillWidth - currentWidth)/2;
+        healthBarFill.position -= new Vector3(offset, 0);
+
+        textBox.text = Utils.ToDisplayText(health);
+    }
+
+    public virtual void Move(Vector2 position)
+    {
+        if (moveTo.x != position.x || moveTo.y != position.y)
+        {
+            moveTo = position;
+            if (!isMoving)
+            {
+                isMoving = true;
+                IEnumerator coroutine = MoveCoroutine();
+                gameController.StartCoroutine(coroutine);
+            }
+        }
+    }
+
+    public Boolean CheckDead()
+    {
+        if (health <= 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public virtual void MoveUpdate() {
+        //Use the coded out one for dynamic move speed
+        //characterGUI.ForEach(i => i.position += new Vector3((moveTo.x - startPositions[characterGUI.IndexOf(i)].x) * Time.deltaTime * walkSpeed, 0, 0));
+        characterGUI.ForEach(i =>
+            i.position -= new Vector3(Time.deltaTime * walkSpeed, 0, 0));
+    }
+
+    public virtual void FinishMove()
+    {
+        if (!CheckDead())
+        {
+            characterGUI.ForEach(i => i.position = new Vector2(moveTo.x, i.position.y));
+            anim.SetBool("Idle", true);
+        }
+        isMoving = false;
+    }
+
+    //Moves enemy to it moveTo
+    IEnumerator MoveCoroutine()
+    {
+        if (!CheckDead())
+        {
+            anim.SetBool("Walk", true);
+
+            //Get End position of everything
+            List<Vector3> startPositions = new List<Vector3> { };
+            foreach (Transform i in characterGUI)
+            {
+                startPositions.Add(i.position);
+            }
+
+            while (!CheckDead() && sprite.position.x > moveTo.x)
+            {
+                MoveUpdate();
+                yield return null;
+            }
+            FinishMove();
+        }
     }
 
     //Also casts the spell
@@ -159,9 +258,13 @@ public abstract class Character
     //Right now this removes buffs every update... should be changed
     public void Update()
     {
-        ReduceCooldowns();
         UpdateStatusBars();
-        buffs.ForEach(buff => buff.Update());
+
+        if(GameController.gameController.stage.inCombat)
+        {
+            ReduceCooldowns();
+            buffs.ForEach(buff => buff.Update());
+        }
     }
 
     /// <summary>
@@ -217,13 +320,13 @@ public abstract class Character
     }
 
     public virtual void CheckDeadAndKill()
-    { 
-        if (health <= 0) {
+    {
+        if (CheckDead()) {
             foreach (Transform uiElement in characterGUI)
             {
-                MonoBehaviour.print("You Lose.");
-                //MonoBehaviour.Destroy(instance.gameObject);
+                MonoBehaviour.Destroy(uiElement.gameObject);
             }
+            MonoBehaviour.print("You Lose.");
         }
     }
 
@@ -317,7 +420,14 @@ public abstract class Character
         }
         foreach (Transform uiElement in characterGUI)
         {
-            MonoBehaviour.Destroy(uiElement.gameObject);
+            if (uiElement != null)
+            {
+                MonoBehaviour.Destroy(uiElement.gameObject);
+            }
+            else
+            {
+                MonoBehaviour.print("Warning!! Tried to destroy null ui element!");
+            }
         }
     }
 }
