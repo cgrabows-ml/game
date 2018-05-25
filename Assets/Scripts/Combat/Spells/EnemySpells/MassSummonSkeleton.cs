@@ -23,7 +23,9 @@ public class MassSummonSkeleton : Spell, IDeathObserver
         this.minSkeletons = minSkeletons;
         this.maxSkeletons = maxSkeletons;
         this.totalLevel = totalLevel;
+        MonoBehaviour.print("Set the stage");
         stage = gameController.stage;
+
         name = "Mass Summon Skeletons";
     }
 

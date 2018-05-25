@@ -1,46 +1,16 @@
 using System;
 using UnityEngine;
 
-public class SummonSkeleton : Spell, IDeathObserver
+public class SummonSkeleton : SummonEnemy, IDeathObserver
 {
-
-    private Stage stage;
-    private int skeletonsAlive = 0;
-    private int maxSkeletons = 3;
-
     public SummonSkeleton(Character caster)
-        :base(caster, 5, "Use2")
+        :base(caster)
     {
-        stage = gameController.stage;
 
     }
 
-    public override void ReduceCooldown()
+    public override Enemy getEnemy()
     {
-        if (skeletonsAlive < maxSkeletons)
-        {
-            SetCooldown(Math.Max(0, GetCooldown() - Time.deltaTime));
-        }
-    }
-
-    public void DeathUpdate(Character character)
-    {
-        skeletonsAlive -= 1;
-        MonoBehaviour.print(skeletonsAlive);
-
-    }
-
-    public override Boolean isCastable()
-    {
-        return base.isCastable() && skeletonsAlive < maxSkeletons;
-    }
-
-    public override void CastEffect()
-    {
-        int casterIndex = stage.enemies.IndexOf((Enemy)caster);
-        Enemy skeleton = new Skeleton();
-        stage.AddEnemyAtIndex(skeleton, casterIndex);
-        skeleton.RegisterDeathObserver(this);
-        skeletonsAlive += 1;
+        return new Skeleton();
     }
 }

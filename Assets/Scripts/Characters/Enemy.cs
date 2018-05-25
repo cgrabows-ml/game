@@ -41,7 +41,6 @@ public abstract class Enemy : Character
             base.Update();
             Cast();
         }
-
     }
 
     /// <summary>

@@ -18,7 +18,6 @@ public abstract class Encounter {
     public Encounter(Stage stage)
     {
         this.stage = stage;
-        this.startingEnemies = getStartingEnemies();
     }
 
     protected abstract List<Enemy> getStartingEnemies();
@@ -33,6 +32,7 @@ public abstract class Encounter {
     }
 
 	public void StartEncounter () {
+        this.startingEnemies = getStartingEnemies();
         SetEnemies(startingEnemies);
 	}
 

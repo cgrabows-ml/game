@@ -74,6 +74,7 @@ public class GameController : MonoBehaviour
         SetSpells();
         SetSpellBindings();
         SetSpellToolTips();
+
         canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
     }
 
@@ -84,11 +85,8 @@ public class GameController : MonoBehaviour
 
     private void SetStage()
     {
-        stage = new Stage();
-        //Encounter encounter = new Encounter(stage, enemies);
-        List<Encounter> encounters = new List<Encounter>() {
-            new NecromancerBossEncounter(stage) };
-        stage.SetEncounters(encounters);
+        //stage = new TutorialStage();
+        stage = new NecromancerBossStage();
         stage.StartStage();
     }
 

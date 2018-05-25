@@ -62,7 +62,6 @@ public class NecromancerBoss : Enemy, IDeathObserver
         }
         if (phase == 2 && health <= finalTHealthhreshhold)
         {
-            MonoBehaviour.print("Final");
             //Transition to final burn
             phase = 3;
             ChangeSpellbook(fireChargesSpellbook);

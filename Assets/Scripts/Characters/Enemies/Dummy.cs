@@ -15,7 +15,7 @@ public class Dummy : Enemy
 
     protected override List<Spell> getSpells()
     {
-        return null; ;
+        return new List<Spell> { }; ;
     }
 
     public override void Update()

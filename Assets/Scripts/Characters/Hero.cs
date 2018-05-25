@@ -68,7 +68,8 @@ public class Hero : Character
     {
         energy = amount;
         Sprite energySprite;
-        for(int i = 0; i < energyUI.Count; i++)
+
+        for (int i = 0; i < energyUI.Count; i++)
         {
             if(energy == 5)
             {

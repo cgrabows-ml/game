@@ -317,6 +317,7 @@
     <Compile Include="Assets\Scripts\Combat\Spells\EnemySpells\Shadowbolt.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\EnemySpells\StoreCharge.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\EnemySpells\SummonCrystal.cs" />
+    <Compile Include="Assets\Scripts\Combat\Spells\EnemySpells\SummonEnemy.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\EnemySpells\SummonSkeleton.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\HeroSpell.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\AOEAttack.cs" />
@@ -330,14 +331,18 @@
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\StealLife.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\Spell.cs" />
     <Compile Include="Assets\Scripts\Encounters\Encounter.cs" />
+    <Compile Include="Assets\Scripts\Encounters\FourDummies.cs" />
     <Compile Include="Assets\Scripts\Encounters\GiantBossEncounter.cs" />
     <Compile Include="Assets\Scripts\Encounters\NecromancerBossEncounter.cs" />
     <Compile Include="Assets\Scripts\Encounters\SampleEncounters\Encounter1.cs" />
     <Compile Include="Assets\Scripts\Encounters\SampleEncounters\Encounter2.cs" />
+    <Compile Include="Assets\Scripts\Encounters\SummonerEncounter.cs" />
     <Compile Include="Assets\Scripts\FPSDisplay.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
     <Compile Include="Assets\Scripts\MenuScript.cs" />
-    <Compile Include="Assets\Scripts\Stage.cs" />
+    <Compile Include="Assets\Scripts\Stages\NecromancerBossStage.cs" />
+    <Compile Include="Assets\Scripts\Stages\Stage.cs" />
+    <Compile Include="Assets\Scripts\Stages\TutorialStage.cs" />
     <Compile Include="Assets\Scripts\UI\KeypressDownBig.cs" />
     <Compile Include="Assets\Scripts\UI\KeypressDownTiny.cs" />
     <Compile Include="Assets\Scripts\UI\KeypressShrink.cs" />
