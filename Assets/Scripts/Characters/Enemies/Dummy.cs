@@ -18,8 +18,16 @@ public class Dummy : Enemy
         return new List<Spell> { }; ;
     }
 
-    public override void Update()
+    public override void Spawn(Vector2 pos)
     {
+        base.Spawn(pos);
+        this.isFixed = true;
+    }
 
+    public override float TakeDamage(float baseDamage, Character source)
+    {
+        float x = base.TakeDamage(baseDamage, source);
+
+        return x;
     }
 }

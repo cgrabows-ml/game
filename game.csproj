@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -303,6 +305,7 @@
     <Compile Include="Assets\Scripts\Characters\Enemies\Giant.cs" />
     <Compile Include="Assets\Scripts\Characters\Enemies\Necromancer.cs" />
     <Compile Include="Assets\Scripts\Characters\Enemies\NecromancerBoss.cs" />
+    <Compile Include="Assets\Scripts\Characters\Enemies\DummySummoner.cs" />
     <Compile Include="Assets\Scripts\Characters\Enemies\Skeleton.cs" />
     <Compile Include="Assets\Scripts\Characters\Enemies\Warrior.cs" />
     <Compile Include="Assets\Scripts\Characters\Enemy.cs" />
@@ -314,6 +317,7 @@
     <Compile Include="Assets\Scripts\Combat\Spells\DamageSpell.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\EnemySpells\FireCharge.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\EnemySpells\MassSummonSkeleton.cs" />
+    <Compile Include="Assets\Scripts\Combat\Spells\EnemySpells\SummonDummy.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\EnemySpells\Shadowbolt.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\EnemySpells\StoreCharge.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\EnemySpells\SummonCrystal.cs" />
@@ -331,7 +335,7 @@
     <Compile Include="Assets\Scripts\Combat\Spells\PlayerSpells\StealLife.cs" />
     <Compile Include="Assets\Scripts\Combat\Spells\Spell.cs" />
     <Compile Include="Assets\Scripts\Encounters\Encounter.cs" />
-    <Compile Include="Assets\Scripts\Encounters\FourDummies.cs" />
+    <Compile Include="Assets\Scripts\Encounters\Dummies.cs" />
     <Compile Include="Assets\Scripts\Encounters\GiantBossEncounter.cs" />
     <Compile Include="Assets\Scripts\Encounters\NecromancerBossEncounter.cs" />
     <Compile Include="Assets\Scripts\Encounters\SampleEncounters\Encounter1.cs" />
@@ -348,7 +352,7 @@
     <Compile Include="Assets\Scripts\UI\KeypressShrink.cs" />
     <Compile Include="Assets\Scripts\UI\Projectile.cs" />
     <Compile Include="Assets\Scripts\UI\Projectiles\Lob.cs" />
-    <Compile Include="Assets\Scripts\UI\SpellBinding.cs" />
+    <Compile Include="Assets\Scripts\UI\SpellUI.cs" />
     <Compile Include="Assets\Scripts\UI\TooltipHover.cs" />
     <Compile Include="Assets\Scripts\UI\TooltipTrigger.cs" />
     <Compile Include="Assets\Scripts\Util\CombatUtils.cs" />

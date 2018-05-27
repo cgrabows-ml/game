@@ -13,7 +13,7 @@ public class SummonerEncounter: Encounter
 
     protected override List<Enemy> getStartingEnemies()
     {
-        return new List<Enemy>() {};
+        return new List<Enemy>() {new DummySummoner() };
     }
 
 }

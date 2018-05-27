@@ -614,6 +614,10 @@ Prefab:
       propertyPath: m_Name
       value: CooldownCover 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1984764014608746, guid: 34894fc3d44a01841a693fa0850bb1c7, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 34894fc3d44a01841a693fa0850bb1c7, type: 2}
   m_IsPrefabParent: 0
@@ -738,6 +742,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1984764014608746, guid: 34894fc3d44a01841a693fa0850bb1c7, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 34894fc3d44a01841a693fa0850bb1c7, type: 2}
   m_IsPrefabParent: 0
@@ -855,6 +863,10 @@ Prefab:
     - target: {fileID: 1245045362351068, guid: 34894fc3d44a01841a693fa0850bb1c7, type: 2}
       propertyPath: m_Name
       value: Cast 4 Box
+      objectReference: {fileID: 0}
+    - target: {fileID: 1984764014608746, guid: 34894fc3d44a01841a693fa0850bb1c7, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 34894fc3d44a01841a693fa0850bb1c7, type: 2}
@@ -1504,6 +1516,10 @@ Prefab:
     - target: {fileID: 1245045362351068, guid: 34894fc3d44a01841a693fa0850bb1c7, type: 2}
       propertyPath: m_Name
       value: Cast 3 Box
+      objectReference: {fileID: 0}
+    - target: {fileID: 1984764014608746, guid: 34894fc3d44a01841a693fa0850bb1c7, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 34894fc3d44a01841a693fa0850bb1c7, type: 2}

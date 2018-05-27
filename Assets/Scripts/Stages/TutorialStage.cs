@@ -9,9 +9,11 @@ public class TutorialStage : Stage
     {
         //Encounter encounter = new Encounter(stage, enemies);
         List<Encounter> encounters = new List<Encounter>() {
-            new FourDummies(this),
-            new FourDummies(this)
+            //new Dummies(this, 4),
+            new SummonerEncounter(this)
         };
+
+        //this.leftMostPositionX = -1f;
         SetEncounters(encounters);
     }
 }

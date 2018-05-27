@@ -26,4 +26,9 @@ public class EnergyGenerator : HeroSpell
     {
         // can't be empowered
     }
+
+    public override Boolean PreconditionsMet()
+    {
+        return gameController.stage.getActiveEnemies().Count > 0;
+    }
 }

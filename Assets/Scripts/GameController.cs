@@ -46,10 +46,6 @@ public class GameController : MonoBehaviour
     public Transform energy4;
     public Transform energy5;
 
-    public Sprite emptyEnergy;
-    public Sprite filledEnergy;
-    public Sprite empoweredEnergy;
-
     public List<Transform> energyUI;
 
     public RectTransform tinyBox1;
@@ -62,7 +58,7 @@ public class GameController : MonoBehaviour
     public RectTransform bigBox3;
     public RectTransform bigBox4;
 
-    public List<SpellBinding> spellBindings = new List<SpellBinding>();
+    public List<SpellUI> spellUIs = new List<SpellUI>();
 
     // Use this for initialization
     void Start()
@@ -71,9 +67,8 @@ public class GameController : MonoBehaviour
         SetEnergyUI();
         SetStage();
         SetHero();
-        SetSpells();
-        SetSpellBindings();
-        SetSpellToolTips();
+        SetSpellUIs();
+        //SetSpellToolTips();
 
         canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
     }
@@ -85,8 +80,8 @@ public class GameController : MonoBehaviour
 
     private void SetStage()
     {
-        //stage = new TutorialStage();
-        stage = new NecromancerBossStage();
+        stage = new TutorialStage();
+        //stage = new NecromancerBossStage();
         stage.StartStage();
     }
 
@@ -95,7 +90,6 @@ public class GameController : MonoBehaviour
 
         this.hero = stage.hero;
     }
-
 
     private void SetSpellToolTips()
     {
@@ -127,32 +121,21 @@ public class GameController : MonoBehaviour
             i++;
         }
         
-        tinyBox1.GetComponent<KeypressDownTiny>().k = spellBindings[0].GetKey();
-        tinyBox2.GetComponent<KeypressDownTiny>().k = spellBindings[1].GetKey();
-        tinyBox3.GetComponent<KeypressDownTiny>().k = spellBindings[2].GetKey();
-        tinyBox4.GetComponent<KeypressDownTiny>().k = spellBindings[3].GetKey();
+        tinyBox1.GetComponent<KeypressDownTiny>().k = spellUIs[0].GetKey();
+        tinyBox2.GetComponent<KeypressDownTiny>().k = spellUIs[1].GetKey();
+        tinyBox3.GetComponent<KeypressDownTiny>().k = spellUIs[2].GetKey();
+        tinyBox4.GetComponent<KeypressDownTiny>().k = spellUIs[3].GetKey();
 
-        bigBox1.GetComponent<KeypressDownBig>().k = spellBindings[0].GetKey();
-        bigBox2.GetComponent<KeypressDownBig>().k = spellBindings[1].GetKey();
-        bigBox3.GetComponent<KeypressDownBig>().k = spellBindings[2].GetKey();
-        bigBox4.GetComponent<KeypressDownBig>().k = spellBindings[3].GetKey();
+        bigBox1.GetComponent<KeypressDownBig>().k = spellUIs[0].GetKey();
+        bigBox2.GetComponent<KeypressDownBig>().k = spellUIs[1].GetKey();
+        bigBox3.GetComponent<KeypressDownBig>().k = spellUIs[2].GetKey();
+        bigBox4.GetComponent<KeypressDownBig>().k = spellUIs[3].GetKey();
 
-        castCover1.GetComponent<KeypressShrink>().k = spellBindings[0].GetKey();
-        castCover2.GetComponent<KeypressShrink>().k = spellBindings[1].GetKey();
-        castCover3.GetComponent<KeypressShrink>().k = spellBindings[2].GetKey();
-        castCover4.GetComponent<KeypressShrink>().k = spellBindings[3].GetKey();
+        castCover1.GetComponent<KeypressShrink>().k = spellUIs[0].GetKey();
+        castCover2.GetComponent<KeypressShrink>().k = spellUIs[1].GetKey();
+        castCover3.GetComponent<KeypressShrink>().k = spellUIs[2].GetKey();
+        castCover4.GetComponent<KeypressShrink>().k = spellUIs[3].GetKey();
 
-    }
-
-    /// <summary>
-    /// Initializes Hero spells.
-    /// </summary>
-    private void SetSpells()
-    {
-        foreach(Spell spell in hero.spellbook)
-        {
-            spellbook.Add(spell);
-        }
     }
 
     /// <summary>
@@ -182,18 +165,17 @@ public class GameController : MonoBehaviour
     }
 
     /// <summary>
-    /// Initializes spellBindings to tie together the keybinds, spells, and text boxes.
+    /// Initializes spellUIs to tie together the keybinds, spells, and text boxes.
     /// </summary>
-    private void SetSpellBindings()
+    private void SetSpellUIs()
     {
         List<RectTransform> castCovers = GetCastCovers();
         List<Text> textBoxes = GetTextBoxes();
         List<KeyCode> keys = GetKeys();
-        for (int i = 0; i < spellbook.Count; i++)
+        for (int i = 0; i < hero.spellbook.Count; i++)
         {
-            SpellBinding binding = new SpellBinding(hero.spellbook[i], keys[i], textBoxes[i],
-                castCovers[i]);
-            spellBindings.Add(binding);
+            SpellUI binding = new SpellUI(hero.spellbook[i], keys[i], i);
+            spellUIs.Add(binding);
         }
     }
 
@@ -215,7 +197,7 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void UpdateView()
     {
-        spellBindings.ForEach(binding => binding.Update());
+        spellUIs.ForEach(binding => binding.Update());
         //foreach update characterbinding
         GCDText.text = Utils.ToDisplayText(hero.GCD);
     }
@@ -225,7 +207,7 @@ public class GameController : MonoBehaviour
     /// </summary>
     void CheckInput()
     {
-        foreach (SpellBinding binding in spellBindings)
+        foreach (SpellUI binding in spellUIs)
         {
             if (Input.GetKeyDown(binding.GetKey()))
             {

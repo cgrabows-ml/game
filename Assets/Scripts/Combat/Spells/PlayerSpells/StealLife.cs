@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class StealLife : HeroSpell
 {
@@ -52,5 +53,10 @@ public class StealLife : HeroSpell
         {
             gameController.hero.TakeDamage(-damageDealt, owner);
         }
+    }
+
+    public override Boolean PreconditionsMet()
+    {
+        return gameController.stage.getActiveEnemies().Count > 0;
     }
 }

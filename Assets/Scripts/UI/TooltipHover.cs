@@ -18,16 +18,16 @@ public class TooltipHover : MonoBehaviour {
 
     public void OnMouseEnter()
     {
-        tooltipBG.gameObject.SetActive(true);
-        tooltipText.gameObject.SetActive(true);
+        //tooltipBG.gameObject.SetActive(true);
+        //tooltipText.gameObject.SetActive(true);
 
 
 
-        //Instantiate Text
-        Text textBox = tooltipText.GetComponent<Text>();
+        ////Instantiate Text
+        //Text textBox = tooltipText.GetComponent<Text>();
 
 
-        textBox.text = "Has " + spell.baseCooldown + " base cooldown";
+        //textBox.text = "Has " + spell.baseCooldown + " base cooldown";
     }
 
     public void OnMouseExit()

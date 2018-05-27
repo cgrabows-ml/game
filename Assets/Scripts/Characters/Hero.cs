@@ -10,9 +10,9 @@ public class Hero : Character
     private int energy = 0;
     public int maxEnergy = 5;
 
-    private Sprite emptyEnergy = gameController.emptyEnergy;
-    private Sprite filledEnergy = gameController.filledEnergy;
-    private Sprite empoweredEnergy = gameController.empoweredEnergy;
+    private Sprite emptyEnergy = Resources.Load<Sprite>("energy");
+    private Sprite filledEnergy = Resources.Load<Sprite>("energy2");
+    private Sprite empoweredEnergy = Resources.Load<Sprite>("energy3");
 
     private List<Transform> energyUI = gameController.energyUI;
 
@@ -46,7 +46,7 @@ public class Hero : Character
         //Spell spell4 = new Block(this);
         //Spell spell4 = new AOEAttack(this);
         //Spell spell4 = new Bomb(this);
-        return new List<Spell> { spell1, spell2, spell3, spell1 };
+        return new List<Spell> { spell1, spell2, spell3 };
     }
 
     public int GetEnergy()

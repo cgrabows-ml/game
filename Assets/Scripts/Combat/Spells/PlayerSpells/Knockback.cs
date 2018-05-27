@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Knockback : Spell
 {
@@ -18,5 +19,10 @@ public class Knockback : Spell
         stage.enemies.Remove(enemy);
         stage.enemies.Add(enemy);
         stage.MoveEnemies();
+    }
+
+    public override Boolean PreconditionsMet()
+    {
+        return gameController.stage.getActiveEnemies().Count > 0;
     }
 }

@@ -12,7 +12,7 @@ public abstract class Character
     public List<Transform> characterGUI = new List<Transform> { };
 
     public List<Spell> spellbook;
-    private float maxHealth;
+    public float maxHealth;
     public float health;
     public float GCD = .5f;
     public float maxGCD;
@@ -113,8 +113,6 @@ public abstract class Character
              typeof(Transform)), new Vector2(0, 0), Quaternion.identity);
         characterGUI.Add(healthBarFill);
         //healthBarFill.localScale *= healthBarScale;
-        Bounds healthFillBounds = healthBarFill.GetComponent<SpriteRenderer>().bounds;
-        healthFillBounds.size = healthBar.GetComponent<Renderer>().bounds.size;
         healthBarFill.localScale *= healthBarScale;
         healthFillScale = healthBarFill.localScale;
 
@@ -259,7 +257,6 @@ public abstract class Character
     public void Update()
     {
         UpdateStatusBars();
-
         if(GameController.gameController.stage.inCombat)
         {
             ReduceCooldowns();
@@ -314,7 +311,10 @@ public abstract class Character
         health = Math.Max(health, 0);
         textBox.text = Utils.ToDisplayText(health);
         DrawDamageTaken(damageTaken);
-        anim.SetBool("TakeDamage", true);
+        if(baseDamage > 0)
+        {
+            anim.SetBool("TakeDamage", true);
+        }
         CheckDeadAndKill();
         return damageTaken;
     }

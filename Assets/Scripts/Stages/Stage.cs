@@ -16,7 +16,7 @@ public class Stage: IDeathObserver {
     public int damageDone;
 
     private List<Encounter> encounters;
-    private float leftMostPositionX = -2f;
+    public float leftMostPositionX = -2f;
     private float rightScreenEdgePositionX = 6.58f;
     private Boolean canProceed = false;
 
@@ -201,6 +201,7 @@ public class Stage: IDeathObserver {
             position = new Vector2(nextX, groundY);
         }
         enemy.Spawn(position);
+        MoveEnemies();
     }
 
     public void AddEnemyAtIndex(Enemy enemy, int index)

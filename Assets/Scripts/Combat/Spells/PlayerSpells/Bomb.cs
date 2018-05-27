@@ -32,7 +32,7 @@ public class Bomb : DamageSpell {
             yield return null;
         }
 
-        foreach (SpellBinding binding in gameController.spellBindings)
+        foreach (SpellUI binding in gameController.spellUIs)
         {
             if (binding.spell == this)
             {

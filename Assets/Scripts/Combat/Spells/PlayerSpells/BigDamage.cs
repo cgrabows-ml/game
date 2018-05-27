@@ -28,4 +28,9 @@ public class BigDamage : HeroSpell
         List<Character> targets = enemies.ConvertAll<Character>(x => x);
         CombatUtils.DealDamage(hero, targets, baseDamage);
     }
+
+    public override Boolean PreconditionsMet()
+    {
+        return gameController.stage.getActiveEnemies().Count > 0;
+    }
 }

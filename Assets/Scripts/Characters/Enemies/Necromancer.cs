@@ -14,6 +14,11 @@ public class Necromancer : Enemy
         this.moveTo = new Vector2(5, -2.58f);
     }
 
+    public override void Update()
+    {
+        MonoBehaviour.print(sprite.position);
+    }
+
     protected override List<Spell> getSpells()
     {
         Spell spell1 = new SummonSkeleton(this);
