@@ -58,6 +58,8 @@ public class GameController : MonoBehaviour
     public RectTransform bigBox3;
     public RectTransform bigBox4;
 
+    public Boolean isPaused = false;
+
     public List<SpellUI> spellUIs = new List<SpellUI>();
 
     // Use this for initialization
@@ -183,10 +185,11 @@ public class GameController : MonoBehaviour
     void Update() {
         stage.Update();
         hero.Update();
+        CheckInput();
+
 
         if (stage.inCombat)
         {
-            CheckInput();
             UpdateView();
         }
 
@@ -202,17 +205,48 @@ public class GameController : MonoBehaviour
         GCDText.text = Utils.ToDisplayText(hero.GCD);
     }
 
+    public void TogglePause()
+    {
+        if (isPaused)
+        {
+            Unpause();
+        }
+        else
+        {
+            Pause();
+        }
+    }
+
+    public void Pause()
+    {
+        Time.timeScale = 0f;
+        isPaused = true;
+    }
+
+    public void Unpause()
+    {
+        Time.timeScale = 1f;
+        isPaused = false;
+    }
+
     /// <summary>
     /// Checks if the input is the keybind for one of the casts, then casts the spell if it's valid to cast.
     /// </summary>
     void CheckInput()
     {
-        foreach (SpellUI binding in spellUIs)
+        if (Input.GetKeyDown("p"))
         {
-            if (Input.GetKeyDown(binding.GetKey()))
+            TogglePause();
+        }
+        if (!isPaused && stage.inCombat)
+        {
+            foreach (SpellUI binding in spellUIs)
             {
-                //CanCast also does the cast
-                hero.CastIfAble(binding.spell);
+                if (Input.GetKeyDown(binding.GetKey()))
+                {
+                    //CanCast also does the cast
+                    hero.CastIfAble(binding.spell);
+                }
             }
         }
     }

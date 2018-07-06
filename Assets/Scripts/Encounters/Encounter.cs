@@ -31,7 +31,7 @@ public abstract class Encounter {
         stage.SetEnemies(enemies);
     }
 
-	public void StartEncounter () {
+	public virtual void StartEncounter () {
         this.startingEnemies = getStartingEnemies();
         SetEnemies(startingEnemies);
 	}

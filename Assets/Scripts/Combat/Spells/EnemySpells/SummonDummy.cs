@@ -7,7 +7,7 @@ public class SummonDummy : SummonEnemy, IDeathObserver
         : base(caster)
     {
         baseCooldown = 10;
-        maxSummons = 5;
+        maxSummons = 4;
     }
 
     public override Enemy getEnemy()
@@ -19,7 +19,8 @@ public class SummonDummy : SummonEnemy, IDeathObserver
     {
         foreach(Enemy summon in summons)
         {
-            summon.TakeDamage(summon.health - summon.maxHealth, caster);
+            summon.TakeDamage(summon.health - summon.maxHealth,
+                caster);
         }
         while(summonsAlive < maxSummons)
         {

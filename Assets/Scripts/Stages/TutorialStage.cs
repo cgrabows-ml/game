@@ -9,7 +9,8 @@ public class TutorialStage : Stage
     {
         //Encounter encounter = new Encounter(stage, enemies);
         List<Encounter> encounters = new List<Encounter>() {
-            //new Dummies(this, 4),
+            new Dummies(this, 1),
+            new SummonerEncounter(this),
             new SummonerEncounter(this)
         };
 

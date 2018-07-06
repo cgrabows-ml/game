@@ -37,6 +37,7 @@ public class SpellUI
 
     public void InstantiateSpellUI()
     {
+        MonoBehaviour.print("hellothere");
         GameObject prefab = (GameObject)Resources.Load("SpellUI");
         spellUI = MonoBehaviour.Instantiate(prefab).transform;
         //textBox = spellUI.GetComponent<Text>("Cast 1 Text");

@@ -21,7 +21,7 @@ public class Dummy : Enemy
     public override void Spawn(Vector2 pos)
     {
         base.Spawn(pos);
-        this.isFixed = true;
+        //this.isFixed = true;
     }
 
     public override float TakeDamage(float baseDamage, Character source)

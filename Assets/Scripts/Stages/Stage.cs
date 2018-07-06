@@ -16,8 +16,10 @@ public class Stage: IDeathObserver {
     public int damageDone;
 
     private List<Encounter> encounters;
-    public float leftMostPositionX = -2f;
-    private float rightScreenEdgePositionX = 6.58f;
+    public float leftMostPositionX = -1.5f;
+    public float defaultLeftMostPositionX = -1.5f;
+    private float stageWidth = 6.09f;
+    public float rightScreenEdgePositionX = 5.5f;
     private Boolean canProceed = false;
 
     private Vector3 heroPosition = new Vector3(-10,-2.58f,0); //replace me
@@ -137,7 +139,9 @@ public class Stage: IDeathObserver {
         if (encounters.Count > 0)
         {
             heroPosition = new Vector3(hero.sprite.position.x, -2.58f, 0);
-            leftMostPositionX += 6.09f;
+            defaultLeftMostPositionX += stageWidth;
+            leftMostPositionX = defaultLeftMostPositionX;
+            rightScreenEdgePositionX += stageWidth;
             hero.MoveRight(heroPosition);
             encounters[0].StartEncounter();
             IEnumerator coroutine = SetActive();
@@ -224,8 +228,8 @@ public class Stage: IDeathObserver {
 
     public void SetEnemies(List<Enemy> enemies)
     {
-        this.enemies = enemies;
-        enemies.ForEach(enemy => SetupEnemy(enemy));
+        //this.enemies = enemies;
+        enemies.ForEach(enemy => AddEnemy(enemy));
     }
 
     /// <summary>
@@ -238,7 +242,8 @@ public class Stage: IDeathObserver {
         foreach (Enemy enemy in enemies)
         {
             // move enemy to correct position
-            float nextPositionX = getNextFreeSpace(enemy, rightScreenEdgePositionX);
+            float nextPositionX = getNextFreeSpace(enemy,
+                rightScreenEdgePositionX);
             Vector2 spawnPos = new Vector2(nextPositionX, groundY);
             enemy.Spawn(spawnPos);
         }
@@ -268,11 +273,11 @@ public class Stage: IDeathObserver {
                     Boolean collision;
                     if (targetLeft > enemyLeft)
                     {
-                        collision = targetLeft < enemyRight;
+                        collision = targetLeft <= enemyRight;
                     }
                     else
                     {
-                        collision = enemyLeft < targetRight;
+                        collision = enemyLeft <= targetRight;
                     }
                     if (collision)
                     {

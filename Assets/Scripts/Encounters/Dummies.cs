@@ -10,6 +10,7 @@ public class Dummies : Encounter
         : base(stage)
     {
         this.numDummies = numDummies;
+        stage.leftMostPositionX += 1f;
     }
 
     protected override List<Enemy> getStartingEnemies()

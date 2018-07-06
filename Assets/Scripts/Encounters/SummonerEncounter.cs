@@ -11,6 +11,12 @@ public class SummonerEncounter: Encounter
 
     }
 
+    public override void StartEncounter()
+    {
+        //GameController.gameController.Pause();
+        base.StartEncounter();
+    }
+
     protected override List<Enemy> getStartingEnemies()
     {
         return new List<Enemy>() {new DummySummoner() };

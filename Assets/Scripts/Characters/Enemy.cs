@@ -30,7 +30,6 @@ public abstract class Enemy : Character
         float maxGCD = 2)
         : base(prefabPath, health)
     {
-        this.width = width;
         this.name = name;
     }
 
@@ -65,6 +64,8 @@ public abstract class Enemy : Character
             anim.SetBool("Entrance", true);
             isActive = false;
         }
+        width = sprite.GetComponent<Renderer>().bounds.size.x;
+
     }
 
     public override void CheckDeadAndKill()

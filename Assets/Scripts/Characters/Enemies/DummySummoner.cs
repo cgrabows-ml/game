@@ -12,7 +12,9 @@ public class DummySummoner : Enemy
     {
         GCD = 0f;
         this.isFixed = true;
-        this.moveTo = new Vector2(5, -2.58f);
+        Stage stage = GameController.gameController.stage;
+        this.moveTo = new Vector2(stage.rightScreenEdgePositionX - 1f,
+            stage.groundY);
     }
 
     protected override List<Spell> getSpells()
