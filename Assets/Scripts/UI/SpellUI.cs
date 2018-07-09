@@ -15,6 +15,7 @@ public class SpellUI
     private Hero hero = GameController.gameController.hero;
     private Vector3 castCoverBasePosition;
     private float scale = .01f;
+    private Vector3 basePosition = new Vector3(-1.5f, 2f);
 
     private Transform castBox;
 
@@ -31,29 +32,30 @@ public class SpellUI
     public void SetOffset(int position)
     {
         //float width = castBox.GetComponent<Image>().flexibleWidth;
-        float width = 1;
+        float width = 1f;
+        //spellUI.position = new Vector3(0, 0, 0);
         spellUI.position += new Vector3(width, 0f)*position;
     }
 
     public void InstantiateSpellUI()
     {
-        MonoBehaviour.print("hellothere");
         GameObject prefab = (GameObject)Resources.Load("SpellUI");
         spellUI = MonoBehaviour.Instantiate(prefab).transform;
         //textBox = spellUI.GetComponent<Text>("Cast 1 Text");
-        spellUI.position = new Vector3(-1.5f, 2f);
+        spellUI.position = basePosition;
         spellUI.SetParent(gameController.canvas.transform);
 
         for (int i = 0; i < spellUI.transform.childCount; i++)
         {
             Transform child = spellUI.transform.GetChild(i).transform;
+            child.localPosition = new Vector2(0, 0);
             //child.position = gameController.hero.sprite.position;
             child.transform.localScale = new Vector3(scale, scale);
 
-            if (child.name == "CastText")
-            {
-                textBox = child.GetComponent<Text>();
-            }
+            //if (child.name == "CastText")
+            //{
+            //    textBox = child.GetComponent<Text>();
+            //}
             if(child.name == "CooldownCover")
             {
                 castCover = child.GetComponent<RectTransform>();
@@ -67,7 +69,7 @@ public class SpellUI
 
     public void Update()
     {
-        UpdateTextBox();
+        //UpdateTextBox();
         UpdateCooldownCover();
     }
 
@@ -101,10 +103,10 @@ public class SpellUI
             new Vector3(0, percentDone * castCover.rect.height/2)*scale;
     }
 
-    public void UpdateTextBox()
-    {
-        this.textBox.text = Utils.ToDisplayText(spell.GetCooldown());
-    }
+    //public void UpdateTextBox()
+    //{
+    //    this.textBox.text = Utils.ToDisplayText(spell.GetCooldown());
+    //}
 
 
     public KeyCode GetKey()

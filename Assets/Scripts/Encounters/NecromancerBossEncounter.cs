@@ -8,7 +8,7 @@ public class NecromancerBossEncounter : Encounter
     public NecromancerBossEncounter(Stage stage)
         : base(stage)
     {
-
+        stage.leftMostPositionX = -2f;
     }
 
     protected override List<Enemy> getStartingEnemies()

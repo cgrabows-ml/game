@@ -82,8 +82,8 @@ public class GameController : MonoBehaviour
 
     private void SetStage()
     {
-        stage = new TutorialStage();
-        //stage = new NecromancerBossStage();
+        //stage = new TutorialStage();
+        stage = new NecromancerBossStage();
         stage.StartStage();
     }
 
@@ -186,13 +186,7 @@ public class GameController : MonoBehaviour
         stage.Update();
         hero.Update();
         CheckInput();
-
-
-        if (stage.inCombat)
-        {
-            UpdateView();
-        }
-
+        UpdateView();
     }
 
     /// <summary>

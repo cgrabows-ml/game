@@ -618,6 +618,11 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 224191821683178522, guid: 34894fc3d44a01841a693fa0850bb1c7,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 205.69
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 34894fc3d44a01841a693fa0850bb1c7, type: 2}
   m_IsPrefabParent: 0
@@ -1742,7 +1747,7 @@ MonoBehaviour:
   cast3Text: {fileID: 329354267}
   cast4Text: {fileID: 1155911}
   GCDText: {fileID: 1585808361}
-  canvas: {fileID: 0}
+  canvas: {fileID: 90215706}
   herofab: {fileID: 0}
   warriorfab: {fileID: 0}
   healthbarFab: {fileID: 0}
@@ -1760,9 +1765,6 @@ MonoBehaviour:
   energy3: {fileID: 745141688}
   energy4: {fileID: 755646526}
   energy5: {fileID: 2038457252}
-  emptyEnergy: {fileID: 21300000, guid: c8b1562cae34bf24cb1f41d3e0a32af6, type: 3}
-  filledEnergy: {fileID: 21300000, guid: ec06d485ff68d69488f67584d192492e, type: 3}
-  empoweredEnergy: {fileID: 21300000, guid: c53d69cc98b06db44b46b3db45fc6430, type: 3}
   energyUI: []
   tinyBox1: {fileID: 149083581}
   tinyBox2: {fileID: 903304254}
@@ -1772,6 +1774,7 @@ MonoBehaviour:
   bigBox2: {fileID: 2015777495}
   bigBox3: {fileID: 571855209}
   bigBox4: {fileID: 320012873}
+  isPaused: 0
 --- !u!4 &1466786624
 Transform:
   m_ObjectHideFlags: 0

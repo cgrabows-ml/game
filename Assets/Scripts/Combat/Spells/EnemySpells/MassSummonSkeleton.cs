@@ -12,12 +12,13 @@ public class MassSummonSkeleton : Spell, IDeathObserver
     private int minSkeletons;
     private int maxSkeletons;
     private int levelGainPerCast;
+    private Boolean firstCast = true;
 
     System.Random rand = new System.Random();
 
     public MassSummonSkeleton(Character caster, int minSkeletons=4,
         int maxSkeletons=4, int totalLevel=4, int levelGainPerCast=2)
-        : base(caster, 5f, "Use2", GCDRespect:false)
+        : base(caster, baseCooldown:15f, animationKey: "Use2", GCDRespect:false)
     {
         this.levelGainPerCast = levelGainPerCast;
         this.minSkeletons = minSkeletons;
@@ -95,6 +96,13 @@ public class MassSummonSkeleton : Spell, IDeathObserver
             skeletonsAlive += 1;
             //MonoBehaviour.print(skeletonsAlive);
         }
-        totalLevel += levelGainPerCast;
+        if (!firstCast)
+        {
+            totalLevel += levelGainPerCast;
+        }
+        else
+        {
+            firstCast = false;
+        }
     }
 }
