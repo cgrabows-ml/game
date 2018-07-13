@@ -23,6 +23,8 @@ public abstract class Character
     public float deathTime = 2;
     protected float sizeScale = 1f;
 
+    protected String spriteType = "sprite";
+
     public Vector2 moveTo = new Vector3(-100, 0);
     protected float walkSpeed = 1;
     protected Boolean isMoving = false;
@@ -35,14 +37,20 @@ public abstract class Character
     public Transform healthBar;
     public Transform healthText;
     public Transform healthBarFill;
-    private float healthBarFillWidth;
-    private Vector3 healthFillScale;
+    protected float healthBarFillWidth;
+    protected Vector3 healthFillScale;
     public Transform sprite;
     public Animator anim;
     public List<Buff> buffs = new List<Buff> { };
     public List<TextMesh> floatingCombatText = new List<TextMesh> { };
     public Transform prefab;
     protected List<SpellCastObserver> spellCastObservers = new List<SpellCastObserver>();
+
+    public String walkAnim = "Walk";
+    public String idleAnim = "Idle";
+    public String deathAnim = "Death";
+    public String takeDamageAnim = "TakeDamage";
+    public String entranceAnim = "Entrance";
 
     /// <summary>
     /// Constructor for Character class.
@@ -89,11 +97,17 @@ public abstract class Character
         characterGUI.Add(sprite);
     }
 
-    public virtual void instantiateHealthBar(Vector2 position)
-    {
-        //Set height one time so health bar doesnt move
-        characterHeight = new Vector2(0f,
+    public virtual void instantiateHealthBar(Vector2 position) { 
+    
+        if(spriteType.Equals("sprite")){
+                //Set height one time so health bar doesnt move
+            characterHeight = new Vector2(0f,
             sprite.GetComponent<Renderer>().bounds.size.y);
+        }
+        else
+        {
+            characterHeight = new Vector2(0f, 1f);
+        }
 
         //Instantiate health bar
         healthBar = MonoBehaviour.Instantiate(
@@ -188,7 +202,7 @@ public abstract class Character
         if (!CheckDead())
         {
             characterGUI.ForEach(i => i.position = new Vector2(moveTo.x, i.position.y));
-            anim.SetBool("Idle", true);
+            anim.SetBool(idleAnim, true);
         }
         isMoving = false;
     }
@@ -198,7 +212,7 @@ public abstract class Character
     {
         if (!CheckDead())
         {
-            anim.SetBool("Walk", true);
+            anim.SetBool(walkAnim, true);
 
             //Get End position of everything
             List<Vector3> startPositions = new List<Vector3> { };
@@ -313,7 +327,7 @@ public abstract class Character
         DrawDamageTaken(damageTaken);
         if(baseDamage > 0)
         {
-            anim.SetBool("TakeDamage", true);
+            anim.SetBool(takeDamageAnim, true);
         }
         CheckDeadAndKill();
         return damageTaken;
@@ -376,9 +390,14 @@ public abstract class Character
         //Scales FCT from non-canvas to canvas
         //103 is the scale from canvas to non-canvas, at least it's really close
         FCT.transform.localScale /= 103;
+        //FCTGameObject.
 
-        Vector3 newPos = new Vector3(sprite.position.x + .2f,
-            sprite.position.y + .4f, 0);
+        float xoffset = UnityEngine.Random.Range(0, .5f);
+        float yoffset = UnityEngine.Random.Range(0, .5f);
+
+        Vector3 newPos = new Vector3(sprite.position.x + .2f + xoffset,
+            sprite.position.y + .4f + yoffset, 0);
+
         FCT.transform.position = newPos;
 
         IEnumerator coroutine = DestroyFCT(FCT, 1.5f);

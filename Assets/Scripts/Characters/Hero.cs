@@ -14,6 +14,8 @@ public class Hero : Character
     private Sprite filledEnergy = Resources.Load<Sprite>("energy2");
     private Sprite empoweredEnergy = Resources.Load<Sprite>("energy3");
 
+    private Vector3 healthPos = new Vector3(-3.5f, 1);
+
     private List<Transform> energyUI = gameController.energyUI;
 
     /// <summary>
@@ -25,13 +27,15 @@ public class Hero : Character
     /// <param name="health"></param>
     // Use this for initialization
     public Hero()
-        : base("warrior", 200)
+        : base("blackKnight", 50)
     {
         maxGCD = 1f;
         GCD = 0;
         healthBarScale = 2f;
         healthText = gameController.heroHealthText;
         healthBarFloatDistance = new Vector2(0, 1);
+        this.spriteType = "special";
+        healthFillScale = new Vector3(55f, 55f);
     }
 
     protected override List<Spell> getSpells()
@@ -216,6 +220,29 @@ public class Hero : Character
         gameController.cantCast.gameObject.SetActive(false);
     }
 
+    public override void UpdateStatusBars()
+    {
+        //Get positioning
+        Vector2 position = sprite.position;
+        Vector2 healthBarOffset = characterHeight +
+            healthBarFloatDistance;
+
+        //Move health bar
+        //healthBar.position = position + healthBarOffset;
+
+        //Update health text
+        //healthText.position = position + healthBarOffset;
+
+        //Update health bar fill
+        float percentFilled = health / maxHealth;
+        healthBarFill.localScale = new Vector2(healthFillScale.x * percentFilled, healthFillScale.y);
+        float currentWidth = healthBarFill.GetComponent<Renderer>().bounds.size.x;
+        float offset = (healthBarFillWidth - currentWidth) / 2;
+        healthBarFill.localPosition = (healthPos - new Vector3(offset, 0))* 110.3559f;
+
+        textBox.text = Utils.ToDisplayText(health);
+    }
+
     //public override void instantiateHealthBar(Vector2 position)
     //{
     //    //Set height one time so health bar doesnt move
@@ -225,6 +252,18 @@ public class Hero : Character
     //    characterGUI.Add((Transform)healthText);
     //    textBox = healthText.GetComponent<TextMesh>();
     //}
+
+    public override void instantiateHealthBar(Vector2 position)
+    {
+        base.instantiateHealthBar(position);
+        healthBar.SetParent(gameController.canvas.transform);
+        healthBarFill.SetParent(gameController.canvas.transform);
+        healthText.SetParent(gameController.canvas.transform);
+        healthFillScale = healthBarFill.localScale;
+        healthBar.position = healthPos;
+        healthText.position = healthPos;
+        healthBarFill.position = healthPos;
+    }
 
     //public override void UpdateStatusBars()
     //{

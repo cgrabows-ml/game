@@ -27,7 +27,7 @@ public class NecromancerBoss : Enemy, IDeathObserver
     private Boolean firstCrystal = true;
 
     private int transitionHealthThreshhold = 20;
-    private int finalTHealthhreshhold = 10;
+    private int finalHealthThreshhold = 10;
     private int phase = 1;
     private int phaseTwoMaxCharges = 15;
 
@@ -60,7 +60,7 @@ public class NecromancerBoss : Enemy, IDeathObserver
             charges = new List<Transform>();
             ChangeSpellbook(superChargeSpellbook);
         }
-        if (phase == 2 && health <= finalTHealthhreshhold)
+        if (phase == 2 && health <= finalHealthThreshhold)
         {
             //Transition to final burn
             phase = 3;
@@ -154,7 +154,10 @@ public class NecromancerBoss : Enemy, IDeathObserver
     {
         crystal = null;
         //Pure DPS -> Alternating
-        currentSpellbook = alternateSpellbook;
+        if(health > finalHealthThreshhold)
+        {
+            currentSpellbook = alternateSpellbook;
+        }
     }
 
     public void ChangeSpellbook(List<Spell> spellbook, float seconds=0)

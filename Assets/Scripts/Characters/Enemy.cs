@@ -31,6 +31,7 @@ public abstract class Enemy : Character
         : base(prefabPath, health)
     {
         this.name = name;
+        this.GCD = maxGCD;
     }
 
     new public virtual void Update()
@@ -61,11 +62,17 @@ public abstract class Enemy : Character
 
         if (GameController.gameController.stage.inCombat)
         {
-            anim.SetBool("Entrance", true);
+            anim.SetBool(entranceAnim, true);
             isActive = false;
         }
-        width = sprite.GetComponent<Renderer>().bounds.size.x;
-
+        if (spriteType.Equals("sprite"))
+        {
+            width = sprite.GetComponent<Renderer>().bounds.size.x;
+        }
+        else
+        {
+            width = 1f;
+        }
     }
 
     public override void CheckDeadAndKill()
@@ -77,7 +84,7 @@ public abstract class Enemy : Character
             VictoryStats.enemiesSlain += 1;
 
             //Move enemy and uninstantiate
-            anim.SetBool("Death", true);
+            anim.SetBool(deathAnim, true);
             moveTo = sprite.position;
             deathObservers.ForEach(observer => {
                 observer.DeathUpdate(this);});
