@@ -232,6 +232,11 @@ public abstract class Character
         }
     }
 
+    public virtual Boolean CanCast(Spell spell)
+    {
+        return spell.isCastable();
+    }
+
     //Also casts the spell
     public virtual Boolean CastIfAble(Spell spell)
     {
@@ -240,7 +245,7 @@ public abstract class Character
             //Throw error
             MonoBehaviour.print("Spellbook does not contain spell.");
         }
-        Boolean castable = spell.isCastable();
+        Boolean castable = CanCast(spell);
         if (castable)
         {
             anim.SetBool(spell.animationKey, true);

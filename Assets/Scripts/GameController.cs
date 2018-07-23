@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -59,8 +61,10 @@ public class GameController : MonoBehaviour
     public RectTransform bigBox4;
 
     public Boolean isPaused = false;
-
     public List<SpellUI> spellUIs = new List<SpellUI>();
+    public Timer timer = new Timer();
+    //private Transform instance;
+    private OrderedDictionary bufferedSpellBinding = new OrderedDictionary();
 
     // Use this for initialization
     void Start()
@@ -184,6 +188,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update() {
         stage.Update();
+        timer.Increment();
         hero.Update();
         CheckInput();
         UpdateView();
@@ -238,9 +243,31 @@ public class GameController : MonoBehaviour
             {
                 if (Input.GetKeyDown(binding.GetKey()))
                 {
-                    //CanCast also does the cast
-                    hero.CastIfAble(binding.spell);
+                    // a usable key has been pressed
+                    // add this key to a 'list' of keys that were pressed recently
+                    // order matters
+                    KeyCode key = binding.GetKey();
+
+                    // update ordering if that key has already been pressed recently
+                    if (bufferedSpellBinding.Contains(key))
+                    {
+                        bufferedSpellBinding.Remove(key);
+                    }
+                    bufferedSpellBinding.Add(key, binding);
+                    // after 15 frames, no longer recently pressed
+                    timer.SetTimer(15, () => bufferedSpellBinding.Remove(key));
                 }
+            }
+            
+        }
+        // loop over recently pressed keys, and attempt to apply them
+        foreach (KeyCode key in bufferedSpellBinding.Keys)
+        {
+            SpellUI binding = (SpellUI)(bufferedSpellBinding[key]);
+            if (hero.CanCast(binding.spell))
+            {
+                hero.CastIfAble(binding.spell);
+
             }
         }
     }
