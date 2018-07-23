@@ -9,7 +9,7 @@ public class FireCharges : DamageSpell
     private float timeBetweenShots = 1f;
 
     public FireCharges(Character caster)
-        : base(caster: caster, baseCooldown: 10, baseDamage: 3, animationKey: "Use2",
+        : base(caster: caster, baseCooldown: 10, baseDamage: 3, animationKey: "skill_3",
             triggersGCD: true, target: "player", GCDRespect: true, delay: .5f)
     {
         boss = (NecromancerBoss)caster;
@@ -33,7 +33,7 @@ public class FireCharges : DamageSpell
 
     IEnumerator CastAgain()
     {
-        if (boss.charges.Count != 0)
+        if (boss.charges.Count != 0 && boss.health > 0)
         {
             yield return new WaitForSeconds(timeBetweenShots);
             Cast();

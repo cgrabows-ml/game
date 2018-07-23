@@ -18,13 +18,12 @@ public class MassSummonSkeleton : Spell, IDeathObserver
 
     public MassSummonSkeleton(Character caster, int minSkeletons=4,
         int maxSkeletons=4, int totalLevel=4, int levelGainPerCast=2)
-        : base(caster, baseCooldown:15f, animationKey: "Use2", GCDRespect:false)
+        : base(caster, baseCooldown:15f, animationKey: "skill_3", GCDRespect:false)
     {
         this.levelGainPerCast = levelGainPerCast;
         this.minSkeletons = minSkeletons;
         this.maxSkeletons = maxSkeletons;
         this.totalLevel = totalLevel;
-        MonoBehaviour.print("Set the stage");
         stage = gameController.stage;
 
         name = "Mass Summon Skeletons";

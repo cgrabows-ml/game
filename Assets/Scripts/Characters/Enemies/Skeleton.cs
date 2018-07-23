@@ -25,7 +25,6 @@ public class Skeleton : Enemy
         this.takeDamageAnim = "hit_1";
         this.walkAnim = "walk";
         this.idleAnim = "idle_1";
-        //this.entranceAnim = "Entrance";
     }
 
     public override void InstantiateCharacter(Vector2 position)

@@ -50,7 +50,9 @@ public abstract class Character
     public String idleAnim = "Idle";
     public String deathAnim = "Death";
     public String takeDamageAnim = "TakeDamage";
-    public String entranceAnim = "Entrance";
+    public String attack1Anim = "Use1";
+    public String attack2Anim = "Use2";
+    public String attack3Anim = "Use3";
 
     /// <summary>
     /// Constructor for Character class.

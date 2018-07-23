@@ -10,7 +10,6 @@ public class AnimationEvent : MonoBehaviour {
 	private int atkTimes = 0;
 
 	public void AttackStart () {
-		//Debug.Log ("Attack Start");
 
 		//Just for demonstration, you can replace it with your own code logic.
 		atkTimes++;
@@ -28,7 +27,7 @@ public class AnimationEvent : MonoBehaviour {
 	}
 
 	public void AttackStartEffectObject () {
-		//Debug.Log ("Fire Effect Object");
+		Debug.Log ("Fire Effect Object");
 	}
 
 }

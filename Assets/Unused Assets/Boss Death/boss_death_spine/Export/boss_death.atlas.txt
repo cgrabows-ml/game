@@ -1,0 +1,277 @@
+
+boss_death.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+arm_l_1
+  rotate: true
+  xy: 976, 865
+  size: 48, 32
+  orig: 48, 32
+  offset: 0, 0
+  index: -1
+arm_l_2
+  rotate: true
+  xy: 976, 915
+  size: 54, 44
+  orig: 54, 44
+  offset: 0, 0
+  index: -1
+arm_l_4
+  rotate: false
+  xy: 976, 971
+  size: 46, 50
+  orig: 46, 50
+  offset: 0, 0
+  index: -1
+arm_r_1
+  rotate: false
+  xy: 451, 49
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+body_1
+  rotate: false
+  xy: 408, 411
+  size: 69, 73
+  orig: 69, 73
+  offset: 0, 0
+  index: -1
+buttock_1
+  rotate: false
+  xy: 2, 115
+  size: 489, 294
+  orig: 489, 294
+  offset: 0, 0
+  index: -1
+buttock_2
+  rotate: false
+  xy: 493, 190
+  size: 489, 294
+  orig: 489, 294
+  offset: 0, 0
+  index: -1
+cloak_r
+  rotate: true
+  xy: 277, 5
+  size: 108, 172
+  orig: 108, 172
+  offset: 0, 0
+  index: -1
+coat_l_1
+  rotate: false
+  xy: 493, 8
+  size: 268, 180
+  orig: 268, 180
+  offset: 0, 0
+  index: -1
+coat_r_1
+  rotate: false
+  xy: 763, 14
+  size: 208, 174
+  orig: 208, 174
+  offset: 0, 0
+  index: -1
+neck
+  rotate: false
+  xy: 2, 2
+  size: 273, 111
+  orig: 273, 111
+  offset: 0, 0
+  index: -1
+skill1_1
+  rotate: false
+  xy: 692, 486
+  size: 282, 535
+  orig: 282, 535
+  offset: 0, 0
+  index: -1
+skill1_3
+  rotate: false
+  xy: 408, 486
+  size: 282, 535
+  orig: 282, 535
+  offset: 0, 0
+  index: -1
+weapon
+  rotate: false
+  xy: 2, 411
+  size: 404, 610
+  orig: 404, 610
+  offset: 0, 0
+  index: -1
+
+boss_death2.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+arm_l_3
+  rotate: true
+  xy: 542, 10
+  size: 98, 132
+  orig: 98, 132
+  offset: 0, 0
+  index: -1
+arm_r_2
+  rotate: true
+  xy: 676, 24
+  size: 84, 118
+  orig: 84, 118
+  offset: 0, 0
+  index: -1
+buttock_3
+  rotate: false
+  xy: 2, 187
+  size: 489, 294
+  orig: 489, 294
+  offset: 0, 0
+  index: -1
+cloak_l
+  rotate: true
+  xy: 812, 2
+  size: 136, 198
+  orig: 136, 198
+  offset: 0, 0
+  index: -1
+coat_l_2
+  rotate: false
+  xy: 2, 5
+  size: 268, 180
+  orig: 268, 180
+  offset: 0, 0
+  index: -1
+coat_l_3
+  rotate: false
+  xy: 272, 5
+  size: 268, 180
+  orig: 268, 180
+  offset: 0, 0
+  index: -1
+coat_l_4
+  rotate: false
+  xy: 542, 838
+  size: 268, 180
+  orig: 268, 180
+  offset: 0, 0
+  index: -1
+coat_l_5
+  rotate: false
+  xy: 542, 656
+  size: 268, 180
+  orig: 268, 180
+  offset: 0, 0
+  index: -1
+coat_l_6
+  rotate: false
+  xy: 542, 474
+  size: 268, 180
+  orig: 268, 180
+  offset: 0, 0
+  index: -1
+coat_l_7
+  rotate: false
+  xy: 542, 292
+  size: 268, 180
+  orig: 268, 180
+  offset: 0, 0
+  index: -1
+coat_l_8
+  rotate: false
+  xy: 542, 110
+  size: 268, 180
+  orig: 268, 180
+  offset: 0, 0
+  index: -1
+coat_r_2
+  rotate: false
+  xy: 812, 844
+  size: 208, 174
+  orig: 208, 174
+  offset: 0, 0
+  index: -1
+coat_r_3
+  rotate: false
+  xy: 812, 668
+  size: 208, 174
+  orig: 208, 174
+  offset: 0, 0
+  index: -1
+coat_r_4
+  rotate: false
+  xy: 812, 492
+  size: 208, 174
+  orig: 208, 174
+  offset: 0, 0
+  index: -1
+coat_r_5
+  rotate: false
+  xy: 812, 316
+  size: 208, 174
+  orig: 208, 174
+  offset: 0, 0
+  index: -1
+coat_r_6
+  rotate: false
+  xy: 812, 140
+  size: 208, 174
+  orig: 208, 174
+  offset: 0, 0
+  index: -1
+coat_r_7
+  rotate: false
+  xy: 286, 844
+  size: 208, 174
+  orig: 208, 174
+  offset: 0, 0
+  index: -1
+coat_r_8
+  rotate: false
+  xy: 286, 668
+  size: 208, 174
+  orig: 208, 174
+  offset: 0, 0
+  index: -1
+head_1
+  rotate: true
+  xy: 286, 512
+  size: 154, 200
+  orig: 154, 200
+  offset: 0, 0
+  index: -1
+skill1_2
+  rotate: false
+  xy: 2, 483
+  size: 282, 535
+  orig: 282, 535
+  offset: 0, 0
+  index: -1
+
+boss_death3.png
+size: 256,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+arm_r_3
+  rotate: false
+  xy: 158, 51
+  size: 72, 72
+  orig: 72, 72
+  offset: 0, 0
+  index: -1
+body_2
+  rotate: false
+  xy: 158, 125
+  size: 93, 77
+  orig: 93, 77
+  offset: 0, 0
+  index: -1
+head_2
+  rotate: false
+  xy: 2, 2
+  size: 154, 200
+  orig: 154, 200
+  offset: 0, 0
+  index: -1

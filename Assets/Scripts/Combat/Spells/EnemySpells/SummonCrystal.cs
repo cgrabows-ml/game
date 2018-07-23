@@ -8,7 +8,7 @@ public class SummonCrystal : Spell
     private Stage stage;
 
     public SummonCrystal(Character caster)
-        : base(caster, 30, "Use2")
+        : base(caster, 30, "skill_3")
     {
         stage = gameController.stage;
         boss = (NecromancerBoss)caster;

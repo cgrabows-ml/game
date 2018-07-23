@@ -84,8 +84,8 @@ public class UnitControl : MonoBehaviour {
 					} else if (keyCode == KeyCode.W) {
 						animator.SetTrigger("jump");
 					} else if (keyCode == KeyCode.Space) {
-						animator.SetTrigger("evade_1");
-						StartCoroutine (Evade ());
+						//animator.SetTrigger("evade");
+						//StartCoroutine (Evade ());
 					} 
 				}  
 			}  

@@ -62,7 +62,7 @@ public abstract class Enemy : Character
 
         if (GameController.gameController.stage.inCombat)
         {
-            anim.SetBool(entranceAnim, true);
+            //anim.SetBool(entranceAnim, true);
             isActive = false;
         }
         if (spriteType.Equals("sprite"))

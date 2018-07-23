@@ -13,7 +13,7 @@ public class StoreCharge : Spell
     private int chargesPerCast;
 
     public StoreCharge(Character caster, int chargesPerCast = 1)
-        : base(caster, baseCooldown: 6f, animationKey: "Use2")
+        : base(caster, baseCooldown: 6f, animationKey: "skill_3")
     {
         this.chargesPerCast = chargesPerCast;
         boss = (NecromancerBoss)caster;

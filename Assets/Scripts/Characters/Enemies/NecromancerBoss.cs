@@ -34,11 +34,19 @@ public class NecromancerBoss : Enemy, IDeathObserver
     private List<Spell> currentSpellbook;
 
     public NecromancerBoss()
-        : base("necromancer", "warrior", health:100, maxGCD: 1)
+        : base("necromancer", "boss_death", health:100, maxGCD: 1)
     {
+        this.spriteType = "special";
+        this.deathAnim = "death";
+        this.takeDamageAnim = "hit_1";
+        this.walkAnim = "walk";
+        this.idleAnim = "idle_1";
+        this.attack1Anim = "skill_3";
+        this.attack2Anim = "skill_3";
+        this.attack3Anim = "skill_3";
         this.isFixed = true;
         this.moveTo = new Vector2(4.5f, -2.58f);
-        sizeScale = 2.5f;
+        sizeScale = .65f;
         hasCollision = false;
         float initialDPSTime = 5f;
         //Pure DPS -> Summon Skeletons
@@ -67,6 +75,13 @@ public class NecromancerBoss : Enemy, IDeathObserver
             ChangeSpellbook(fireChargesSpellbook);
         }
         return damage;
+    }
+
+    public override void InstantiateCharacter(Vector2 position)
+    {
+        base.InstantiateCharacter(position);
+        sprite.localRotation = Quaternion.Euler(0, 180, 0);
+
     }
 
     public override void Cast()
